@@ -1,0 +1,2256 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>SIMPEKA SD - Kabupaten Tabalong</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Times+New+Roman&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['"Times New Roman"', 'Times', 'serif']
+          },
+          colors: {
+            peka: {
+              50: '#eefbf3',
+              100: '#d6f5e3',
+              200: '#b0eacb',
+              300: '#7cd8ac',
+              400: '#46be88',
+              500: '#108A44', // Primary Emerald Green matching reference UI
+              600: '#0d7539',
+              700: '#0b5d2f',
+              800: '#0b4a27',
+              900: '#093d21',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #e8f3ec;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+
+    /* Mobile App Header Curve */
+    .app-header-curve {
+      background: linear-gradient(145deg, #108A44 0%, #0b6e35 100%);
+      border-bottom-left-radius: 32px;
+      border-bottom-right-radius: 32px;
+      box-shadow: 0 10px 25px -5px rgba(16, 138, 68, 0.35);
+    }
+
+    /* Floating Action Button Glow */
+    .fab-glow {
+      box-shadow: 0 8px 20px -2px rgba(16, 138, 68, 0.55);
+    }
+
+    /* Soft Card Shadow */
+    .peka-card {
+      background: #ffffff;
+      border-radius: 22px;
+      box-shadow: 0 6px 24px -4px rgba(15, 23, 42, 0.06);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+    }
+
+    /* Circular Progress Transition */
+    .progress-ring__circle {
+      transition: stroke-dashoffset 0.5s ease-in-out;
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
+    }
+
+    /* ==========================================
+       PRINT ENGINE FOR F4 PAPER (215mm x 330mm)
+       ========================================== */
+    @page {
+      size: 215mm 330mm;
+      margin: 12mm 14mm 12mm 14mm;
+    }
+
+    @page f4-landscape {
+      size: 330mm 215mm;
+      margin: 12mm 14mm 12mm 14mm;
+    }
+
+    @media print {
+      html, body {
+        background: #ffffff !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        color: #000000 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      #print-area {
+        display: block !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      .f4-sheet {
+        width: 100% !important;
+        min-height: 300mm !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        page-break-after: always;
+        break-after: page;
+        position: relative;
+        box-sizing: border-box;
+      }
+
+      .f4-sheet-landscape {
+        page: f4-landscape;
+        width: 100% !important;
+        min-height: 185mm !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        page-break-after: always;
+        break-after: page;
+        position: relative;
+        box-sizing: border-box;
+      }
+
+      .f4-sheet:last-child,
+      .f4-sheet-landscape:last-child {
+        page-break-after: auto;
+        break-after: auto;
+      }
+    }
+
+    /* Screen Preview F4 Sheet Styling */
+    .f4-preview-sheet {
+      width: 215mm;
+      min-height: 330mm;
+      background: white;
+      margin: 0 auto 2rem auto;
+      padding: 14mm 16mm 18mm 16mm;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+      border-radius: 4px;
+      color: #000;
+      font-family: 'Times New Roman', Times, serif;
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    .f4-preview-sheet-landscape {
+      width: 330mm;
+      min-height: 215mm;
+      background: white;
+      margin: 0 auto 2rem auto;
+      padding: 14mm 16mm 18mm 16mm;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+      border-radius: 4px;
+      color: #000;
+      font-family: 'Times New Roman', Times, serif;
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    /* Responsive Scaling for F4 Preview on Mobile Screens */
+    @media (max-width: 768px) {
+      #screen-preview-wrapper {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 12px;
+      }
+      .f4-preview-sheet {
+        zoom: 0.42;
+        margin: 0 auto 1.25rem auto;
+      }
+      .f4-preview-sheet-landscape {
+        zoom: 0.30;
+        margin: 0 auto 1.25rem auto;
+      }
+    }
+
+    /* Official App Watermark Footer on Every Report Sheet */
+    .simpeka-sheet-footer {
+      position: absolute;
+      bottom: 5mm;
+      left: 14mm;
+      right: 14mm;
+      border-top: 0.5pt solid #cbd5e1;
+      padding-top: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+      font-size: 7.5pt;
+      color: #64748b;
+      letter-spacing: 0.3px;
+    }
+
+    /* Uniform Mobile Navigation Button & Icon Sizing */
+    .mobile-nav-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 50px;
+      border-radius: 14px;
+      transition: all 0.2s ease;
+      gap: 3px;
+    }
+    .mobile-nav-btn i {
+      font-size: 18px;
+      line-height: 1;
+      width: 22px;
+      height: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .mobile-nav-btn span {
+      font-size: 10px;
+      line-height: 1.1;
+      letter-spacing: -0.1px;
+    }
+
+    .report-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'Times New Roman', Times, serif;
+    }
+    .report-table th, .report-table td {
+      border: 1px solid #000000;
+      padding: 5px 6px;
+      vertical-align: top;
+      font-size: 11pt;
+      line-height: 1.3;
+    }
+    .report-table th {
+      background-color: #f1f5f9 !important;
+      font-weight: bold;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    /* Dense Table for 1-31 Presensi */
+    .presensi-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'Times New Roman', Times, serif;
+      table-layout: fixed;
+    }
+    .presensi-table th, .presensi-table td {
+      border: 1px solid #000000;
+      padding: 3px 1px;
+      text-align: center;
+      vertical-align: middle;
+      font-size: 8.5pt;
+      overflow: hidden;
+    }
+    .presensi-table th {
+      background-color: #f1f5f9 !important;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#e8f3ec] text-slate-800 pb-28 md:pb-12 overflow-x-hidden">
+
+  <!-- =========================================================
+       MAIN APP SHELL (NO-PRINT)
+       ========================================================= -->
+  <div class="no-print max-w-5xl mx-auto md:py-6 md:px-4">
+    <div class="bg-[#F4F8F5] md:rounded-[36px] md:shadow-2xl md:border md:border-white/70 min-h-screen md:min-h-[860px] relative flex flex-col">
+
+      <!-- TOP CURVED GREEN HEADER (Inspired by Reference Mobile App) -->
+      <header class="app-header-curve text-white pt-6 pb-8 px-5 sm:px-8 relative z-10">
+        <div class="flex items-center justify-between mb-4">
+          <!-- Left User / App Identity -->
+          <div class="flex items-center gap-3.5 min-w-0">
+            <div class="w-12 h-12 rounded-2xl bg-white/15 border border-white/30 flex items-center justify-center shadow-inner shrink-0">
+              <i class="fa-solid fa-mosque text-amber-300 text-xl" id="header-agama-icon"></i>
+            </div>
+            <div class="min-w-0">
+              <div class="flex items-center gap-2">
+                <span class="text-[11px] font-bold uppercase tracking-widest bg-white/20 px-2.5 py-0.5 rounded-full text-emerald-50">SIMPEKA SD</span>
+                <span class="text-[11px] text-emerald-100 font-medium hidden sm:inline">Disdikbud Tabalong</span>
+              </div>
+              <h1 class="text-base sm:text-xl font-extrabold tracking-tight leading-tight mt-0.5 truncate" id="header-fasilitator-name">
+                Halo, Fasilitator PEKA
+              </h1>
+              <p class="text-xs text-emerald-100/90 font-medium truncate max-w-[195px] sm:max-w-xs" id="header-school-name">
+                Belum memilih sekolah • Klik Profil
+              </p>
+            </div>
+          </div>
+
+          <!-- Right Action Pills -->
+          <div class="flex items-center gap-2 shrink-0">
+            <div class="bg-white/15 border border-white/25 rounded-full h-10 px-3.5 flex items-center gap-1.5 shadow-sm">
+              <i class="fa-solid fa-star text-amber-300 text-xs"></i>
+              <span class="text-xs font-bold whitespace-nowrap" id="header-jurnal-badge">0 Jurnal</span>
+            </div>
+            <button onclick="switchTab('profil')" title="Pengaturan Data Awal" class="w-10 h-10 rounded-full bg-white/15 hover:bg-white/25 border border-white/25 flex items-center justify-center transition shrink-0">
+              <i class="fa-solid fa-sliders text-sm"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Active Period Selector Bar Inside Header -->
+        <div class="bg-white/15 border border-white/25 rounded-2xl p-3 flex flex-wrap items-center justify-between gap-2 mt-2">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-white text-peka-600 flex items-center justify-center font-bold text-sm shadow-sm shrink-0">
+              <i class="fa-regular fa-calendar-check text-base"></i>
+            </div>
+            <div>
+              <p class="text-[10px] uppercase tracking-wider text-emerald-100 font-semibold">Periode Laporan Aktif</p>
+              <p class="text-xs font-bold text-white" id="active-period-label">November 2026</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 ml-auto">
+            <select id="select-bulan" onchange="onPeriodChange()" class="h-9 bg-white text-slate-800 text-xs font-bold rounded-xl px-3 focus:outline-none shadow-sm cursor-pointer">
+              <option value="0">Januari</option>
+              <option value="1">Februari</option>
+              <option value="2">Maret</option>
+              <option value="3">April</option>
+              <option value="4">Mei</option>
+              <option value="5">Juni</option>
+              <option value="6">Juli</option>
+              <option value="7">Agustus</option>
+              <option value="8">September</option>
+              <option value="9">Oktober</option>
+              <option value="10" selected>November</option>
+              <option value="11">Desember</option>
+            </select>
+            <input id="input-tahun" type="number" min="2020" max="2040" value="2026" onchange="onPeriodChange()" class="w-20 h-9 bg-white text-slate-800 text-xs font-bold rounded-xl px-2.5 text-center focus:outline-none shadow-sm" placeholder="Tahun" />
+          </div>
+        </div>
+      </header>
+
+      <!-- DESKTOP NAVIGATION PILLS (Visible on md+) -->
+      <div class="hidden md:flex flex-wrap items-center justify-center gap-2 px-8 pt-5">
+        <button onclick="switchTab('beranda')" id="dnav-beranda" class="h-10 px-4 rounded-xl text-xs font-bold transition inline-flex items-center gap-2 bg-peka-500 text-white shadow-sm">
+          <i class="fa-solid fa-house text-sm w-4 text-center"></i> <span>Beranda</span>
+        </button>
+        <button onclick="switchTab('jurnal')" id="dnav-jurnal" class="h-10 px-4 rounded-xl text-xs font-bold transition inline-flex items-center gap-2 bg-white text-slate-600 hover:bg-emerald-50">
+          <i class="fa-solid fa-book-open-reader text-sm w-4 text-center"></i> <span>Isi Jurnal</span>
+        </button>
+        <button onclick="switchTab('presensi')" id="dnav-presensi" class="h-10 px-4 rounded-xl text-xs font-bold transition inline-flex items-center gap-2 bg-white text-slate-600 hover:bg-emerald-50">
+          <i class="fa-solid fa-calendar-check text-sm w-4 text-center"></i> <span>Presensi</span>
+        </button>
+        <button onclick="switchTab('dokumentasi')" id="dnav-dokumentasi" class="h-10 px-4 rounded-xl text-xs font-bold transition inline-flex items-center gap-2 bg-white text-slate-600 hover:bg-emerald-50">
+          <i class="fa-solid fa-camera-retro text-sm w-4 text-center"></i> <span>Dokumentasi (Maks 3)</span>
+        </button>
+        <button onclick="switchTab('profil')" id="dnav-profil" class="h-10 px-4 rounded-xl text-xs font-bold transition inline-flex items-center gap-2 bg-white text-slate-600 hover:bg-emerald-50">
+          <i class="fa-solid fa-school text-sm w-4 text-center"></i> <span>Data Awal</span>
+        </button>
+        <button onclick="switchTab('cetak')" id="dnav-cetak" class="h-10 px-4 rounded-xl text-xs font-bold transition inline-flex items-center gap-2 bg-amber-500 text-white shadow-sm hover:bg-amber-600">
+          <i class="fa-solid fa-file-pdf text-sm w-4 text-center"></i> <span>Buat Laporan & Cetak</span>
+        </button>
+      </div>
+
+      <!-- MAIN CONTENT VIEWS -->
+      <main class="flex-1 p-4 sm:p-6 md:p-8 space-y-6">
+
+        <!-- ==========================================
+             TAB 1: BERANDA / DASHBOARD (Eco App Style)
+             ========================================== -->
+        <section id="view-beranda" class="space-y-5">
+          <!-- Setup Alert Banner if Master Data incomplete -->
+          <div id="setup-warning-banner" class="hidden bg-amber-50 border border-amber-300 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="flex items-start gap-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-400/20 text-amber-700 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-triangle-exclamation text-base"></i>
+              </div>
+              <div>
+                <h3 class="text-sm font-bold text-amber-900">Data Awal Belum Lengkap</h3>
+                <p class="text-xs text-amber-800 mt-0.5">Silakan lengkapi Nama Fasilitator, Kecamatan, Sekolah, Kepala Sekolah, dan Hari Mengajar terlebih dahulu.</p>
+              </div>
+            </div>
+            <button onclick="switchTab('profil')" class="h-10 shrink-0 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-4 rounded-xl shadow-sm transition inline-flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-user-gear text-xs"></i> <span>Atur Sekarang</span>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+            <!-- Left Circular Progress Card (Matching Reference Image) -->
+            <div class="peka-card p-6 lg:col-span-5 flex flex-col items-center text-center relative overflow-hidden">
+              <div class="w-full flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Progres Laporan</span>
+                <span id="dash-period-chip" class="text-xs font-bold bg-peka-50 text-peka-600 px-3 py-1 rounded-full">November 2026</span>
+              </div>
+
+              <!-- Circular Ring -->
+              <div class="relative w-44 h-44 flex items-center justify-center my-2">
+                <svg class="w-44 h-44" viewBox="0 0 120 120">
+                  <circle cx="60" cy="60" r="50" stroke="#e2f2e8" stroke-width="11" fill="none" />
+                  <circle id="progress-ring-circle" class="progress-ring__circle" cx="60" cy="60" r="50" stroke="#108A44" stroke-width="11" stroke-dasharray="314.16" stroke-dashoffset="314.16" stroke-linecap="round" fill="none" />
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center p-4">
+                  <div class="w-11 h-11 rounded-2xl bg-peka-50 text-peka-600 flex items-center justify-center mb-1 shadow-sm">
+                    <i class="fa-solid fa-seedling text-lg"></i>
+                  </div>
+                  <span id="dash-progress-percent" class="text-2xl font-extrabold text-slate-800">0%</span>
+                  <span class="text-[11px] font-semibold text-slate-400">Kelengkapan</span>
+                </div>
+              </div>
+
+              <!-- Pill Status -->
+              <div class="w-full bg-sky-50 text-sky-700 border border-sky-100 rounded-xl px-3.5 py-2 text-xs font-bold mb-4" id="dash-progress-subtitle">
+                0 dari 0 Hari Efektif Terisi Jurnal
+              </div>
+
+              <!-- Primary Action Buttons (Uniform Height & Icon Size) -->
+              <div class="grid grid-cols-2 gap-2.5 w-full">
+                <button onclick="switchTab('jurnal'); openJournalModal();" class="h-11 bg-peka-500 hover:bg-peka-600 text-white font-bold text-xs px-4 rounded-xl shadow-md transition inline-flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-plus-circle text-sm w-4 text-center"></i> <span>Isi Jurnal</span>
+                </button>
+                <button onclick="switchTab('cetak')" class="h-11 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs px-4 rounded-xl shadow-md transition inline-flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-print text-sm w-4 text-center"></i> <span>Buat Laporan</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Right 2x2 Stat Grid & Quick Settings -->
+            <div class="lg:col-span-7 flex flex-col justify-between space-y-5">
+              <!-- 2x2 Grid Cards -->
+              <div class="peka-card p-5">
+                <div class="flex items-center justify-between mb-3.5">
+                  <h2 class="text-sm font-extrabold text-slate-800">Ringkasan Bulan Ini</h2>
+                  <button onclick="switchTab('presensi')" class="text-xs font-bold text-peka-600 hover:underline">Lihat Presensi →</button>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <!-- Stat 1: Jurnal -->
+                  <div onclick="switchTab('jurnal')" class="cursor-pointer bg-[#F8FAFC] hover:bg-peka-50/60 border border-slate-200/80 rounded-2xl p-3.5 transition">
+                    <div class="flex items-center gap-2 text-xs font-bold text-slate-500 mb-2">
+                      <span class="w-8 h-8 rounded-xl bg-emerald-100 text-peka-600 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-book text-sm"></i>
+                      </span>
+                      <span>Jurnal</span>
+                    </div>
+                    <p class="text-2xl font-extrabold text-slate-800" id="stat-jurnal-count">0</p>
+                    <p class="text-[11px] text-slate-400 font-medium">Pertemuan</p>
+                  </div>
+
+                  <!-- Stat 2: Hadir (H) -->
+                  <div onclick="switchTab('presensi')" class="cursor-pointer bg-[#F8FAFC] hover:bg-peka-50/60 border border-slate-200/80 rounded-2xl p-3.5 transition">
+                    <div class="flex items-center gap-2 text-xs font-bold text-slate-500 mb-2">
+                      <span class="w-8 h-8 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-user-check text-sm"></i>
+                      </span>
+                      <span>Hadir (H)</span>
+                    </div>
+                    <p class="text-2xl font-extrabold text-slate-800" id="stat-hadir-count">0</p>
+                    <p class="text-[11px] text-slate-400 font-medium">Hari Mengajar</p>
+                  </div>
+
+                  <!-- Stat 3: S / I / A -->
+                  <div onclick="switchTab('presensi')" class="cursor-pointer bg-[#F8FAFC] hover:bg-peka-50/60 border border-slate-200/80 rounded-2xl p-3.5 transition">
+                    <div class="flex items-center gap-2 text-xs font-bold text-slate-500 mb-2">
+                      <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-notes-medical text-sm"></i>
+                      </span>
+                      <span>S / I / A</span>
+                    </div>
+                    <p class="text-2xl font-extrabold text-slate-800" id="stat-sia-count">0/0/0</p>
+                    <p class="text-[11px] text-slate-400 font-medium">Sakit/Izin/Alpa</p>
+                  </div>
+
+                  <!-- Stat 4: Foto Dokumentasi -->
+                  <div onclick="switchTab('dokumentasi')" class="cursor-pointer bg-[#F8FAFC] hover:bg-peka-50/60 border border-slate-200/80 rounded-2xl p-3.5 transition">
+                    <div class="flex items-center gap-2 text-xs font-bold text-slate-500 mb-2">
+                      <span class="w-8 h-8 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-images text-sm"></i>
+                      </span>
+                      <span>Foto</span>
+                    </div>
+                    <p class="text-2xl font-extrabold text-slate-800" id="stat-foto-count">0/3</p>
+                    <p class="text-[11px] text-slate-400 font-medium">Dokumentasi</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Titimangsa (Tempat & Tanggal Laporan Custom) Card -->
+              <div class="peka-card p-5">
+                <div class="flex items-center justify-between mb-3">
+                  <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-lg bg-peka-50 text-peka-600 flex items-center justify-center">
+                      <i class="fa-solid fa-signature text-xs"></i>
+                    </div>
+                    <h3 class="text-sm font-extrabold text-slate-800">Tempat & Tanggal Tanda Tangan Laporan</h3>
+                  </div>
+                  <span class="text-[11px] text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full font-semibold">Custom Tgl</span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-[11px] font-bold text-slate-500 mb-1">Tempat Laporan (Kecamatan/Desa)</label>
+                    <input type="text" id="input-tempat-ttd" oninput="savePeriodMeta()" placeholder="Contoh: Tanjung" class="w-full h-10 bg-slate-50 border border-slate-200 rounded-xl px-3.5 text-xs font-semibold focus:outline-none focus:border-peka-500" />
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-bold text-slate-500 mb-1">Tanggal Laporan (Bebas / Custom)</label>
+                    <input type="text" id="input-tanggal-ttd" oninput="savePeriodMeta()" placeholder="Contoh: 30 November 2026" class="w-full h-10 bg-slate-50 border border-slate-200 rounded-xl px-3.5 text-xs font-semibold focus:outline-none focus:border-peka-500" />
+                  </div>
+                </div>
+                <p class="text-[11px] text-slate-400 mt-2">
+                  *Teks ini akan tampil di bagian pengesahan bawah pada lembar Jurnal Kegiatan dan Daftar Hadir (Presensi).
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Info Card: Jadwal Hari Efektif & Backup Offline -->
+          <div class="peka-card p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-3.5">
+              <div class="w-11 h-11 rounded-2xl bg-peka-50 text-peka-600 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-calendar-week text-lg"></i>
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-slate-400 uppercase">Jadwal Hari Efektif Mengajar Sekolah Ini</h4>
+                <p class="text-sm font-extrabold text-slate-800 mt-0.5" id="dash-jadwal-hari">Belum dipilih</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+              <button onclick="exportBackupJSON()" class="h-10 text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 rounded-xl transition inline-flex items-center gap-2">
+                <i class="fa-solid fa-download text-xs w-4 text-center"></i> <span>Backup (.json)</span>
+              </button>
+              <label class="cursor-pointer h-10 text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 rounded-xl transition inline-flex items-center gap-2">
+                <i class="fa-solid fa-upload text-xs w-4 text-center"></i> <span>Pulihkan</span>
+                <input type="file" accept=".json" onchange="importBackupJSON(event)" class="hidden" />
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             TAB 2: JURNAL KEGIATAN PEKA
+             ========================================== -->
+        <section id="view-jurnal" class="hidden space-y-5">
+          <div class="peka-card p-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+              <div>
+                <h2 class="text-base font-extrabold text-slate-800 flex items-center gap-2">
+                  <i class="fa-solid fa-book-open-reader text-peka-500"></i>
+                  Jurnal Kegiatan PEKA
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                  Setiap pengisian jurnal otomatis mengisi status <strong>H (Hadir)</strong> pada tabel Daftar Hadir Fasilitator.
+                </p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="generateScheduledDatesHelper()" class="bg-peka-50 hover:bg-peka-100 text-peka-700 font-bold text-xs px-3.5 py-2.5 rounded-xl transition flex items-center gap-1.5">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i> Tampilkan Tanggal Efektif
+                </button>
+                <button onclick="openJournalModal()" class="bg-peka-500 hover:bg-peka-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-sm transition flex items-center gap-1.5">
+                  <i class="fa-solid fa-plus"></i> Tambah Jurnal
+                </button>
+              </div>
+            </div>
+
+            <!-- Quick Scheduled Dates Chips Bar -->
+            <div class="mt-4">
+              <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+                Klik Tanggal Hari Mengajar di Bawah untuk Mengisi Jurnal Cepat:
+              </p>
+              <div id="scheduled-dates-chips" class="flex flex-wrap gap-2"></div>
+            </div>
+          </div>
+
+          <!-- Journal Entries List -->
+          <div id="journal-list-container" class="space-y-3"></div>
+        </section>
+
+        <!-- ==========================================
+             TAB 3: DAFTAR HADIR / PRESENSI FASILITATOR (1-31)
+             ========================================== -->
+        <section id="view-presensi" class="hidden space-y-5">
+          <div class="peka-card p-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+              <div>
+                <h2 class="text-base font-extrabold text-slate-800 flex items-center gap-2">
+                  <i class="fa-solid fa-calendar-check text-peka-500"></i>
+                  Presensi Kehadiran Mengajar Fasilitator
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                  Otomatis terisi <strong>H</strong> saat mengisi Jurnal. Klik pada kotak tanggal untuk mengubah status menjadi <strong>H / S / I / A / Kosong</strong> secara fleksibel.
+                </p>
+              </div>
+              <div class="flex items-center gap-1.5 text-[11px] font-bold">
+                <span class="px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800">H = Hadir</span>
+                <span class="px-2.5 py-1 rounded-lg bg-amber-100 text-amber-800">S = Sakit</span>
+                <span class="px-2.5 py-1 rounded-lg bg-sky-100 text-sky-800">I = Izin</span>
+                <span class="px-2.5 py-1 rounded-lg bg-rose-100 text-rose-800">A = Alpa</span>
+              </div>
+            </div>
+
+            <!-- Interactive Calendar Grid 1 - 31 -->
+            <div id="presensi-interactive-grid" class="grid grid-cols-4 sm:grid-cols-7 md:grid-cols-8 gap-2.5"></div>
+
+            <!-- Summary Bar -->
+            <div class="mt-5 pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
+              <div class="flex items-center gap-4 text-xs font-bold">
+                <span class="text-slate-600">Rekap Bulan Ini:</span>
+                <span class="text-emerald-700" id="rekap-h-label">Hadir (H): 0</span>
+                <span class="text-amber-600" id="rekap-s-label">Sakit (S): 0</span>
+                <span class="text-sky-600" id="rekap-i-label">Izin (I): 0</span>
+                <span class="text-rose-600" id="rekap-a-label">Alpa (A): 0</span>
+              </div>
+              <button onclick="switchTab('cetak')" class="bg-peka-500 hover:bg-peka-600 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-sm transition flex items-center gap-1.5">
+                <i class="fa-solid fa-print"></i> Lihat Tabel Presensi Cetak
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             TAB 4: DOKUMENTASI KEGIATAN (MAKS 3 FOTO)
+             ========================================== -->
+        <section id="view-dokumentasi" class="hidden space-y-5">
+          <div class="peka-card p-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+              <div>
+                <h2 class="text-base font-extrabold text-slate-800 flex items-center gap-2">
+                  <i class="fa-solid fa-camera-retro text-peka-500"></i>
+                  Upload Dokumentasi Kegiatan (Maksimal 3 Foto)
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                  Ketiga foto akan disusun secara proporsional menjadi <strong>1 lembar halaman F4</strong> pada laporan cetak.
+                </p>
+              </div>
+              <span id="photo-counter-badge" class="text-xs font-extrabold bg-peka-50 text-peka-700 px-3 py-1.5 rounded-full self-start sm:self-center">
+                0 / 3 Foto Terunggah
+              </span>
+            </div>
+
+            <!-- Drag & Drop Zone -->
+            <div id="dropzone-area"
+                 ondragover="handleDragOver(event)"
+                 ondragleave="handleDragLeave(event)"
+                 ondrop="handleDropFiles(event)"
+                 onclick="document.getElementById('file-upload-input').click()"
+                 class="border-2 border-dashed border-peka-300 hover:border-peka-500 bg-peka-50/40 hover:bg-peka-50 transition rounded-2xl p-8 text-center cursor-pointer">
+              <input type="file" id="file-upload-input" accept="image/*" multiple onchange="handleFileSelect(event)" class="hidden" />
+              <div class="w-14 h-14 rounded-2xl bg-peka-500 text-white flex items-center justify-center mx-auto mb-3 shadow-md">
+                <i class="fa-solid fa-cloud-arrow-up text-2xl"></i>
+              </div>
+              <p class="text-sm font-bold text-slate-800">Klik untuk Pilih Foto atau Tarik & Lepas (Drag & Drop) ke Sini</p>
+              <p class="text-xs text-slate-500 mt-1">Format JPG, PNG, WEBP • Otomatis disesuaikan untuk 1 halaman F4 (Maksimal 3 Gambar)</p>
+            </div>
+
+            <!-- Uploaded Photos Preview Grid -->
+            <div id="documentation-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5"></div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             TAB 5: PENGATURAN DATA AWAL (MASTER SETUP)
+             ========================================== -->
+        <section id="view-profil" class="hidden space-y-5">
+          <div class="peka-card p-5 sm:p-6">
+            <div class="flex items-center justify-between pb-4 mb-5 border-b border-slate-100">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-peka-50 text-peka-600 flex items-center justify-center">
+                  <i class="fa-solid fa-user-gear text-xl"></i>
+                </div>
+                <div>
+                  <h2 class="text-base font-extrabold text-slate-800">Pengaturan Data Awal (Master Data)</h2>
+                  <p class="text-xs text-slate-500">Data tersimpan otomatis secara offline di perangkat ini.</p>
+                </div>
+              </div>
+              <span class="text-[11px] font-bold bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full flex items-center gap-1">
+                <i class="fa-solid fa-hard-drive"></i> Offline Ready
+              </span>
+            </div>
+
+            <form onsubmit="saveMasterSettings(event)" class="space-y-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Nama Fasilitator -->
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1.5">Nama Fasilitator PEKA <span class="text-rose-500">*</span></label>
+                  <div class="relative">
+                    <i class="fa-regular fa-user absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+                    <input type="text" id="set-fasilitator" required placeholder="Contoh: Ahmad Fauzi, S.Pd.I" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-peka-500 focus:bg-white" />
+                  </div>
+                </div>
+
+                <!-- Agama -->
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1.5">Agama <span class="text-rose-500">*</span></label>
+                  <select id="set-agama" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-peka-500 focus:bg-white">
+                    <option value="Islam">Islam</option>
+                    <option value="Kristen">Kristen</option>
+                    <option value="Katolik">Katolik</option>
+                    <option value="Hindu">Hindu</option>
+                    <option value="Buddha">Buddha</option>
+                    <option value="Konghucu">Konghucu</option>
+                  </select>
+                </div>
+
+                <!-- Kecamatan (12 Kecamatan se-Kabupaten Tabalong) -->
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1.5">Kecamatan (Kab. Tabalong) <span class="text-rose-500">*</span></label>
+                  <select id="set-kecamatan" onchange="populateSchoolDropdown()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-peka-500 focus:bg-white">
+                    <option value="">-- Pilih Kecamatan --</option>
+                  </select>
+                </div>
+
+                <!-- Nama Sekolah (Otomatis sesuai DB SD se-Tabalong) -->
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1.5">Nama Sekolah (Sesuai DB SD Tabalong) <span class="text-rose-500">*</span></label>
+                  <select id="set-sekolah" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-peka-500 focus:bg-white">
+                    <option value="">-- Pilih Kecamatan Terlebih Dahulu --</option>
+                  </select>
+                </div>
+
+                <!-- Nama Kepala Sekolah -->
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1.5">Nama Kepala Sekolah <span class="text-rose-500">*</span></label>
+                  <input type="text" id="set-kepsek-nama" required placeholder="Contoh: Hj. Siti Rahmah, S.Pd., M.M." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-peka-500 focus:bg-white" />
+                </div>
+
+                <!-- NIP Kepala Sekolah -->
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1.5">NIP Kepala Sekolah</label>
+                  <input type="text" id="set-kepsek-nip" placeholder="Contoh: 19750412 200012 2 003 (Atau strip -)" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-peka-500 focus:bg-white" />
+                </div>
+              </div>
+
+              <!-- Hari Mengajar (Multi-select Checkbox) -->
+              <div class="pt-2">
+                <label class="block text-xs font-bold text-slate-700 mb-1">
+                  Jadwal Hari Mengajar Efektif <span class="text-rose-500">*</span>
+                  <span class="text-[11px] font-normal text-slate-500">(Bisa pilih lebih dari satu hari)</span>
+                </label>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5 mt-2" id="hari-checkbox-group">
+                  <label class="cursor-pointer flex items-center gap-2 p-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-peka-50 transition text-xs font-bold">
+                    <input type="checkbox" name="hari_mengajar" value="Senin" class="accent-peka-500 w-4 h-4 rounded" /> Senin
+                  </label>
+                  <label class="cursor-pointer flex items-center gap-2 p-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-peka-50 transition text-xs font-bold">
+                    <input type="checkbox" name="hari_mengajar" value="Selasa" class="accent-peka-500 w-4 h-4 rounded" /> Selasa
+                  </label>
+                  <label class="cursor-pointer flex items-center gap-2 p-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-peka-50 transition text-xs font-bold">
+                    <input type="checkbox" name="hari_mengajar" value="Rabu" class="accent-peka-500 w-4 h-4 rounded" /> Rabu
+                  </label>
+                  <label class="cursor-pointer flex items-center gap-2 p-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-peka-50 transition text-xs font-bold">
+                    <input type="checkbox" name="hari_mengajar" value="Kamis" class="accent-peka-500 w-4 h-4 rounded" /> Kamis
+                  </label>
+                  <label class="cursor-pointer flex items-center gap-2 p-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-peka-50 transition text-xs font-bold">
+                    <input type="checkbox" name="hari_mengajar" value="Jumat" class="accent-peka-500 w-4 h-4 rounded" /> Jumat
+                  </label>
+                  <label class="cursor-pointer flex items-center gap-2 p-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-peka-50 transition text-xs font-bold">
+                    <input type="checkbox" name="hari_mengajar" value="Sabtu" class="accent-peka-500 w-4 h-4 rounded" /> Sabtu
+                  </label>
+                </div>
+              </div>
+
+              <!-- Optional Custom Logo Override (Default is Official Tabalong Smart URL) -->
+              <div class="pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                  <div class="w-14 h-12 bg-slate-100 border border-slate-200 rounded-xl flex items-center justify-center p-1.5 shrink-0">
+                    <img src="https://sipandusd.disdikbudtabalong.id/tabalong-smart.png" alt="Logo Tabalong Smart" class="max-h-full max-w-full object-contain" />
+                  </div>
+                  <div>
+                    <p class="text-xs font-bold text-slate-700">Logo Cover Laporan: Tabalong Smart (Resmi)</p>
+                    <p class="text-[11px] text-slate-500">Terhubung otomatis ke logo resmi Disdikbud Tabalong.</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <label class="cursor-pointer h-9 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-3 rounded-xl transition inline-flex items-center gap-1.5">
+                    <i class="fa-solid fa-image text-xs"></i> <span>Upload Logo Offline</span>
+                    <input type="file" accept="image/*" onchange="handleCustomLogoUpload(event)" class="hidden" />
+                  </label>
+                  <button type="button" onclick="resetCustomLogo()" class="h-9 text-xs font-bold text-rose-600 hover:bg-rose-50 px-3 rounded-xl transition">Reset Default</button>
+                </div>
+              </div>
+
+              <div class="pt-3 flex items-center justify-end gap-3">
+                <button type="submit" class="w-full sm:w-auto h-11 bg-peka-500 hover:bg-peka-600 text-white font-bold text-xs px-6 rounded-xl shadow-md transition inline-flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-floppy-disk text-sm"></i> <span>Simpan Pengaturan Data Awal</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             TAB 6: PRATINJAU & CETAK LAPORAN F4
+             ========================================== -->
+        <section id="view-cetak" class="hidden space-y-5">
+          <!-- Sticky Control Bar -->
+          <div class="peka-card p-4 flex flex-wrap items-center justify-between gap-3 sticky top-3 z-20 border-2 border-peka-500/30">
+            <div>
+              <h2 class="text-sm font-extrabold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-file-pdf text-rose-600"></i>
+                Pratinjau Laporan Lengkap (Ukuran Kertas F4 / Folio)
+              </h2>
+              <p class="text-xs text-slate-500">
+                Terdiri dari: <strong>1. Cover Laporan</strong> • <strong>2. Jurnal Kegiatan</strong> • <strong>3. Daftar Hadir (1–31)</strong> • <strong>4. Dokumentasi (1 Kertas)</strong>
+              </p>
+            </div>
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+              <button onclick="triggerPrintReport()" class="w-full sm:w-auto h-11 bg-peka-500 hover:bg-peka-600 text-white font-extrabold text-xs px-5 rounded-xl shadow-lg transition inline-flex items-center justify-center gap-2">
+                <i class="fa-solid fa-print text-sm"></i> <span>Cetak / Simpan PDF (F4)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Responsive Scroll Wrapper for F4 Preview -->
+          <div class="overflow-x-auto pb-8">
+            <div id="screen-preview-wrapper"></div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- =========================================================
+           MOBILE BOTTOM NAVIGATION BAR (Uniform Button & Icon Sizes)
+           ========================================================= -->
+      <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-2 py-1.5 flex items-center justify-around z-30 shadow-[0_-8px_25px_rgba(0,0,0,0.08)]">
+        <button onclick="switchTab('beranda')" id="mnav-beranda" class="mobile-nav-btn text-peka-600 font-bold">
+          <i class="fa-solid fa-house"></i>
+          <span>Beranda</span>
+        </button>
+        <button onclick="switchTab('jurnal')" id="mnav-jurnal" class="mobile-nav-btn text-slate-400 font-semibold">
+          <i class="fa-solid fa-book-open"></i>
+          <span>Jurnal</span>
+        </button>
+
+        <!-- Center Prominent Add / Action Button -->
+        <div class="-mt-6 flex items-center justify-center w-[60px]">
+          <button onclick="switchTab('jurnal'); openJournalModal();" title="Isi Jurnal" class="w-13 h-13 w-[52px] h-[52px] rounded-full bg-peka-500 text-white flex items-center justify-center fab-glow border-4 border-white transition transform active:scale-95">
+            <i class="fa-solid fa-plus text-lg"></i>
+          </button>
+        </div>
+
+        <button onclick="switchTab('dokumentasi')" id="mnav-dokumentasi" class="mobile-nav-btn text-slate-400 font-semibold">
+          <i class="fa-solid fa-camera"></i>
+          <span>Foto</span>
+        </button>
+        <button onclick="switchTab('cetak')" id="mnav-cetak" class="mobile-nav-btn text-slate-400 font-semibold">
+          <i class="fa-solid fa-print"></i>
+          <span>Laporan</span>
+        </button>
+      </nav>
+
+    </div>
+  </div>
+
+  <!-- =========================================================
+       MODAL: TAMBAH / EDIT JURNAL KEGIATAN
+       ========================================================= -->
+  <div id="journal-modal" class="no-print fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 animate-fadeIn max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-peka-50 text-peka-600 flex items-center justify-center">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-extrabold text-slate-800" id="modal-journal-title">Isi Jurnal Kegiatan PEKA</h3>
+            <p class="text-[11px] text-slate-400" id="modal-journal-subtitle">Otomatis mengisi Hadir (H) pada Presensi</p>
+          </div>
+        </div>
+        <button onclick="closeJournalModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form onsubmit="saveJournalEntry(event)" class="space-y-3.5">
+        <input type="hidden" id="jurnal-edit-id" value="" />
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Tanggal Pertemuan <span class="text-rose-500">*</span></label>
+            <select id="jurnal-tanggal" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-bold focus:outline-none focus:border-peka-500"></select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Kelas <span class="text-rose-500">*</span></label>
+            <input type="text" id="jurnal-kelas" required placeholder="Contoh: I - VI / Kelas IV" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-peka-500" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Materi Pendidikan Karakter / Keagamaan <span class="text-rose-500">*</span></label>
+          <input type="text" id="jurnal-materi" required placeholder="Contoh: Pembiasaan Adab Sopan Santun & Doa Harian" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-peka-500" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Kegiatan Pembelajaran Inti <span class="text-rose-500">*</span></label>
+          <textarea id="jurnal-kegiatan" rows="3" required placeholder="Tuliskan rincian kegiatan pembelajaran inti yang dilaksanakan..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-peka-500"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Catatan</label>
+          <input type="text" id="jurnal-catatan" placeholder="Contoh: Kegiatan berjalan lancar, siswa sangat antusias" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-peka-500" />
+        </div>
+
+        <div class="pt-3 flex items-center justify-end gap-2">
+          <button type="button" onclick="closeJournalModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">
+            Batal
+          </button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-peka-500 hover:bg-peka-600 text-white text-xs font-bold shadow-md flex items-center gap-1.5">
+            <i class="fa-solid fa-check"></i> Simpan Jurnal & Presensi
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       TOAST NOTIFICATION (NO ALERT)
+       ========================================================= -->
+  <div id="toast-box" class="no-print fixed top-5 right-5 z-50 hidden bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-xl border border-white/15 flex items-center gap-2.5 text-xs font-bold">
+    <i class="fa-solid fa-circle-check text-emerald-400 text-base" id="toast-icon"></i>
+    <span id="toast-message">Data berhasil disimpan</span>
+  </div>
+
+  <!-- =========================================================
+       DEDICATED PRINT AREA (F4 PORTRAIT SHEETS)
+       ========================================================= -->
+  <div id="print-area" class="hidden"></div>
+
+  <!-- =========================================================
+       APPLICATION JAVASCRIPT & DATABASE SD SE-TABALONG
+       ========================================================= -->
+  <script>
+    /**
+     * 1. DATABASE LENGKAP SD SE-KABUPATEN TABALONG (215 SEKOLAH - 12 KECAMATAN)
+     * Sesuai file CSV DB_SD_se-Tabalong.csv yang diunggah pengguna.
+     */
+    const DB_SD_TABALONG = {
+      "Banua Lawas": [
+        "SD NEGERI 1 BANUA LAWAS", "SD NEGERI 1 BANUA RANTAU", "SD NEGERI 1 BUNGIn", "SD NEGERI 1 HABAU HULU",
+        "SD NEGERI 1 HAPALAH", "SD NEGERI 1 HARIANG", "SD NEGERI 1 PEMATANG", "SD NEGERI 1 PURAI",
+        "SD NEGERI 1 SUNGAI ANYAR", "SD NEGERI 1 SUNGAI DURIAN", "SD NEGERI 1 TALAN", "SD NEGERI 2 BANUA LAWAS",
+        "SD NEGERI 2 BANUA RANTAU", "SD NEGERI 2 BUNGIn", "SD NEGERI 2 HABAU HULU", "SD NEGERI 2 HAPALAH",
+        "SD NEGERI 2 HARIANG", "SD NEGERI 2 TALAN", "SD NEGERI 3 BANUA RANTAU", "SD NEGERI BANGKILING",
+        "SD NEGERI BANGKILING RAYA", "SD NEGERI BATANG BANYU", "SD NEGERI HABAU", "SD NEGERI Pematang"
+      ],
+      "Bintang Ara": [
+        "SD NEGERI 1 BINTANG ARA", "SD NEGERI 1 BURUM", "SD NEGERI 1 Daling", "SD NEGERI 1 KOve",
+        "SD NEGERI 1 PANAAN", "SD NEGERI 1 USIH", "SD NEGERI 2 BINTANG ARA", "SD NEGERI 2 BURUM",
+        "SD NEGERI 2 PANAAN", "SD NEGERI 2 USIH", "SD NEGERI ARGO MULYO", "SD NEGERI BUMI MAKMUR",
+        "SD NEGERI DAMBUNG RAYA", "SD NEGERI HEGAR MANAH", "SD NEGERI Waling"
+      ],
+      "Haruai": [
+        "SD NEGERI 1 BONGKANG", "SD NEGERI 1 HAYUP", "SD NEGERI 1 KEMBANG KUNING", "SD NEGERI 1 LOK BATU",
+        "SD NEGERI 1 MAHE PASAR", "SD NEGERI 1 MARINDI", "SD NEGERI 1 NAWIN", "SD NEGERI 1 WIRANG",
+        "SD NEGERI 2 BONGKANG", "SD NEGERI 2 HAYUP", "SD NEGERI 2 KEMBANG KUNING", "SD NEGERI 2 LOK BATU",
+        "SD NEGERI 2 MARINDI", "SD NEGERI 2 NAWIN", "SD NEGERI 2 WIRANG", "SD NEGERI 3 HAYUP",
+        "SD NEGERI 3 KEMBANG KUNING", "SD NEGERI 4 HAYUP", "SD NEGERI CACAR", "SD NEGERI HALONG",
+        "SD NEGERI SERADANG", "SD NEGERI SUPUT"
+      ],
+      "Jaro": [
+        "SD NEGERI 1 GARAGATA", "SD NEGERI 1 JARO", "SD NEGERI 1 LANO", "SD NEGERI 1 MUANG",
+        "SD NEGERI 1 NAluI", "SD NEGERI 1 PURUI", "SD NEGERI 1 SOLAN", "SD NEGERI 2 GARAGATA",
+        "SD NEGERI 2 JARO", "SD NEGERI 2 MUANG", "SD NEGERI 2 NAluI", "SD NEGERI 2 SOLAN",
+        "SD NEGERI 3 JARO", "SD NEGERI 4 JARO", "SD NEGERI TERATAU"
+      ],
+      "Kelua": [
+        "SD NEGERI 1 AMPUKUNG", "SD NEGERI 1 BAHUNGIN", "SD NEGERI 1 BINTURU", "SD NEGERI 1 KARANGAN PUTIH",
+        "SD NEGERI 1 MASINTAN", "SD NEGERI 1 PALIAT", "SD NEGERI 1 PASAR PANAS", "SD NEGERI 1 PULAU",
+        "SD NEGERI 1 TAKULAT", "SD NEGERI 2 AMPUKUNG", "SD NEGERI 2 BAHUNGIN", "SD NEGERI 2 BINTURU",
+        "SD NEGERI 2 KARANGAN PUTIH", "SD NEGERI 2 MASINTAN", "SD NEGERI 2 PALIAT", "SD NEGERI 2 PASAR PANAS",
+        "SD NEGERI 2 PULAU", "SD NEGERI 2 TAKULAT", "SD NEGERI 3 AMPUKUNG", "SD NEGERI 3 PASAR PANAS",
+        "SD NEGERI 3 PULAU", "SD NEGERI PUDIN", "SD NEGERI TELAGA ITAR"
+      ],
+      "Muara Harus": [
+        "SD NEGERI 1 HARUS", "SD NEGERI 1 MANDUIN", "SD NEGERI 1 MANTUIL", "SD NEGERI 1 MURUNG KARANGAN",
+        "SD NEGERI 1 PADANGIN", "SD NEGERI 1 TANTARINGIN", "SD NEGERI 2 HARUS", "SD NEGERI 2 MANDUIN",
+        "SD NEGERI 2 MANTUIL", "SD NEGERI 2 PADANGIN", "SD NEGERI 2 TANTARINGIN", "SD NEGERI 3 TANTARINGIN",
+        "SD NEGERI MADANG"
+      ],
+      "Muara Uya": [
+        "SD NEGERI 1 BINJAI", "SD NEGERI 1 KUPANG NUNDING", "SD NEGERI 1 LUMBANG", "SD NEGERI 1 MANGKUPUM",
+        "SD NEGERI 1 MUARA UYA", "SD NEGERI 1 PALAPI", "SD NEGERI 1 PASAR BATU", "SD NEGERI 1 RIBANG",
+        "SD NEGERI 1 SALIKUNG", "SD NEGERI 1 SANTUUN", "SD NEGERI 1 SIMPUNG LAYUNG", "SD NEGERI 1 SUNGAI KUMAP",
+        "SD NEGERI 1 UWI", "SD NEGERI 2 KUPANG NUNDING", "SD NEGERI 2 LUMBANG", "SD NEGERI 2 MANGKUPUM",
+        "SD NEGERI 2 MUARA UYA", "SD NEGERI 2 PALAPI", "SD NEGERI 2 PASAR BATU", "SD NEGERI 2 RIBANG",
+        "SD NEGERI 2 SALIKUNG", "SD NEGERI 2 SANTUUN", "SD NEGERI 2 SIMPUNG LAYUNG", "SD NEGERI 2 UWI",
+        "SD NEGERI 3 LUMBANG", "SD NEGERI 3 MUARA UYA", "SD NEGERI 3 SANTUUN", "SD NEGERI 4 MUARA UYA",
+        "SD NEGERI PELAJAU"
+      ],
+      "Murung Pudak": [
+        "SD ISLAM TERPADU AN-NAHL", "SD IT ASH-SHIDDIQ", "SD KATOLIK MURUNG PUDAK", "SD KRISTEN TABALONG",
+        "SD NEGERI 1 BELIMBING", "SD NEGERI 1 BELIMBING RAYA", "SD NEGERI 1 KAPAR", "SD NEGERI 1 KASIAU",
+        "SD NEGERI 1 MABUUN", "SD NEGERI 1 MASUKAU", "SD NEGERI 1 PEMBATAAN", "SD NEGERI 1 SULLINGAN",
+        "SD NEGERI 1.2 KAPAR", "SD NEGERI 2 BELIMBING", "SD NEGERI 2 BELIMBING RAYA", "SD NEGERI 2 KASIAU",
+        "SD NEGERI 2 MABUUN", "SD NEGERI 2 MASUKAU", "SD NEGERI 2 PEMBATAAN", "SD NEGERI 2 SULLINGAN",
+        "SD NEGERI 3 BELIMBING", "SD NEGERI 3 BELIMBING RAYA", "SD NEGERI 3 KAPAR", "SD NEGERI 3 MABUUN",
+        "SD NEGERI 3 PEMBATAAN", "SD NEGERI 4 BELIMBING", "SD NEGERI 4 KAPAR", "SD NEGERI 4 MABUUN",
+        "SD NEGERI 4 PEMBATAAN", "SD NEGERI 5 BELIMBING", "SD NEGERI 5 KAPAR", "SD NEGERI KASIAU RAYA",
+        "SD PLUS MURUNG PUDAK", "SDHAS BUNGA BANGSA"
+      ],
+      "Pugaan": [
+        "SD NEGERI 1 HALANGAN", "SD NEGERI 1 PUGAAN", "SD NEGERI 1 SEI RUKAM I", "SD NEGERI 1 SEI RUKAM II",
+        "SD NEGERI 1 TAMUNTI", "SD NEGERI 2 HALANGAN", "SD NEGERI 2 PUGAAN", "SD NEGERI 2 SEI RUKAM I",
+        "SD NEGERI 2 SEI RUKAM II", "SD NEGERI 2 TAMUNTI", "SD NEGERI JIRAK", "SD NEGERI PAMPANAN"
+      ],
+      "Tanjung": [
+        "SD INTEGRAL HIDAYATULLAH", "SD ISLAM TERPADU DARUL ULUM", "SD MUHAMMADIYAH", "SD NEGERI 1 AGUNG",
+        "SD NEGERI 1 BANYU TAJUN", "SD NEGERI 1 GARUNGIn", "SD NEGERI 1 HIKUN", "SD NEGERI 1 JANGKUNG",
+        "SD NEGERI 1 JUAI", "SD NEGERI 1 KAMBITIN", "SD NEGERI 1 KITANG", "SD NEGERI 1 MAHE SEBERANG",
+        "SD NEGERI 1 PAMAAR", "SD NEGERI 1 PUDAK SETEGAL", "SD NEGERI 1 SUNGAI PIMPI", "SD NEGERI 1 TANJUNG",
+        "SD NEGERI 1 WAYAU", "SD NEGERI 1.2 JANGKUNG", "SD NEGERI 2 AGUNG", "SD NEGERI 2 BANYU TAJUN",
+        "SD NEGERI 2 HIKUN", "SD NEGERI 2 JUAI", "SD NEGERI 2 KAMBITIN", "SD NEGERI 2 KITANG",
+        "SD NEGERI 2 PAMAAR", "SD NEGERI 2 PUDAK SETEGAL", "SD NEGERI 2 TANJUNG", "SD NEGERI 2 WAYAU",
+        "SD NEGERI 3 AGUNG", "SD NEGERI 3 BANYU TAJUN", "SD NEGERI 3 HIKUN", "SD NEGERI 3 JANGKUNG",
+        "SD NEGERI 3 KAMBITIN", "SD NEGERI 3 TANJUNG", "SD NEGERI 3 WAYAU", "SD NEGERI 4 AGUNG",
+        "SD NEGERI 4 HIKUN", "SD NEGERI 4 TANJUNG", "SD NEGERI 5 HIKUN", "SD NEGERI 5 TANJUNG",
+        "SD NEGERI 5.8TANJUNG", "SD NEGERI 6 TANJUNG", "SD NEGERI 9 TANJUNG", "SD NEGERI BANYU TAJUN DALAM",
+        "SD NEGERI KAMBITIN RAYA", "SD NEGERI SUNGAI PIMPI"
+      ],
+      "Tanta": [
+        "SD NEGERI 1 BARIMBUN", "SD NEGERI 1 LUK BAYUR", "SD NEGERI 1 MANGKUSIP", "SD NEGERI 1 MURUNG BARU",
+        "SD NEGERI 1 PADANG PANJANG", "SD NEGERI 1 PUJUNG", "SD NEGERI 1 PULAU KU'U", "SD NEGERI 1 TAMIYANG",
+        "SD NEGERI 1 TANTA", "SD NEGERI 1 TANTA HULU", "SD NEGERI 1 WALANGKIR", "SD NEGERI 1 WARUKIN",
+        "SD NEGERI 2 MANGKUSIP", "SD NEGERI 2 PADANG PANJANG", "SD NEGERI 2 TAMIYANG", "SD NEGERI 2 TANTA",
+        "SD NEGERI 2 WALANGKIR", "SD NEGERI 2 WARUKIN", "SD NEGERI 3 PADANG PANJANG", "SD NEGERI 3 WARUKIN",
+        "SD NEGERI PADANGIN", "SD NEGERI PUAIN KANAN"
+      ],
+      "Upau": [
+        "SD NEGERI 1 BILAS", "SD NEGERI 1 KAONG", "SD NEGERI 1 Kinarum", "SD NEGERI 1 MASINGAI I",
+        "SD NEGERI 1 MASINGAI II", "SD NEGERI 1 PANGELAK", "SD NEGERI 2 BILAS", "SD NEGERI 2 Kinarum",
+        "SD NEGERI 2 MASINGAI I", "SD NEGERI 2 MASINGAI II", "SD NEGERI 2 PANGELAK", "SD NEGERI 3 PANGELAK"
+      ]
+    };
+
+    const BULAN_NAMES = [
+      "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+      "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+    ];
+
+    const HARI_NAMES = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+
+    const STORAGE_KEY_MASTER = "simpeka_tabalong_master_v1";
+    const STORAGE_KEY_REPORTS = "simpeka_tabalong_reports_v1";
+
+    // Application State
+    let masterSettings = {
+      fasilitator: "",
+      agama: "Islam",
+      kecamatan: "Tanjung",
+      sekolah: "SD NEGERI 1 TANJUNG",
+      kepsekNama: "",
+      kepsekNip: "",
+      hariMengajar: ["Selasa", "Jumat"],
+      customLogoDataUrl: "" // If empty, uses built-in SVG Tabalong Smart Logo
+    };
+
+    let reportsStore = {}; // Keyed by "YYYY-MM", e.g., "2026-10" (0-indexed month)
+    let activeTab = "beranda";
+
+    /**
+     * 2. INITIALIZATION ON WINDOW LOAD
+     */
+    window.onload = function () {
+      loadFromStorage();
+      initKecamatanDropdown();
+      hydrateMasterForm();
+      onPeriodChange();
+    };
+
+    function loadFromStorage() {
+      try {
+        const savedMaster = localStorage.getItem(STORAGE_KEY_MASTER);
+        if (savedMaster) {
+          masterSettings = { ...masterSettings, ...JSON.parse(savedMaster) };
+        }
+        const savedReports = localStorage.getItem(STORAGE_KEY_REPORTS);
+        if (savedReports) {
+          reportsStore = JSON.parse(savedReports);
+        }
+      } catch (err) {
+        console.error("Gagal memuat penyimpanan lokal:", err);
+      }
+    }
+
+    function saveMasterToStorage() {
+      try {
+        localStorage.setItem(STORAGE_KEY_MASTER, JSON.stringify(masterSettings));
+      } catch (err) {
+        showToast("Memori penuh! Kurangi ukuran gambar.", true);
+      }
+    }
+
+    function saveReportsToStorage() {
+      try {
+        localStorage.setItem(STORAGE_KEY_REPORTS, JSON.stringify(reportsStore));
+      } catch (err) {
+        showToast("Memori browser penuh! Hapus beberapa foto lama.", true);
+      }
+    }
+
+    /**
+     * 3. PERIOD MANAGEMENT & REPORT OBJECT ACCESSOR
+     */
+    function getActivePeriodKey() {
+      const bulanIdx = parseInt(document.getElementById("select-bulan").value, 10);
+      const tahunVal = parseInt(document.getElementById("input-tahun").value, 10) || 2026;
+      return `${tahunVal}-${bulanIdx}`;
+    }
+
+    function getActiveReport() {
+      const key = getActivePeriodKey();
+      const bulanIdx = parseInt(document.getElementById("select-bulan").value, 10);
+      const tahunVal = parseInt(document.getElementById("input-tahun").value, 10) || 2026;
+      const lastDay = new Date(tahunVal, bulanIdx + 1, 0).getDate();
+
+      if (!reportsStore[key]) {
+        reportsStore[key] = {
+          bulanIdx,
+          tahun: tahunVal,
+          tempatTtd: masterSettings.kecamatan || "Tanjung",
+          tanggalTtd: `${lastDay} ${BULAN_NAMES[bulanIdx]} ${tahunVal}`,
+          jurnal: [],       // Array of { id, dayNumber, kelas, materi, kegiatan, catatan }
+          presensiManual: {}, // Map of dayNumber (1..31) -> "H" | "S" | "I" | "A" | ""
+          dokumentasi: []   // Array of max 3 { id, dataUrl, caption }
+        };
+      }
+      return reportsStore[key];
+    }
+
+    function onPeriodChange() {
+      const bulanIdx = parseInt(document.getElementById("select-bulan").value, 10);
+      const tahunVal = parseInt(document.getElementById("input-tahun").value, 10) || 2026;
+      const periodText = `${BULAN_NAMES[bulanIdx]} ${tahunVal}`;
+
+      document.getElementById("active-period-label").textContent = periodText;
+      document.getElementById("dash-period-chip").textContent = periodText;
+
+      const report = getActiveReport();
+      document.getElementById("input-tempat-ttd").value = report.tempatTtd || masterSettings.kecamatan || "Tanjung";
+      document.getElementById("input-tanggal-ttd").value = report.tanggalTtd || "";
+
+      refreshAllUI();
+    }
+
+    function savePeriodMeta() {
+      const report = getActiveReport();
+      report.tempatTtd = document.getElementById("input-tempat-ttd").value;
+      report.tanggalTtd = document.getElementById("input-tanggal-ttd").value;
+      saveReportsToStorage();
+      if (activeTab === "cetak") renderF4ReportPreview();
+    }
+
+    /**
+     * 4. MASTER SETTINGS (PROFIL SEKOLAH & FASILITATOR)
+     */
+    function initKecamatanDropdown() {
+      const kecSelect = document.getElementById("set-kecamatan");
+      kecSelect.innerHTML = `<option value="">-- Pilih Kecamatan --</option>`;
+      Object.keys(DB_SD_TABALONG).sort().forEach(kec => {
+        const opt = document.createElement("option");
+        opt.value = kec;
+        opt.textContent = kec;
+        kecSelect.appendChild(opt);
+      });
+    }
+
+    function populateSchoolDropdown(selectedSchool = "") {
+      const kec = document.getElementById("set-kecamatan").value;
+      const sekSelect = document.getElementById("set-sekolah");
+      sekSelect.innerHTML = "";
+
+      if (!kec || !DB_SD_TABALONG[kec]) {
+        sekSelect.innerHTML = `<option value="">-- Pilih Kecamatan Terlebih Dahulu --</option>`;
+        return;
+      }
+
+      DB_SD_TABALONG[kec].forEach(schoolName => {
+        const opt = document.createElement("option");
+        opt.value = schoolName;
+        opt.textContent = schoolName;
+        if (schoolName === selectedSchool) opt.selected = true;
+        sekSelect.appendChild(opt);
+      });
+    }
+
+    function hydrateMasterForm() {
+      document.getElementById("set-fasilitator").value = masterSettings.fasilitator || "";
+      document.getElementById("set-agama").value = masterSettings.agama || "Islam";
+      document.getElementById("set-kecamatan").value = masterSettings.kecamatan || "Tanjung";
+      populateSchoolDropdown(masterSettings.sekolah);
+      document.getElementById("set-kepsek-nama").value = masterSettings.kepsekNama || "";
+      document.getElementById("set-kepsek-nip").value = masterSettings.kepsekNip || "";
+
+      const checkboxes = document.querySelectorAll('input[name="hari_mengajar"]');
+      checkboxes.forEach(cb => {
+        cb.checked = (masterSettings.hariMengajar || []).includes(cb.value);
+      });
+    }
+
+    function saveMasterSettings(e) {
+      e.preventDefault();
+      const checkedDays = Array.from(document.querySelectorAll('input[name="hari_mengajar"]:checked')).map(cb => cb.value);
+      if (checkedDays.length === 0) {
+        showToast("Pilih minimal 1 Hari Mengajar Efektif!", true);
+        return;
+      }
+
+      masterSettings.fasilitator = document.getElementById("set-fasilitator").value.trim();
+      masterSettings.agama = document.getElementById("set-agama").value;
+      masterSettings.kecamatan = document.getElementById("set-kecamatan").value;
+      masterSettings.sekolah = document.getElementById("set-sekolah").value;
+      masterSettings.kepsekNama = document.getElementById("set-kepsek-nama").value.trim();
+      masterSettings.kepsekNip = document.getElementById("set-kepsek-nip").value.trim();
+      masterSettings.hariMengajar = checkedDays;
+
+      // Update default tempat ttd if still empty
+      const report = getActiveReport();
+      if (!report.tempatTtd) {
+        report.tempatTtd = masterSettings.kecamatan;
+        document.getElementById("input-tempat-ttd").value = report.tempatTtd;
+      }
+
+      saveMasterToStorage();
+      saveReportsToStorage();
+      refreshAllUI();
+      showToast("Pengaturan Data Awal berhasil disimpan!");
+      switchTab("beranda");
+    }
+
+    function handleCustomLogoUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      compressImageFile(file, 500, 0.85, (dataUrl) => {
+        masterSettings.customLogoDataUrl = dataUrl;
+        saveMasterToStorage();
+        showToast("Logo kustom berhasil disimpan!");
+        if (activeTab === "cetak") renderF4ReportPreview();
+      });
+    }
+
+    function resetCustomLogo() {
+      masterSettings.customLogoDataUrl = "";
+      saveMasterToStorage();
+      showToast("Logo dikembalikan ke Default Tabalong Smart.");
+      if (activeTab === "cetak") renderF4ReportPreview();
+    }
+
+    /**
+     * 5. SCHEDULED DAYS & EFFECTIVE DATES CALCULATOR
+     */
+    function getDaysInActiveMonth() {
+      const bulanIdx = parseInt(document.getElementById("select-bulan").value, 10);
+      const tahunVal = parseInt(document.getElementById("input-tahun").value, 10) || 2026;
+      return new Date(tahunVal, bulanIdx + 1, 0).getDate();
+    }
+
+    function getDayNameForDate(dayNumber) {
+      const bulanIdx = parseInt(document.getElementById("select-bulan").value, 10);
+      const tahunVal = parseInt(document.getElementById("input-tahun").value, 10) || 2026;
+      const dateObj = new Date(tahunVal, bulanIdx, dayNumber);
+      return HARI_NAMES[dateObj.getDay()];
+    }
+
+    function formatFullHariTanggal(dayNumber) {
+      const bulanIdx = parseInt(document.getElementById("select-bulan").value, 10);
+      const tahunVal = parseInt(document.getElementById("input-tahun").value, 10) || 2026;
+      const hariName = getDayNameForDate(dayNumber);
+      return `${hariName}, ${dayNumber} ${BULAN_NAMES[bulanIdx]} ${tahunVal}`;
+    }
+
+    function getScheduledDayNumbersInMonth() {
+      const totalDays = getDaysInActiveMonth();
+      const scheduled = [];
+      for (let d = 1; d <= totalDays; d++) {
+        const dayName = getDayNameForDate(d);
+        if ((masterSettings.hariMengajar || []).includes(dayName)) {
+          scheduled.push(d);
+        }
+      }
+      return scheduled;
+    }
+
+    /**
+     * 6. ATTENDANCE (PRESENSI) RESOLUTION LOGIC (1 - 31)
+     * Priority:
+     * 1. Manual override in report.presensiManual[day] ("H", "S", "I", "A", or "-" to force empty)
+     * 2. Automatic "H" if there is at least one Journal entry on that dayNumber
+     * 3. Empty "" otherwise
+     */
+    function getAttendanceStatusForDay(dayNumber) {
+      const totalDays = getDaysInActiveMonth();
+      if (dayNumber > totalDays) return "";
+
+      const report = getActiveReport();
+      const manual = report.presensiManual ? report.presensiManual[dayNumber] : undefined;
+      if (manual !== undefined && manual !== null) {
+        return manual === "-" ? "" : manual;
+      }
+
+      const hasJournal = (report.jurnal || []).some(j => Number(j.dayNumber) === Number(dayNumber));
+      if (hasJournal) return "H";
+
+      return "";
+    }
+
+    function cycleAttendanceStatus(dayNumber) {
+      const totalDays = getDaysInActiveMonth();
+      if (dayNumber > totalDays) return;
+
+      const report = getActiveReport();
+      if (!report.presensiManual) report.presensiManual = {};
+
+      const current = getAttendanceStatusForDay(dayNumber);
+      const order = ["", "H", "S", "I", "A"];
+      const nextIdx = (order.indexOf(current) + 1) % order.length;
+      const nextStatus = order[nextIdx];
+
+      // If nextStatus is empty "", store "-" so it overrides any journal auto-H if user explicitly cleared it
+      report.presensiManual[dayNumber] = nextStatus === "" ? "-" : nextStatus;
+
+      saveReportsToStorage();
+      refreshAllUI();
+      showToast(`Tanggal ${dayNumber}: Status diubah ke ${nextStatus || 'Kosong'}`);
+    }
+
+    function getAttendanceSummary() {
+      const totalDays = getDaysInActiveMonth();
+      let H = 0, S = 0, I = 0, A = 0;
+      for (let d = 1; d <= totalDays; d++) {
+        const st = getAttendanceStatusForDay(d);
+        if (st === "H") H++;
+        else if (st === "S") S++;
+        else if (st === "I") I++;
+        else if (st === "A") A++;
+      }
+      return { H, S, I, A };
+    }
+
+    /**
+     * 7. JOURNAL CRUD & SYNC WITH PRESENSI
+     */
+    function renderScheduledDateChips() {
+      const container = document.getElementById("scheduled-dates-chips");
+      const scheduledDays = getScheduledDayNumbersInMonth();
+      const report = getActiveReport();
+
+      if (scheduledDays.length === 0) {
+        container.innerHTML = `<span class="text-xs text-amber-700 bg-amber-50 px-3 py-1.5 rounded-xl font-semibold">Belum ada Hari Mengajar dipilih di Pengaturan Data Awal.</span>`;
+        return;
+      }
+
+      container.innerHTML = scheduledDays.map(d => {
+        const filled = (report.jurnal || []).some(j => Number(j.dayNumber) === d);
+        const dayName = getDayNameForDate(d);
+        return `
+          <button onclick="openJournalModal(${d})"
+            class="px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 border ${
+              filled
+                ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm'
+                : 'bg-white hover:bg-peka-50 text-slate-700 border-slate-200'
+            }">
+            <i class="fa-solid ${filled ? 'fa-circle-check' : 'fa-calendar-plus text-peka-500'}"></i>
+            <span>${dayName}, Tgl ${d}</span>
+          </button>
+        `;
+      }).join("");
+    }
+
+    function openJournalModal(preselectedDay = null, editId = null) {
+      const modal = document.getElementById("journal-modal");
+      const selectTgl = document.getElementById("jurnal-tanggal");
+      const totalDays = getDaysInActiveMonth();
+      const scheduledDays = getScheduledDayNumbersInMonth();
+
+      selectTgl.innerHTML = "";
+      for (let d = 1; d <= totalDays; d++) {
+        const isEff = scheduledDays.includes(d);
+        const opt = document.createElement("option");
+        opt.value = d;
+        opt.textContent = `${formatFullHariTanggal(d)}${isEff ? ' ★ (Hari Mengajar)' : ''}`;
+        selectTgl.appendChild(opt);
+      }
+
+      const report = getActiveReport();
+
+      if (editId) {
+        const item = report.jurnal.find(j => j.id === editId);
+        if (item) {
+          document.getElementById("modal-journal-title").textContent = "Edit Jurnal Kegiatan PEKA";
+          document.getElementById("jurnal-edit-id").value = item.id;
+          selectTgl.value = item.dayNumber;
+          document.getElementById("jurnal-kelas").value = item.kelas;
+          document.getElementById("jurnal-materi").value = item.materi;
+          document.getElementById("jurnal-kegiatan").value = item.kegiatan;
+          document.getElementById("jurnal-catatan").value = item.catatan || "";
+        }
+      } else {
+        document.getElementById("modal-journal-title").textContent = "Isi Jurnal Kegiatan PEKA";
+        document.getElementById("jurnal-edit-id").value = "";
+        document.getElementById("jurnal-kelas").value = "";
+        document.getElementById("jurnal-materi").value = "";
+        document.getElementById("jurnal-kegiatan").value = "";
+        document.getElementById("jurnal-catatan").value = "";
+
+        if (preselectedDay) {
+          selectTgl.value = preselectedDay;
+        } else if (scheduledDays.length > 0) {
+          // Pick first unfilled scheduled date
+          const unfilled = scheduledDays.find(d => !(report.jurnal || []).some(j => Number(j.dayNumber) === d));
+          selectTgl.value = unfilled || scheduledDays[0];
+        }
+      }
+
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    }
+
+    function closeJournalModal() {
+      const modal = document.getElementById("journal-modal");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+
+    function saveJournalEntry(e) {
+      e.preventDefault();
+      const report = getActiveReport();
+      const editId = document.getElementById("jurnal-edit-id").value;
+      const dayNumber = parseInt(document.getElementById("jurnal-tanggal").value, 10);
+      const kelas = document.getElementById("jurnal-kelas").value.trim();
+      const materi = document.getElementById("jurnal-materi").value.trim();
+      const kegiatan = document.getElementById("jurnal-kegiatan").value.trim();
+      const catatan = document.getElementById("jurnal-catatan").value.trim();
+
+      if (editId) {
+        const idx = report.jurnal.findIndex(j => j.id === editId);
+        if (idx !== -1) {
+          report.jurnal[idx] = { id: editId, dayNumber, kelas, materi, kegiatan, catatan };
+        }
+      } else {
+        report.jurnal.push({
+          id: "j_" + Date.now() + "_" + Math.random().toString(36).substring(2, 6),
+          dayNumber,
+          kelas,
+          materi,
+          kegiatan,
+          catatan
+        });
+      }
+
+      // Sort journal chronologically by dayNumber
+      report.jurnal.sort((a, b) => Number(a.dayNumber) - Number(b.dayNumber));
+
+      // Ensure automatic 'H' in Presensi for this date
+      if (!report.presensiManual) report.presensiManual = {};
+      report.presensiManual[dayNumber] = "H";
+
+      saveReportsToStorage();
+      closeJournalModal();
+      refreshAllUI();
+      showToast("Jurnal disimpan & Presensi otomatis terisi Hadir (H)!");
+    }
+
+    function deleteJournalEntry(id) {
+      const report = getActiveReport();
+      const target = report.jurnal.find(j => j.id === id);
+      report.jurnal = report.jurnal.filter(j => j.id !== id);
+
+      // If no other journal on that dayNumber, clear manual "H"
+      if (target) {
+        const stillHas = report.jurnal.some(j => Number(j.dayNumber) === Number(target.dayNumber));
+        if (!stillHas && report.presensiManual && report.presensiManual[target.dayNumber] === "H") {
+          delete report.presensiManual[target.dayNumber];
+        }
+      }
+
+      saveReportsToStorage();
+      refreshAllUI();
+      showToast("Jurnal berhasil dihapus.");
+    }
+
+    function generateScheduledDatesHelper() {
+      const scheduledDays = getScheduledDayNumbersInMonth();
+      if (scheduledDays.length === 0) {
+        showToast("Atur Jadwal Hari Mengajar di menu Profil dahulu!", true);
+        switchTab("profil");
+        return;
+      }
+      openJournalModal(scheduledDays[0]);
+    }
+
+    function renderJournalList() {
+      const container = document.getElementById("journal-list-container");
+      const report = getActiveReport();
+      const list = report.jurnal || [];
+
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div class="peka-card p-8 text-center">
+            <div class="w-14 h-14 rounded-2xl bg-peka-50 text-peka-500 flex items-center justify-center mx-auto mb-3">
+              <i class="fa-solid fa-book-open text-2xl"></i>
+            </div>
+            <h3 class="text-sm font-extrabold text-slate-800">Belum Ada Jurnal pada Bulan Ini</h3>
+            <p class="text-xs text-slate-500 max-w-md mx-auto mt-1">
+              Klik salah satu tombol tanggal hari mengajar di atas atau tekan tombol <strong>+ Tambah Jurnal</strong> untuk mulai mengisi kegiatan pembelajaran PEKA.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = list.map((item, idx) => `
+        <div class="peka-card p-4 sm:p-5 flex flex-col sm:flex-row sm:items-start justify-between gap-4 hover:border-peka-300 transition">
+          <div class="flex items-start gap-3.5">
+            <div class="w-10 h-10 rounded-2xl bg-peka-500 text-white font-extrabold text-sm flex items-center justify-center shrink-0 shadow-sm">
+              ${idx + 1}
+            </div>
+            <div class="space-y-1">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-xs font-extrabold text-peka-700 bg-peka-50 px-2.5 py-0.5 rounded-lg">
+                  ${formatFullHariTanggal(item.dayNumber)}
+                </span>
+                <span class="text-xs font-bold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-lg">
+                  Kelas: ${escapeHtml(item.kelas)}
+                </span>
+                <span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-lg">
+                  <i class="fa-solid fa-check"></i> Presensi: H
+                </span>
+              </div>
+              <h4 class="text-sm font-extrabold text-slate-800 pt-0.5">${escapeHtml(item.materi)}</h4>
+              <p class="text-xs text-slate-600 leading-relaxed whitespace-pre-line">${escapeHtml(item.kegiatan)}</p>
+              ${item.catatan ? `<p class="text-[11px] text-slate-500 italic pt-1"><i class="fa-regular fa-comment-dots mr-1"></i>Catatan: ${escapeHtml(item.catatan)}</p>` : ''}
+            </div>
+          </div>
+
+          <div class="flex sm:flex-col items-center justify-end gap-2 shrink-0 border-t sm:border-t-0 pt-2.5 sm:pt-0 border-slate-100">
+            <button onclick="openJournalModal(null, '${item.id}')" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-peka-50 text-slate-700 hover:text-peka-700 text-xs font-bold transition flex items-center gap-1">
+              <i class="fa-solid fa-pen"></i> Edit
+            </button>
+            <button onclick="deleteJournalEntry('${item.id}')" class="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold transition flex items-center gap-1">
+              <i class="fa-solid fa-trash"></i> Hapus
+            </button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    /**
+     * 8. INTERACTIVE PRESENSI GRID RENDERER
+     */
+    function renderPresensiInteractiveGrid() {
+      const container = document.getElementById("presensi-interactive-grid");
+      const totalDays = getDaysInActiveMonth();
+      const scheduledDays = getScheduledDayNumbersInMonth();
+
+      let html = "";
+      for (let d = 1; d <= 31; d++) {
+        const isValidDay = d <= totalDays;
+        const isScheduled = isValidDay && scheduledDays.includes(d);
+        const status = isValidDay ? getAttendanceStatusForDay(d) : "";
+        const dayName = isValidDay ? getDayNameForDate(d) : "-";
+
+        let badgeClass = "bg-white border-slate-200 text-slate-700";
+        if (!isValidDay) {
+          badgeClass = "bg-slate-100 border-slate-200 text-slate-300 opacity-50 cursor-not-allowed";
+        } else if (status === "H") {
+          badgeClass = "bg-emerald-500 border-emerald-600 text-white shadow-sm";
+        } else if (status === "S") {
+          badgeClass = "bg-amber-500 border-amber-600 text-white shadow-sm";
+        } else if (status === "I") {
+          badgeClass = "bg-sky-500 border-sky-600 text-white shadow-sm";
+        } else if (status === "A") {
+          badgeClass = "bg-rose-500 border-rose-600 text-white shadow-sm";
+        } else if (isScheduled) {
+          badgeClass = "bg-peka-50 border-peka-300 text-peka-800";
+        }
+
+        html += `
+          <button ${isValidDay ? `onclick="cycleAttendanceStatus(${d})"` : 'disabled'}
+            class="p-2.5 rounded-2xl border text-left transition flex flex-col justify-between h-20 relative ${badgeClass}">
+            <div class="flex items-center justify-between w-full">
+              <span class="text-xs font-extrabold">${d}</span>
+              ${isScheduled && isValidDay ? `<span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-black/10">Efektif</span>` : ''}
+            </div>
+            <div class="text-center my-auto">
+              <span class="text-base font-extrabold tracking-wider">${status || (isScheduled ? '•' : '-')}</span>
+            </div>
+            <div class="text-[10px] opacity-80 font-semibold truncate w-full">${dayName}</div>
+          </button>
+        `;
+      }
+      container.innerHTML = html;
+
+      const sum = getAttendanceSummary();
+      document.getElementById("rekap-h-label").textContent = `Hadir (H): ${sum.H}`;
+      document.getElementById("rekap-s-label").textContent = `Sakit (S): ${sum.S}`;
+      document.getElementById("rekap-i-label").textContent = `Izin (I): ${sum.I}`;
+      document.getElementById("rekap-a-label").textContent = `Alpa (A): ${sum.A}`;
+    }
+
+    /**
+     * 9. DOCUMENTATION UPLOAD (DRAG & DROP + MAX 3 PHOTOS)
+     */
+    function handleDragOver(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById("dropzone-area").classList.add("ring-2", "ring-peka-500");
+    }
+
+    function handleDragLeave(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById("dropzone-area").classList.remove("ring-2", "ring-peka-500");
+    }
+
+    function handleDropFiles(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById("dropzone-area").classList.remove("ring-2", "ring-peka-500");
+      if (e.dataTransfer && e.dataTransfer.files) {
+        processDocumentationFiles(e.dataTransfer.files);
+      }
+    }
+
+    function handleFileSelect(e) {
+      if (e.target.files) {
+        processDocumentationFiles(e.target.files);
+        e.target.value = "";
+      }
+    }
+
+    function processDocumentationFiles(fileList) {
+      const report = getActiveReport();
+      if (!report.dokumentasi) report.dokumentasi = [];
+
+      const remainingSlots = 3 - report.dokumentasi.length;
+      if (remainingSlots <= 0) {
+        showToast("Maksimal 3 foto dokumentasi untuk 1 kertas laporan!", true);
+        return;
+      }
+
+      const filesArray = Array.from(fileList).slice(0, remainingSlots);
+      filesArray.forEach((file) => {
+        if (!file.type.startsWith("image/")) return;
+        compressImageFile(file, 1000, 0.78, (dataUrl) => {
+          report.dokumentasi.push({
+            id: "doc_" + Date.now() + "_" + Math.random().toString(36).substring(2, 6),
+            dataUrl,
+            caption: `Dokumentasi Kegiatan PEKA (${BULAN_NAMES[report.bulanIdx]} ${report.tahun})`
+          });
+          saveReportsToStorage();
+          refreshAllUI();
+          showToast("Foto dokumentasi berhasil ditambahkan!");
+        });
+      });
+    }
+
+    function updatePhotoCaption(id, newCaption) {
+      const report = getActiveReport();
+      const item = (report.dokumentasi || []).find(d => d.id === id);
+      if (item) {
+        item.caption = newCaption;
+        saveReportsToStorage();
+      }
+    }
+
+    function removePhoto(id) {
+      const report = getActiveReport();
+      report.dokumentasi = (report.dokumentasi || []).filter(d => d.id !== id);
+      saveReportsToStorage();
+      refreshAllUI();
+      showToast("Foto dokumentasi dihapus.");
+    }
+
+    function renderDocumentationGrid() {
+      const report = getActiveReport();
+      const docs = report.dokumentasi || [];
+      document.getElementById("photo-counter-badge").textContent = `${docs.length} / 3 Foto Terunggah`;
+
+      const grid = document.getElementById("documentation-grid");
+      if (docs.length === 0) {
+        grid.innerHTML = "";
+        return;
+      }
+
+      grid.innerHTML = docs.map((doc, index) => `
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden flex flex-col justify-between shadow-sm">
+          <div class="relative h-48 bg-slate-900 flex items-center justify-center overflow-hidden">
+            <img src="${doc.dataUrl}" alt="Dokumentasi ${index + 1}" class="w-full h-full object-cover" />
+            <span class="absolute top-2.5 left-2.5 bg-black/60 backdrop-blur-sm text-white text-[11px] font-bold px-2.5 py-1 rounded-lg">
+              Foto #${index + 1}
+            </span>
+            <button onclick="removePhoto('${doc.id}')" class="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-rose-600 hover:bg-rose-700 text-white flex items-center justify-center shadow-md">
+              <i class="fa-solid fa-trash text-xs"></i>
+            </button>
+          </div>
+          <div class="p-3">
+            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Keterangan Foto #${index + 1}</label>
+            <input type="text" value="${escapeHtml(doc.caption || '')}"
+              oninput="updatePhotoCaption('${doc.id}', this.value)"
+              placeholder="Tuliskan keterangan kegiatan..."
+              class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold focus:outline-none focus:border-peka-500" />
+          </div>
+        </div>
+      `).join("");
+    }
+
+    /**
+     * 10. IMAGE COMPRESSION HELPER (OFFLINE CLIENT-SIDE CANVAS)
+     */
+    function compressImageFile(file, maxWidth, quality, callback) {
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        const img = new Image();
+        img.onload = function () {
+          let width = img.width;
+          let height = img.height;
+          if (width > maxWidth) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          }
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, width, height);
+          const compressedDataUrl = canvas.toDataURL("image/jpeg", quality);
+          callback(compressedDataUrl);
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    /**
+     * 11. F4 REPORT GENERATOR (COVER + JURNAL + PRESENSI 1-31 + DOKUMENTASI 1 KERTAS)
+     */
+    const DEFAULT_TABALONG_LOGO_URL = "https://sipandusd.disdikbudtabalong.id/tabalong-smart.png";
+
+    function getLogoHtmlForReport() {
+      const logoSrc = masterSettings.customLogoDataUrl || DEFAULT_TABALONG_LOGO_URL;
+      return `
+        <img src="${logoSrc}"
+             alt="Logo Tabalong Smart"
+             style="height: 82px; max-width: 70%; width: auto; object-fit: contain; margin: 0 auto; display: block;"
+             onerror="this.style.display='none'" />
+      `;
+    }
+
+    function getAppWatermarkFooter(pageNumber, totalPages = 4) {
+      const sekolah = masterSettings.sekolah || "SD Kabupaten Tabalong";
+      return `
+        <div class="simpeka-sheet-footer">
+          <span><strong>SIMPEKA SD - DISDIKBUD TABALONG</strong> &bull; Aplikasi Pelaporan Pendidikan Karakter (${escapeHtml(sekolah)})</span>
+          <span>Hal. ${pageNumber} / ${totalPages}</span>
+        </div>
+      `;
+    }
+
+    function buildCompleteF4ReportHTML(isForPrint = false) {
+      const report = getActiveReport();
+      const bulanNama = BULAN_NAMES[report.bulanIdx];
+      const tahun = report.tahun;
+      const sekolah = masterSettings.sekolah || "................................................";
+      const kecamatan = masterSettings.kecamatan || "................................";
+      const agama = masterSettings.agama || "Islam";
+      const fasilitator = masterSettings.fasilitator || "................................................";
+      const kepsekNama = masterSettings.kepsekNama || "................................................";
+      const kepsekNip = masterSettings.kepsekNip || "................................";
+      const hariEfektifStr = (masterSettings.hariMengajar || []).join(", ") || "-";
+      const tempatTtd = report.tempatTtd || kecamatan || "Tanjung";
+      const tanggalTtd = report.tanggalTtd || `30 ${bulanNama} ${tahun}`;
+
+      const sheetClass = isForPrint ? "f4-sheet" : "f4-preview-sheet";
+      const logoMarkup = getLogoHtmlForReport();
+
+      // --- SHEET 1: COVER LAPORAN (LOGO DIKECILKAN, JARAK KE JUDUL LEBIH PROPORSIONAL) ---
+      const coverSheet = `
+        <div class="${sheetClass} flex flex-col justify-between text-center" style="border: 3px double #000; padding: 22mm 16mm 20mm 16mm;">
+          <!-- Bagian Atas Cover: Logo Resmi Tabalong Smart diikuti Judul Laporan dengan jarak proporsional -->
+          <div class="pt-4">
+            <div class="flex justify-center items-center" style="margin-bottom: 18mm;">
+              ${logoMarkup}
+            </div>
+          
+            <div class="space-y-2">
+              <h1 style="font-size: 24pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1.5px; margin: 0;">
+                LAPORAN BULANAN
+              </h1>
+              <h2 style="font-size: 16pt; font-weight: bold; text-transform: uppercase; line-height: 1.45; margin: 0;">
+                PROGRAM PENDIDIKAN KARAKTER (PEKA)<br/>
+                JENJANG SEKOLAH DASAR
+              </h2>
+            </div>
+          </div>
+
+          <!-- Bagian Tengah Cover: Kotak Informasi (Huruf Kapital di Awal Kata) & Fasilitator -->
+          <div class="my-auto py-6 space-y-8">
+            <div style="max-width: 410px; margin: 0 auto; border: 1.5px solid #000; border-radius: 6px; padding: 14px 20px; text-align: left; font-size: 12pt;">
+              <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                  <td style="width: 40%; padding: 5px 0; font-weight: bold;">Bulan / Tahun</td>
+                  <td style="width: 5%;">:</td>
+                  <td style="padding: 5px 0; font-weight: bold; text-transform: capitalize;">${bulanNama} ${tahun}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 5px 0; font-weight: bold;">Agama</td>
+                  <td>:</td>
+                  <td style="padding: 5px 0; text-transform: capitalize;">${escapeHtml(agama)}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 5px 0; font-weight: bold;">Hari Efektif</td>
+                  <td>:</td>
+                  <td style="padding: 5px 0; text-transform: capitalize;">${escapeHtml(hariEfektifStr)}</td>
+                </tr>
+              </table>
+            </div>
+
+            <div style="padding-top: 6px;">
+              <p style="font-size: 11.5pt; font-style: italic; margin: 0;">Disusun Oleh Fasilitator PEKA:</p>
+              <p style="font-size: 14.5pt; font-weight: bold; text-decoration: underline; margin-top: 6px;">
+                ${escapeHtml(fasilitator)}
+              </p>
+            </div>
+          </div>
+
+          <!-- Bagian Bawah Cover: Nama Sekolah, Dinas Pendidikan dan Kebudayaan, Kabupaten Tabalong (Tanpa Garis Atas) -->
+          <div class="space-y-1" style="padding-top: 10px; margin-bottom: 6mm;">
+            <p style="font-size: 14pt; font-weight: bold; text-transform: uppercase; margin: 0;">
+              ${escapeHtml(sekolah)}
+            </p>
+            <p style="font-size: 13pt; font-weight: bold; text-transform: uppercase; margin: 2px 0 0 0;">
+              DINAS PENDIDIKAN DAN KEBUDAYAAN
+            </p>
+            <p style="font-size: 13pt; font-weight: bold; text-transform: uppercase; margin: 2px 0 0 0;">
+              KABUPATEN TABALONG
+            </p>
+            <p style="font-size: 12pt; font-weight: bold; margin: 4px 0 0 0;">
+              TAHUN ${tahun}
+            </p>
+          </div>
+
+          ${getAppWatermarkFooter(1, 4)}
+        </div>
+      `;
+
+      // --- SHEET 2: JURNAL KEGIATAN PENDIDIKAN KARAKTER (PEKA) ---
+      const jurnalRows = (report.jurnal || []).length > 0
+        ? report.jurnal.map((item, idx) => `
+            <tr>
+              <td style="text-align: center; width: 32px;">${idx + 1}</td>
+              <td style="width: 130px;">${escapeHtml(formatFullHariTanggal(item.dayNumber))}</td>
+              <td style="text-align: center; width: 65px;">${escapeHtml(item.kelas)}</td>
+              <td style="width: 145px;">${escapeHtml(item.materi)}</td>
+              <td>${escapeHtml(item.kegiatan)}</td>
+              <td style="width: 110px;">${escapeHtml(item.catatan || '-')}</td>
+            </tr>
+          `).join("")
+        : `
+          <tr>
+            <td colspan="6" style="text-align: center; padding: 24px; font-style: italic;">
+              Belum ada data jurnal kegiatan yang diisi untuk bulan ${bulanNama} ${tahun}.
+            </td>
+          </tr>
+        `;
+
+      const signatureBlock = `
+        <table style="width: 100%; margin-top: 28px; margin-bottom: 10mm; border-collapse: collapse; font-size: 11pt; page-break-inside: avoid;">
+          <tr>
+            <td style="width: 50%; vertical-align: top; padding-left: 16px;">
+              <p>Mengetahui,</p>
+              <p style="font-weight: bold;">Kepala ${escapeHtml(sekolah)}</p>
+              <div style="height: 68px;"></div>
+              <p style="font-weight: bold; text-decoration: underline;">${escapeHtml(kepsekNama)}</p>
+              <p>NIP. ${escapeHtml(kepsekNip || '-')}</p>
+            </td>
+            <td style="width: 50%; vertical-align: top; padding-left: 40px;">
+              <p>${escapeHtml(tempatTtd)}, ${escapeHtml(tanggalTtd)}</p>
+              <p style="font-weight: bold;">Fasilitator PEKA</p>
+              <div style="height: 68px;"></div>
+              <p style="font-weight: bold; text-decoration: underline;">${escapeHtml(fasilitator)}</p>
+            </td>
+          </tr>
+        </table>
+      `;
+
+      const jurnalSheet = `
+        <div class="${sheetClass}">
+          <div style="text-align: center; margin-bottom: 14px;">
+            <h2 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; margin: 0;">
+              JURNAL KEGIATAN PENDIDIKAN KARAKTER (PEKA)
+            </h2>
+            <h3 style="font-size: 13pt; font-weight: bold; text-transform: uppercase; margin: 2px 0 0 0;">
+              ${escapeHtml(sekolah)}
+            </h3>
+          </div>
+
+          <table style="width: 100%; font-size: 11pt; margin-bottom: 10px; font-weight: bold;">
+            <tr>
+              <td style="width: 100px; padding: 2px 0;">Bulan</td>
+              <td style="width: 12px;">:</td>
+              <td>${bulanNama} ${tahun}</td>
+            </tr>
+            <tr>
+              <td style="padding: 2px 0;">Agama</td>
+              <td>:</td>
+              <td>${escapeHtml(agama)}</td>
+            </tr>
+          </table>
+
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th style="width: 32px;">No</th>
+                <th style="width: 130px;">Hari &amp; Tanggal</th>
+                <th style="width: 65px;">Kelas</th>
+                <th style="width: 145px;">Materi</th>
+                <th>Kegiatan Pembelajaran Inti</th>
+                <th style="width: 110px;">Catatan</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${jurnalRows}
+            </tbody>
+          </table>
+
+          ${signatureBlock}
+          ${getAppWatermarkFooter(2, 4)}
+        </div>
+      `;
+
+      // --- SHEET 3: DAFTAR HADIR / PRESENSI FASILITATOR (LANDSCAPE F4, TANGGAL 1-31 + JUMLAH H,S,I,A + PARAF) ---
+      const totalDays = getDaysInActiveMonth();
+      const scheduledDays = getScheduledDayNumbersInMonth();
+      const sum = getAttendanceSummary();
+      const landscapeSheetClass = isForPrint ? "f4-sheet-landscape" : "f4-preview-sheet-landscape";
+
+      let dateHeadersHtml = "";
+      let dateCellsHtml = "";
+
+      for (let d = 1; d <= 31; d++) {
+        const isValidDay = d <= totalDays;
+        const isEff = isValidDay && scheduledDays.includes(d);
+        const st = isValidDay ? getAttendanceStatusForDay(d) : "";
+
+        // Hari efektif berwarna putih (#ffffff) untuk diisi/paraf, hari tidak efektif berwarna abu-abu (#d1d5db)
+        const bgStyle = isEff
+          ? "background-color: #ffffff !important;"
+          : "background-color: #d1d5db !important;";
+
+        const headerBgStyle = isEff
+          ? "background-color: #ffffff !important;"
+          : "background-color: #e2e8f0 !important; color: #475569;";
+
+        dateHeadersHtml += `<th style="width: 22px; font-size: 8.5pt; ${headerBgStyle}">${d}</th>`;
+        dateCellsHtml += `<td style="font-weight: bold; font-size: 9pt; height: 42px; ${bgStyle}">${st}</td>`;
+      }
+
+      const presensiSheet = `
+        <div class="${landscapeSheetClass}">
+          <div style="text-align: center; margin-bottom: 14px;">
+            <h2 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; margin: 0;">
+              DAFTAR HADIR FASILITATOR PENDIDIKAN KARAKTER (PEKA)
+            </h2>
+            <h3 style="font-size: 13pt; font-weight: bold; text-transform: uppercase; margin: 2px 0 0 0;">
+              ${escapeHtml(sekolah)}
+            </h3>
+          </div>
+
+          <table style="width: 100%; font-size: 11pt; margin-bottom: 10px; font-weight: bold;">
+            <tr>
+              <td style="width: 160px; padding: 2px 0;">Bulan</td>
+              <td style="width: 12px;">:</td>
+              <td>${bulanNama} ${tahun}</td>
+            </tr>
+            <tr>
+              <td style="padding: 2px 0;">Agama</td>
+              <td>:</td>
+              <td>${escapeHtml(agama)}</td>
+            </tr>
+            <tr>
+              <td style="padding: 2px 0;">Hari Efektif Mengajar</td>
+              <td>:</td>
+              <td>${escapeHtml(hariEfektifStr)}</td>
+            </tr>
+          </table>
+
+          <table class="presensi-table">
+            <thead>
+              <tr>
+                <th rowspan="2" style="width: 150px; font-size: 9.5pt;">Nama</th>
+                <th colspan="31" style="font-size: 9.5pt;">Tanggal Pertemuan</th>
+                <th colspan="4" style="width: 84px; font-size: 9pt;">Jumlah</th>
+                <th rowspan="2" style="width: 70px; font-size: 9.5pt;">Paraf</th>
+              </tr>
+              <tr>
+                ${dateHeadersHtml}
+                <th style="width: 21px; font-size: 8.5pt;">H</th>
+                <th style="width: 21px; font-size: 8.5pt;">S</th>
+                <th style="width: 21px; font-size: 8.5pt;">I</th>
+                <th style="width: 21px; font-size: 8.5pt;">A</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align: left; padding: 8px 6px; font-weight: bold; font-size: 9.5pt; background-color: #ffffff !important;">
+                  ${escapeHtml(fasilitator)}
+                </td>
+                ${dateCellsHtml}
+                <td style="font-weight: bold; font-size: 9.5pt; background-color: #ffffff !important;">${sum.H}</td>
+                <td style="font-weight: bold; font-size: 9.5pt; background-color: #ffffff !important;">${sum.S}</td>
+                <td style="font-weight: bold; font-size: 9.5pt; background-color: #ffffff !important;">${sum.I}</td>
+                <td style="font-weight: bold; font-size: 9.5pt; background-color: #ffffff !important;">${sum.A}</td>
+                <td style="background-color: #ffffff !important;"></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="margin-top: 10px; font-size: 9.5pt; line-height: 1.4;">
+            <strong>Keterangan:</strong>
+            <ul style="margin: 2px 0 0 18px; padding: 0;">
+              <li><strong>H</strong> = Hadir Mengajar &nbsp;|&nbsp; <strong>S</strong> = Sakit &nbsp;|&nbsp; <strong>I</strong> = Izin &nbsp;|&nbsp; <strong>A</strong> = Alpa / Tanpa Keterangan</li>
+              <li>Kolom berwarna <strong>Putih</strong> adalah <strong>Hari Efektif Mengajar (${escapeHtml(hariEfektifStr)})</strong> untuk diisi kehadiran/paraf, sedangkan kolom berwarna <strong>Abu-abu</strong> adalah hari tidak efektif.</li>
+            </ul>
+          </div>
+
+          ${signatureBlock}
+          ${getAppWatermarkFooter(3, 4)}
+        </div>
+      `;
+
+      // --- SHEET 4: DOKUMENTASI KEGIATAN (MAKSIMAL 3 GAMBAR DALAM 1 KERTAS F4) ---
+      const docs = report.dokumentasi || [];
+      const docItemsHtml = docs.length > 0
+        ? docs.map((d, idx) => `
+            <div style="border: 1px solid #000; padding: 8px; margin-bottom: 10px; text-align: center; page-break-inside: avoid;">
+              <div style="height: 68mm; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #f8fafc;">
+                <img src="${d.dataUrl}" alt="Dokumentasi ${idx + 1}" style="max-height: 66mm; max-width: 100%; object-fit: contain;" />
+              </div>
+              <p style="font-size: 10.5pt; font-weight: bold; margin-top: 6px;">
+                Gambar ${idx + 1}. ${escapeHtml(d.caption || `Dokumentasi Kegiatan PEKA Bulan ${bulanNama} ${tahun}`)}
+              </p>
+            </div>
+          `).join("")
+        : `
+          <div style="border: 1px dashed #000; padding: 40px; text-align: center; margin-top: 20px;">
+            <p style="font-size: 11pt; font-style: italic;">Belum ada foto dokumentasi yang diunggah pada bulan ${bulanNama} ${tahun}.</p>
+          </div>
+        `;
+
+      const dokumentasiSheet = `
+        <div class="${sheetClass}">
+          <div style="text-align: center; margin-bottom: 12px;">
+            <h2 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; margin: 0;">
+              DOKUMENTASI KEGIATAN PENDIDIKAN KARAKTER (PEKA)
+            </h2>
+            <h3 style="font-size: 13pt; font-weight: bold; text-transform: uppercase; margin: 2px 0 0 0;">
+              ${escapeHtml(sekolah)}
+            </h3>
+            <p style="font-size: 11pt; font-weight: bold; margin-top: 2px;">
+              Bulan: ${bulanNama} ${tahun} &nbsp;|&nbsp; Agama: ${escapeHtml(agama)}
+            </p>
+          </div>
+
+          <div style="margin-bottom: 10mm;">
+            ${docItemsHtml}
+          </div>
+
+          ${getAppWatermarkFooter(4, 4)}
+        </div>
+      `;
+
+      return coverSheet + jurnalSheet + presensiSheet + dokumentasiSheet;
+    }
+
+    function renderF4ReportPreview() {
+      const wrapper = document.getElementById("screen-preview-wrapper");
+      wrapper.innerHTML = buildCompleteF4ReportHTML(false);
+    }
+
+    function triggerPrintReport() {
+      const printArea = document.getElementById("print-area");
+      printArea.innerHTML = buildCompleteF4ReportHTML(true);
+      setTimeout(() => {
+        window.print();
+      }, 150);
+    }
+
+    /**
+     * 12. DASHBOARD & NAVIGATION REFRESH
+     */
+    function switchTab(tabName) {
+      activeTab = tabName;
+      const tabs = ["beranda", "jurnal", "presensi", "dokumentasi", "profil", "cetak"];
+      tabs.forEach(t => {
+        const view = document.getElementById(`view-${t}`);
+        if (view) view.classList.toggle("hidden", t !== tabName);
+
+        // Desktop nav styling
+        const dbtn = document.getElementById(`dnav-${t}`);
+        if (dbtn && t !== "cetak") {
+          dbtn.className = t === tabName
+            ? "h-10 px-4 rounded-xl text-xs font-bold transition inline-flex items-center gap-2 bg-peka-500 text-white shadow-sm"
+            : "h-10 px-4 rounded-xl text-xs font-bold transition inline-flex items-center gap-2 bg-white text-slate-600 hover:bg-emerald-50";
+        }
+
+        // Mobile nav styling (Uniform mobile-nav-btn class)
+        const mbtn = document.getElementById(`mnav-${t}`);
+        if (mbtn) {
+          mbtn.className = t === tabName
+            ? "mobile-nav-btn text-peka-600 font-bold bg-peka-50/80"
+            : "mobile-nav-btn text-slate-400 font-semibold";
+        }
+      });
+
+      refreshAllUI();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function refreshAllUI() {
+      const report = getActiveReport();
+      const scheduledDays = getScheduledDayNumbersInMonth();
+      const jurnalCount = (report.jurnal || []).length;
+      const sum = getAttendanceSummary();
+      const fotoCount = (report.dokumentasi || []).length;
+
+      // Header Identity
+      document.getElementById("header-fasilitator-name").textContent =
+        masterSettings.fasilitator ? `Halo, ${masterSettings.fasilitator}` : "Halo, Fasilitator PEKA";
+      document.getElementById("header-school-name").textContent =
+        masterSettings.sekolah ? `${masterSettings.sekolah} (${masterSettings.kecamatan})` : "Belum memilih sekolah • Klik Profil";
+      document.getElementById("header-jurnal-badge").textContent = `${jurnalCount} Jurnal`;
+
+      // Warning banner if master incomplete
+      const isMasterIncomplete = !masterSettings.fasilitator || !masterSettings.sekolah || !masterSettings.kepsekNama;
+      document.getElementById("setup-warning-banner").classList.toggle("hidden", !isMasterIncomplete);
+
+      // Dashboard Progress Ring
+      const targetMeetings = scheduledDays.length || 4;
+      const pct = Math.min(100, Math.round((jurnalCount / targetMeetings) * 100));
+      const circle = document.getElementById("progress-ring-circle");
+      const circumference = 314.16;
+      circle.style.strokeDashoffset = circumference - (pct / 100) * circumference;
+
+      document.getElementById("dash-progress-percent").textContent = `${pct}%`;
+      document.getElementById("dash-progress-subtitle").textContent =
+        `${jurnalCount} Pertemuan Terisi dari ${scheduledDays.length} Hari Efektif Bulan Ini`;
+
+      // 2x2 Stats
+      document.getElementById("stat-jurnal-count").textContent = jurnalCount;
+      document.getElementById("stat-hadir-count").textContent = sum.H;
+      document.getElementById("stat-sia-count").textContent = `${sum.S}/${sum.I}/${sum.A}`;
+      document.getElementById("stat-foto-count").textContent = `${fotoCount}/3`;
+
+      document.getElementById("dash-jadwal-hari").textContent =
+        (masterSettings.hariMengajar || []).length > 0
+          ? `${masterSettings.hariMengajar.join(", ")} (${scheduledDays.length} hari efektif pada bulan ini)`
+          : "Belum diatur";
+
+      // Sub-views
+      renderScheduledDateChips();
+      renderJournalList();
+      renderPresensiInteractiveGrid();
+      renderDocumentationGrid();
+      if (activeTab === "cetak") {
+        renderF4ReportPreview();
+      }
+    }
+
+    /**
+     * 13. BACKUP & RESTORE JSON (FOR MOVING DEVICES)
+     */
+    function exportBackupJSON() {
+      const payload = {
+        exportedAt: new Date().toISOString(),
+        masterSettings,
+        reportsStore
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Backup_SIMPEKA_${(masterSettings.sekolah || 'Tabalong').replace(/\s+/g, '_')}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast("File cadangan (.json) berhasil diunduh!");
+    }
+
+    function importBackupJSON(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          if (parsed.masterSettings) masterSettings = parsed.masterSettings;
+          if (parsed.reportsStore) reportsStore = parsed.reportsStore;
+          saveMasterToStorage();
+          saveReportsToStorage();
+          hydrateMasterForm();
+          onPeriodChange();
+          showToast("Data berhasil dipulihkan ke perangkat ini!");
+        } catch (err) {
+          showToast("File cadangan tidak valid!", true);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    /**
+     * 14. UTILITIES
+     */
+    function showToast(msg, isError = false) {
+      const box = document.getElementById("toast-box");
+      const icon = document.getElementById("toast-icon");
+      const text = document.getElementById("toast-message");
+
+      text.textContent = msg;
+      icon.className = isError
+        ? "fa-solid fa-circle-exclamation text-amber-400 text-base"
+        : "fa-solid fa-circle-check text-emerald-400 text-base";
+
+      box.classList.remove("hidden");
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        box.classList.add("hidden");
+      }, 3000);
+    }
+
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+  </script>
+</body>
+</html>
