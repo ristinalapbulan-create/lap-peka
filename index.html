@@ -91,12 +91,12 @@
        ========================================== */
     @page {
       size: 215mm 330mm;
-      margin: 14mm 15mm 18mm 15mm;
+      margin: 14mm 15mm 14mm 15mm;
     }
 
     @page f4-landscape {
       size: 330mm 215mm;
-      margin: 12mm 15mm 16mm 15mm;
+      margin: 12mm 15mm 12mm 15mm;
     }
 
     @media print {
@@ -123,33 +123,41 @@
 
       .f4-sheet {
         width: 100% !important;
-        min-height: 294mm !important;
+        height: 300mm !important;
+        min-height: 300mm !important;
+        max-height: 300mm !important;
         box-shadow: none !important;
         margin: 0 !important;
-        padding: 0 0 6mm 0 !important;
+        padding: 0 0 12mm 0 !important;
         border: none !important;
         page-break-after: always;
         break-after: page;
-        position: relative;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
+        page-break-inside: avoid;
+        break-inside: avoid;
+        position: relative !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        flex-direction: column !important;
       }
 
       .f4-sheet-landscape {
         page: f4-landscape;
         width: 100% !important;
-        min-height: 184mm !important;
+        height: 189mm !important;
+        min-height: 189mm !important;
+        max-height: 189mm !important;
         box-shadow: none !important;
         margin: 0 !important;
-        padding: 0 0 5mm 0 !important;
+        padding: 0 0 12mm 0 !important;
         border: none !important;
         page-break-after: always;
         break-after: page;
-        position: relative;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
+        page-break-inside: avoid;
+        break-inside: avoid;
+        position: relative !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        flex-direction: column !important;
       }
 
       .f4-sheet:last-child,
@@ -165,7 +173,7 @@
       min-height: 330mm;
       background: white;
       margin: 0 auto 2rem auto;
-      padding: 15mm 16mm 16mm 16mm;
+      padding: 15mm 16mm 18mm 16mm;
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
       border-radius: 4px;
       color: #000;
@@ -181,7 +189,7 @@
       min-height: 215mm;
       background: white;
       margin: 0 auto 2rem auto;
-      padding: 12mm 16mm 14mm 16mm;
+      padding: 12mm 16mm 16mm 16mm;
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
       border-radius: 4px;
       color: #000;
@@ -210,10 +218,13 @@
       }
     }
 
-    /* Official App Watermark Footer (Flow-based so it NEVER overlaps content) */
+    /* Official App Watermark Footer (Pinned to very bottom of every sheet) */
     .simpeka-sheet-footer {
-      margin-top: auto;
-      padding-top: 6px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding-top: 5px;
       border-top: 0.5pt solid #cbd5e1;
       display: flex;
       align-items: center;
@@ -222,8 +233,14 @@
       font-size: 7.5pt;
       color: #64748b;
       letter-spacing: 0.3px;
-      page-break-inside: avoid;
-      break-inside: avoid;
+      background: #ffffff;
+    }
+
+    .f4-preview-sheet .simpeka-sheet-footer,
+    .f4-preview-sheet-landscape .simpeka-sheet-footer {
+      bottom: 6mm;
+      left: 16mm;
+      right: 16mm;
     }
 
     /* Uniform Mobile Navigation Button & Icon Sizing */
@@ -1804,7 +1821,7 @@
 
       // --- SHEET 1: COVER LAPORAN (LOGO DIKECILKAN, JARAK KE JUDUL LEBIH PROPORSIONAL) ---
       const coverSheet = `
-        <div class="${sheetClass} flex flex-col justify-between text-center" style="border: 3px double #000; padding: 20mm 16mm 14mm 16mm;">
+        <div class="${sheetClass} flex flex-col justify-between text-center" style="border: 3px double #000; padding: 20mm 16mm 18mm 16mm;">
           <!-- Bagian Atas Cover: Logo Resmi Tabalong Smart diikuti Judul Laporan dengan jarak proporsional -->
           <div class="pt-2">
             <div class="flex justify-center items-center" style="margin-bottom: 18mm;">
@@ -1872,90 +1889,145 @@
         </div>
       `;
 
-      // --- SHEET 2: JURNAL KEGIATAN PENDIDIKAN KARAKTER (PEKA) ---
-      const jurnalRows = (report.jurnal || []).length > 0
-        ? report.jurnal.map((item, idx) => `
-            <tr>
-              <td style="text-align: center; width: 32px;">${idx + 1}</td>
-              <td style="width: 130px;">${escapeHtml(formatFullHariTanggal(item.dayNumber))}</td>
-              <td style="text-align: center; width: 65px;">${escapeHtml(item.kelas)}</td>
-              <td style="width: 145px;">${escapeHtml(item.materi)}</td>
-              <td>${escapeHtml(item.kegiatan)}</td>
-              <td style="width: 110px;">${escapeHtml(item.catatan || '-')}</td>
-            </tr>
-          `).join("")
-        : `
-          <tr>
-            <td colspan="6" style="text-align: center; padding: 24px; font-style: italic;">
-              Belum ada data jurnal kegiatan yang diisi untuk bulan ${bulanNama} ${tahun}.
-            </td>
-          </tr>
-        `;
-
+      // --- SHEET 2 (MULTI-PAGE): JURNAL KEGIATAN PENDIDIKAN KARAKTER (PEKA) ---
+      // Memecah baris jurnal secara cerdas per halaman F4 agar setiap lembar memiliki batas bawah aman & footer tetap di paling bawah kertas
       const signatureBlock = `
-        <table style="width: 100%; margin-top: 18px; margin-bottom: 14px; border-collapse: collapse; font-size: 10.5pt; page-break-inside: avoid; break-inside: avoid;">
+        <table style="width: 100%; margin-top: 16px; margin-bottom: 8px; border-collapse: collapse; font-size: 10.5pt; page-break-inside: avoid; break-inside: avoid;">
           <tr>
             <td style="width: 50%; vertical-align: top; padding-left: 16px;">
               <p style="margin: 0;">Mengetahui,</p>
               <p style="font-weight: bold; margin: 2px 0 0 0;">Kepala ${escapeHtml(sekolah)}</p>
-              <div style="height: 56px;"></div>
+              <div style="height: 52px;"></div>
               <p style="font-weight: bold; text-decoration: underline; margin: 0;">${escapeHtml(kepsekNama)}</p>
               <p style="margin: 2px 0 0 0;">NIP. ${escapeHtml(kepsekNip || '-')}</p>
             </td>
             <td style="width: 50%; vertical-align: top; padding-left: 40px;">
               <p style="margin: 0;">${escapeHtml(tempatTtd)}, ${escapeHtml(tanggalTtd)}</p>
               <p style="font-weight: bold; margin: 2px 0 0 0;">Fasilitator PEKA</p>
-              <div style="height: 56px;"></div>
+              <div style="height: 52px;"></div>
               <p style="font-weight: bold; text-decoration: underline; margin: 0;">${escapeHtml(fasilitator)}</p>
             </td>
           </tr>
         </table>
       `;
 
-      const jurnalSheet = `
-        <div class="${sheetClass}">
-          <div style="text-align: center; margin-bottom: 12px;">
-            <h2 style="font-size: 13.5pt; font-weight: bold; text-transform: uppercase; margin: 0;">
-              JURNAL KEGIATAN PENDIDIKAN KARAKTER (PEKA)
-            </h2>
-            <h3 style="font-size: 12.5pt; font-weight: bold; text-transform: uppercase; margin: 2px 0 0 0;">
-              ${escapeHtml(sekolah)}
-            </h3>
-          </div>
+      const jurnalList = report.jurnal || [];
+      const jurnalPages = [];
 
-          <table style="width: 100%; font-size: 10.5pt; margin-bottom: 8px; font-weight: bold;">
-            <tr>
-              <td style="width: 100px; padding: 2px 0;">Bulan</td>
-              <td style="width: 12px;">:</td>
-              <td>${bulanNama} ${tahun}</td>
-            </tr>
-            <tr>
-              <td style="padding: 2px 0;">Agama</td>
-              <td>:</td>
-              <td>${escapeHtml(agama)}</td>
-            </tr>
-          </table>
+      if (jurnalList.length === 0) {
+        jurnalPages.push({ rows: [], showSignature: true });
+      } else {
+        // Hitung tinggi estimasi tiap baris jurnal supaya tidak pernah menabrak batas bawah halaman F4
+        const MAX_UNITS_WITH_SIG = 19;    // Kapasitas unit baris jika halaman memuat tanda tangan
+        const MAX_UNITS_WITHOUT_SIG = 25; // Kapasitas unit baris penuh tanpa tanda tangan
+        let currentRows = [];
+        let currentUnits = 0;
 
-          <table class="report-table">
-            <thead>
+        jurnalList.forEach((item, index) => {
+          const textLen = Math.max(
+            (item.kegiatan || "").length,
+            (item.materi || "").length * 1.3,
+            (item.catatan || "").length * 1.3
+          );
+          const rowUnits = Math.max(2, Math.ceil(textLen / 42) + 1);
+
+          if (currentUnits + rowUnits > MAX_UNITS_WITHOUT_SIG && currentRows.length > 0) {
+            jurnalPages.push({ rows: currentRows, showSignature: false });
+            currentRows = [];
+            currentUnits = 0;
+          }
+
+          currentRows.push({ item, number: index + 1 });
+          currentUnits += rowUnits;
+        });
+
+        // Cek apakah halaman terakhir jurnal masih cukup ruang untuk blok Tanda Tangan
+        if (currentUnits > MAX_UNITS_WITH_SIG && currentRows.length > 1) {
+          const lastRow = currentRows.pop();
+          jurnalPages.push({ rows: currentRows, showSignature: false });
+          jurnalPages.push({ rows: [lastRow], showSignature: true });
+        } else {
+          jurnalPages.push({ rows: currentRows, showSignature: true });
+        }
+      }
+
+      const jurnalSheet = jurnalPages.map((pageObj, pIdx) => {
+        const isFirstJurnalPage = pIdx === 0;
+        const totalJurnalPages = jurnalPages.length;
+        const pageRowsHtml = pageObj.rows.length > 0
+          ? pageObj.rows.map(({ item, number }) => `
               <tr>
-                <th style="width: 32px;">No</th>
-                <th style="width: 130px;">Hari &amp; Tanggal</th>
-                <th style="width: 65px;">Kelas</th>
-                <th style="width: 145px;">Materi</th>
-                <th>Kegiatan Pembelajaran Inti</th>
-                <th style="width: 110px;">Catatan</th>
+                <td style="text-align: center; width: 32px;">${number}</td>
+                <td style="width: 130px;">${escapeHtml(formatFullHariTanggal(item.dayNumber))}</td>
+                <td style="text-align: center; width: 65px;">${escapeHtml(item.kelas)}</td>
+                <td style="width: 145px;">${escapeHtml(item.materi)}</td>
+                <td>${escapeHtml(item.kegiatan)}</td>
+                <td style="width: 110px;">${escapeHtml(item.catatan || '-')}</td>
               </tr>
-            </thead>
-            <tbody>
-              ${jurnalRows}
-            </tbody>
-          </table>
+            `).join("")
+          : `
+            <tr>
+              <td colspan="6" style="text-align: center; padding: 24px; font-style: italic;">
+                Belum ada data jurnal kegiatan yang diisi untuk bulan ${bulanNama} ${tahun}.
+              </td>
+            </tr>
+          `;
 
-          ${signatureBlock}
-          ${getAppWatermarkFooter("Jurnal Kegiatan PEKA")}
-        </div>
-      `;
+        const pageFooterLabel = totalJurnalPages > 1
+          ? `Jurnal Kegiatan PEKA (Hal. ${pIdx + 1}/${totalJurnalPages})`
+          : `Jurnal Kegiatan PEKA`;
+
+        return `
+          <div class="${sheetClass}">
+            ${isFirstJurnalPage ? `
+              <div style="text-align: center; margin-bottom: 12px;">
+                <h2 style="font-size: 13.5pt; font-weight: bold; text-transform: uppercase; margin: 0;">
+                  JURNAL KEGIATAN PENDIDIKAN KARAKTER (PEKA)
+                </h2>
+                <h3 style="font-size: 12.5pt; font-weight: bold; text-transform: uppercase; margin: 2px 0 0 0;">
+                  ${escapeHtml(sekolah)}
+                </h3>
+              </div>
+
+              <table style="width: 100%; font-size: 10.5pt; margin-bottom: 8px; font-weight: bold;">
+                <tr>
+                  <td style="width: 100px; padding: 2px 0;">Bulan</td>
+                  <td style="width: 12px;">:</td>
+                  <td>${bulanNama} ${tahun}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 2px 0;">Agama</td>
+                  <td>:</td>
+                  <td>${escapeHtml(agama)}</td>
+                </tr>
+              </table>
+            ` : `
+              <div style="font-size: 9.5pt; font-style: italic; color: #334155; margin-bottom: 6px;">
+                Lanjutan Jurnal Kegiatan PEKA — ${escapeHtml(sekolah)} (${bulanNama} ${tahun})
+              </div>
+            `}
+
+            <table class="report-table">
+              <thead>
+                <tr>
+                  <th style="width: 32px;">No</th>
+                  <th style="width: 130px;">Hari &amp; Tanggal</th>
+                  <th style="width: 65px;">Kelas</th>
+                  <th style="width: 145px;">Materi</th>
+                  <th>Kegiatan Pembelajaran Inti</th>
+                  <th style="width: 110px;">Catatan</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${pageRowsHtml}
+              </tbody>
+            </table>
+
+            ${pageObj.showSignature ? signatureBlock : ''}
+            ${getAppWatermarkFooter(pageFooterLabel)}
+          </div>
+        `;
+      }).join("");
 
       // --- SHEET 3: DAFTAR HADIR / PRESENSI FASILITATOR (LANDSCAPE F4, TANGGAL 1-31 + JUMLAH H,S,I,A + PARAF) ---
       const totalDays = getDaysInActiveMonth();
