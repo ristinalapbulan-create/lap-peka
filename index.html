@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>SIMPEKA SD - Kabupaten Tabalong</title>
+  <title>SAHABAT PEKA - Kabupaten Tabalong</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts: Plus Jakarta Sans & Inter -->
@@ -91,12 +91,12 @@
        ========================================== */
     @page {
       size: 215mm 330mm;
-      margin: 12mm 14mm 12mm 14mm;
+      margin: 14mm 15mm 18mm 15mm;
     }
 
     @page f4-landscape {
       size: 330mm 215mm;
-      margin: 12mm 14mm 12mm 14mm;
+      margin: 12mm 15mm 16mm 15mm;
     }
 
     @media print {
@@ -123,29 +123,33 @@
 
       .f4-sheet {
         width: 100% !important;
-        min-height: 300mm !important;
+        min-height: 294mm !important;
         box-shadow: none !important;
         margin: 0 !important;
-        padding: 0 !important;
+        padding: 0 0 6mm 0 !important;
         border: none !important;
         page-break-after: always;
         break-after: page;
         position: relative;
         box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
       }
 
       .f4-sheet-landscape {
         page: f4-landscape;
         width: 100% !important;
-        min-height: 185mm !important;
+        min-height: 184mm !important;
         box-shadow: none !important;
         margin: 0 !important;
-        padding: 0 !important;
+        padding: 0 0 5mm 0 !important;
         border: none !important;
         page-break-after: always;
         break-after: page;
         position: relative;
         box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
       }
 
       .f4-sheet:last-child,
@@ -161,13 +165,15 @@
       min-height: 330mm;
       background: white;
       margin: 0 auto 2rem auto;
-      padding: 14mm 16mm 18mm 16mm;
+      padding: 15mm 16mm 16mm 16mm;
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
       border-radius: 4px;
       color: #000;
       font-family: 'Times New Roman', Times, serif;
       box-sizing: border-box;
       position: relative;
+      display: flex;
+      flex-direction: column;
     }
 
     .f4-preview-sheet-landscape {
@@ -175,13 +181,15 @@
       min-height: 215mm;
       background: white;
       margin: 0 auto 2rem auto;
-      padding: 14mm 16mm 18mm 16mm;
+      padding: 12mm 16mm 14mm 16mm;
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
       border-radius: 4px;
       color: #000;
       font-family: 'Times New Roman', Times, serif;
       box-sizing: border-box;
       position: relative;
+      display: flex;
+      flex-direction: column;
     }
 
     /* Responsive Scaling for F4 Preview on Mobile Screens */
@@ -202,14 +210,11 @@
       }
     }
 
-    /* Official App Watermark Footer on Every Report Sheet */
+    /* Official App Watermark Footer (Flow-based so it NEVER overlaps content) */
     .simpeka-sheet-footer {
-      position: absolute;
-      bottom: 5mm;
-      left: 14mm;
-      right: 14mm;
+      margin-top: auto;
+      padding-top: 6px;
       border-top: 0.5pt solid #cbd5e1;
-      padding-top: 3px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -217,6 +222,8 @@
       font-size: 7.5pt;
       color: #64748b;
       letter-spacing: 0.3px;
+      page-break-inside: avoid;
+      break-inside: avoid;
     }
 
     /* Uniform Mobile Navigation Button & Icon Sizing */
@@ -251,11 +258,18 @@
       border-collapse: collapse;
       font-family: 'Times New Roman', Times, serif;
     }
+    .report-table thead {
+      display: table-header-group;
+    }
+    .report-table tr {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
     .report-table th, .report-table td {
       border: 1px solid #000000;
       padding: 5px 6px;
       vertical-align: top;
-      font-size: 11pt;
+      font-size: 10.5pt;
       line-height: 1.3;
     }
     .report-table th {
@@ -304,7 +318,7 @@
             </div>
             <div class="min-w-0">
               <div class="flex items-center gap-2">
-                <span class="text-[11px] font-bold uppercase tracking-widest bg-white/20 px-2.5 py-0.5 rounded-full text-emerald-50">SIMPEKA SD</span>
+                <span class="text-[11px] font-bold uppercase tracking-widest bg-white/20 px-2.5 py-0.5 rounded-full text-emerald-50">SAHABAT PEKA</span>
                 <span class="text-[11px] text-emerald-100 font-medium hidden sm:inline">Disdikbud Tabalong</span>
               </div>
               <h1 class="text-base sm:text-xl font-extrabold tracking-tight leading-tight mt-0.5 truncate" id="header-fasilitator-name">
@@ -1762,12 +1776,11 @@
       `;
     }
 
-    function getAppWatermarkFooter(pageNumber, totalPages = 4) {
-      const sekolah = masterSettings.sekolah || "SD Kabupaten Tabalong";
+    function getAppWatermarkFooter(sectionLabel = "") {
       return `
         <div class="simpeka-sheet-footer">
-          <span><strong>SIMPEKA SD - DISDIKBUD TABALONG</strong> &bull; Aplikasi Pelaporan Pendidikan Karakter (${escapeHtml(sekolah)})</span>
-          <span>Hal. ${pageNumber} / ${totalPages}</span>
+          <span><strong>SAHABAT PEKA</strong> - DISDIKBUD TABALONG</span>
+          <span>${escapeHtml(sectionLabel)}</span>
         </div>
       `;
     }
@@ -1791,9 +1804,9 @@
 
       // --- SHEET 1: COVER LAPORAN (LOGO DIKECILKAN, JARAK KE JUDUL LEBIH PROPORSIONAL) ---
       const coverSheet = `
-        <div class="${sheetClass} flex flex-col justify-between text-center" style="border: 3px double #000; padding: 22mm 16mm 20mm 16mm;">
+        <div class="${sheetClass} flex flex-col justify-between text-center" style="border: 3px double #000; padding: 20mm 16mm 14mm 16mm;">
           <!-- Bagian Atas Cover: Logo Resmi Tabalong Smart diikuti Judul Laporan dengan jarak proporsional -->
-          <div class="pt-4">
+          <div class="pt-2">
             <div class="flex justify-center items-center" style="margin-bottom: 18mm;">
               ${logoMarkup}
             </div>
@@ -1855,7 +1868,7 @@
             </p>
           </div>
 
-          ${getAppWatermarkFooter(1, 4)}
+          ${getAppWatermarkFooter("Cover Laporan")}
         </div>
       `;
 
@@ -1880,20 +1893,20 @@
         `;
 
       const signatureBlock = `
-        <table style="width: 100%; margin-top: 28px; margin-bottom: 10mm; border-collapse: collapse; font-size: 11pt; page-break-inside: avoid;">
+        <table style="width: 100%; margin-top: 18px; margin-bottom: 14px; border-collapse: collapse; font-size: 10.5pt; page-break-inside: avoid; break-inside: avoid;">
           <tr>
             <td style="width: 50%; vertical-align: top; padding-left: 16px;">
-              <p>Mengetahui,</p>
-              <p style="font-weight: bold;">Kepala ${escapeHtml(sekolah)}</p>
-              <div style="height: 68px;"></div>
-              <p style="font-weight: bold; text-decoration: underline;">${escapeHtml(kepsekNama)}</p>
-              <p>NIP. ${escapeHtml(kepsekNip || '-')}</p>
+              <p style="margin: 0;">Mengetahui,</p>
+              <p style="font-weight: bold; margin: 2px 0 0 0;">Kepala ${escapeHtml(sekolah)}</p>
+              <div style="height: 56px;"></div>
+              <p style="font-weight: bold; text-decoration: underline; margin: 0;">${escapeHtml(kepsekNama)}</p>
+              <p style="margin: 2px 0 0 0;">NIP. ${escapeHtml(kepsekNip || '-')}</p>
             </td>
             <td style="width: 50%; vertical-align: top; padding-left: 40px;">
-              <p>${escapeHtml(tempatTtd)}, ${escapeHtml(tanggalTtd)}</p>
-              <p style="font-weight: bold;">Fasilitator PEKA</p>
-              <div style="height: 68px;"></div>
-              <p style="font-weight: bold; text-decoration: underline;">${escapeHtml(fasilitator)}</p>
+              <p style="margin: 0;">${escapeHtml(tempatTtd)}, ${escapeHtml(tanggalTtd)}</p>
+              <p style="font-weight: bold; margin: 2px 0 0 0;">Fasilitator PEKA</p>
+              <div style="height: 56px;"></div>
+              <p style="font-weight: bold; text-decoration: underline; margin: 0;">${escapeHtml(fasilitator)}</p>
             </td>
           </tr>
         </table>
@@ -1901,16 +1914,16 @@
 
       const jurnalSheet = `
         <div class="${sheetClass}">
-          <div style="text-align: center; margin-bottom: 14px;">
-            <h2 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; margin: 0;">
+          <div style="text-align: center; margin-bottom: 12px;">
+            <h2 style="font-size: 13.5pt; font-weight: bold; text-transform: uppercase; margin: 0;">
               JURNAL KEGIATAN PENDIDIKAN KARAKTER (PEKA)
             </h2>
-            <h3 style="font-size: 13pt; font-weight: bold; text-transform: uppercase; margin: 2px 0 0 0;">
+            <h3 style="font-size: 12.5pt; font-weight: bold; text-transform: uppercase; margin: 2px 0 0 0;">
               ${escapeHtml(sekolah)}
             </h3>
           </div>
 
-          <table style="width: 100%; font-size: 11pt; margin-bottom: 10px; font-weight: bold;">
+          <table style="width: 100%; font-size: 10.5pt; margin-bottom: 8px; font-weight: bold;">
             <tr>
               <td style="width: 100px; padding: 2px 0;">Bulan</td>
               <td style="width: 12px;">:</td>
@@ -1940,7 +1953,7 @@
           </table>
 
           ${signatureBlock}
-          ${getAppWatermarkFooter(2, 4)}
+          ${getAppWatermarkFooter("Jurnal Kegiatan PEKA")}
         </div>
       `;
 
@@ -2031,7 +2044,7 @@
             </tbody>
           </table>
 
-          <div style="margin-top: 10px; font-size: 9.5pt; line-height: 1.4;">
+          <div style="margin-top: 8px; font-size: 9.5pt; line-height: 1.35;">
             <strong>Keterangan:</strong>
             <ul style="margin: 2px 0 0 18px; padding: 0;">
               <li><strong>H</strong> = Hadir Mengajar &nbsp;|&nbsp; <strong>S</strong> = Sakit &nbsp;|&nbsp; <strong>I</strong> = Izin &nbsp;|&nbsp; <strong>A</strong> = Alpa / Tanpa Keterangan</li>
@@ -2040,7 +2053,7 @@
           </div>
 
           ${signatureBlock}
-          ${getAppWatermarkFooter(3, 4)}
+          ${getAppWatermarkFooter("Daftar Hadir Fasilitator")}
         </div>
       `;
 
@@ -2048,11 +2061,11 @@
       const docs = report.dokumentasi || [];
       const docItemsHtml = docs.length > 0
         ? docs.map((d, idx) => `
-            <div style="border: 1px solid #000; padding: 8px; margin-bottom: 10px; text-align: center; page-break-inside: avoid;">
-              <div style="height: 68mm; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #f8fafc;">
-                <img src="${d.dataUrl}" alt="Dokumentasi ${idx + 1}" style="max-height: 66mm; max-width: 100%; object-fit: contain;" />
+            <div style="border: 1px solid #000; padding: 7px; margin-bottom: 9px; text-align: center; page-break-inside: avoid; break-inside: avoid;">
+              <div style="height: 62mm; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #f8fafc;">
+                <img src="${d.dataUrl}" alt="Dokumentasi ${idx + 1}" style="max-height: 60mm; max-width: 100%; object-fit: contain;" />
               </div>
-              <p style="font-size: 10.5pt; font-weight: bold; margin-top: 6px;">
+              <p style="font-size: 10pt; font-weight: bold; margin: 5px 0 0 0;">
                 Gambar ${idx + 1}. ${escapeHtml(d.caption || `Dokumentasi Kegiatan PEKA Bulan ${bulanNama} ${tahun}`)}
               </p>
             </div>
@@ -2065,23 +2078,23 @@
 
       const dokumentasiSheet = `
         <div class="${sheetClass}">
-          <div style="text-align: center; margin-bottom: 12px;">
-            <h2 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; margin: 0;">
+          <div style="text-align: center; margin-bottom: 10px;">
+            <h2 style="font-size: 13.5pt; font-weight: bold; text-transform: uppercase; margin: 0;">
               DOKUMENTASI KEGIATAN PENDIDIKAN KARAKTER (PEKA)
             </h2>
-            <h3 style="font-size: 13pt; font-weight: bold; text-transform: uppercase; margin: 2px 0 0 0;">
+            <h3 style="font-size: 12.5pt; font-weight: bold; text-transform: uppercase; margin: 2px 0 0 0;">
               ${escapeHtml(sekolah)}
             </h3>
-            <p style="font-size: 11pt; font-weight: bold; margin-top: 2px;">
+            <p style="font-size: 10.5pt; font-weight: bold; margin: 2px 0 0 0;">
               Bulan: ${bulanNama} ${tahun} &nbsp;|&nbsp; Agama: ${escapeHtml(agama)}
             </p>
           </div>
 
-          <div style="margin-bottom: 10mm;">
+          <div style="margin-bottom: 12px;">
             ${docItemsHtml}
           </div>
 
-          ${getAppWatermarkFooter(4, 4)}
+          ${getAppWatermarkFooter("Dokumentasi Kegiatan")}
         </div>
       `;
 
@@ -2195,7 +2208,7 @@
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `Backup_SIMPEKA_${(masterSettings.sekolah || 'Tabalong').replace(/\s+/g, '_')}.json`;
+      a.download = `Backup_SAHABAT_PEKA_${(masterSettings.sekolah || 'Tabalong').replace(/\s+/g, '_')}.json`;
       a.click();
       URL.revokeObjectURL(url);
       showToast("File cadangan (.json) berhasil diunduh!");
