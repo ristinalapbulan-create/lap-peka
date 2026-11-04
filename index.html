@@ -1917,32 +1917,42 @@
       if (jurnalList.length === 0) {
         jurnalPages.push({ rows: [], showSignature: true });
       } else {
-        // Hitung tinggi estimasi tiap baris jurnal supaya tidak pernah menabrak batas bawah halaman F4
-        const MAX_UNITS_WITH_SIG = 19;    // Kapasitas unit baris jika halaman memuat tanda tangan
-        const MAX_UNITS_WITHOUT_SIG = 25; // Kapasitas unit baris penuh tanpa tanda tangan
+        // Kalkulasi tinggi baris menggunakan estimasi milimeter nyata pada kertas F4 Portrait (Tinggi area isi ~285mm)
+        // Header halaman 1 + kepala tabel = ~42mm, halaman lanjutan = ~22mm, blok TTD = ~48mm, ruang aman footer = ~15mm
+        const AVAILABLE_FIRST_PAGE_MM = 225;
+        const AVAILABLE_NEXT_PAGE_MM = 245;
+        const SIGNATURE_HEIGHT_MM = 48;
+
         let currentRows = [];
-        let currentUnits = 0;
+        let currentHeightMm = 0;
 
         jurnalList.forEach((item, index) => {
-          const textLen = Math.max(
-            (item.kegiatan || "").length,
-            (item.materi || "").length * 1.3,
-            (item.catatan || "").length * 1.3
-          );
-          const rowUnits = Math.max(2, Math.ceil(textLen / 42) + 1);
+          // Estimasi jumlah baris teks berdasarkan lebar kolom masing-masing di kertas F4
+          const linesKegiatan = Math.ceil(((item.kegiatan || "").length || 1) / 38);
+          const linesMateri = Math.ceil(((item.materi || "").length || 1) / 20);
+          const linesCatatan = Math.ceil(((item.catatan || "").length || 1) / 15);
+          const linesTanggal = 2;
 
-          if (currentUnits + rowUnits > MAX_UNITS_WITHOUT_SIG && currentRows.length > 0) {
+          const maxTextLines = Math.max(linesKegiatan, linesMateri, linesCatatan, linesTanggal, 1);
+          // Tinggi per baris teks ~4.5mm + padding atas bawah sel ~4mm
+          const rowHeightMm = (maxTextLines * 4.5) + 4.5;
+
+          const maxLimitMm = jurnalPages.length === 0 ? AVAILABLE_FIRST_PAGE_MM : AVAILABLE_NEXT_PAGE_MM;
+
+          if (currentHeightMm + rowHeightMm > maxLimitMm && currentRows.length > 0) {
             jurnalPages.push({ rows: currentRows, showSignature: false });
             currentRows = [];
-            currentUnits = 0;
+            currentHeightMm = 0;
           }
 
-          currentRows.push({ item, number: index + 1 });
-          currentUnits += rowUnits;
+          currentRows.push({ item, number: index + 1, rowHeightMm });
+          currentHeightMm += rowHeightMm;
         });
 
-        // Cek apakah halaman terakhir jurnal masih cukup ruang untuk blok Tanda Tangan
-        if (currentUnits > MAX_UNITS_WITH_SIG && currentRows.length > 1) {
+        // Cek apakah halaman terakhir masih muat untuk ditambahkan blok Tanda Tangan (48mm)
+        const lastPageLimitMm = jurnalPages.length === 0 ? AVAILABLE_FIRST_PAGE_MM : AVAILABLE_NEXT_PAGE_MM;
+        if (currentHeightMm + SIGNATURE_HEIGHT_MM > lastPageLimitMm && currentRows.length > 1) {
+          // Pindahkan 1 baris paling akhir ke halaman baru bersama tanda tangan agar tanda tangan tidak yatim sendirian
           const lastRow = currentRows.pop();
           jurnalPages.push({ rows: currentRows, showSignature: false });
           jurnalPages.push({ rows: [lastRow], showSignature: true });
@@ -2028,8 +2038,7 @@
           </div>
         `;
       }).join("");
-
-      // --- SHEET 3: DAFTAR HADIR / PRESENSI FASILITATOR (LANDSCAPE F4, TANGGAL 1-31 + JUMLAH H,S,I,A + PARAF) ---
+      // --- SHEET 3: DAFTAR HADIR / PRESENSI FASILITATOR (LANDSCAPE F4, TANGGAL 1-31 + JUMLAH H,S,I,A) ---
       const totalDays = getDaysInActiveMonth();
       const scheduledDays = getScheduledDayNumbersInMonth();
       const sum = getAttendanceSummary();
@@ -2042,6 +2051,8 @@
         const isValidDay = d <= totalDays;
         const isEff = isValidDay && scheduledDays.includes(d);
         const st = isValidDay ? getAttendanceStatusForDay(d) : "";
+        // Kosongkan tampilan jika statusnya "H" agar kolom tanggal efektif bisa langsung diparaf
+        const displaySt = st === "H" ? "" : st;
 
         // Hari efektif berwarna putih (#ffffff) untuk diisi/paraf, hari tidak efektif berwarna abu-abu (#d1d5db)
         const bgStyle = isEff
@@ -2053,7 +2064,7 @@
           : "background-color: #e2e8f0 !important; color: #475569;";
 
         dateHeadersHtml += `<th style="width: 22px; font-size: 8.5pt; ${headerBgStyle}">${d}</th>`;
-        dateCellsHtml += `<td style="font-weight: bold; font-size: 9pt; height: 42px; ${bgStyle}">${st}</td>`;
+        dateCellsHtml += `<td style="font-weight: bold; font-size: 9pt; height: 42px; ${bgStyle}">${displaySt}</td>`;
       }
 
       const presensiSheet = `
@@ -2088,17 +2099,16 @@
           <table class="presensi-table">
             <thead>
               <tr>
-                <th rowspan="2" style="width: 150px; font-size: 9.5pt;">Nama</th>
-                <th colspan="31" style="font-size: 9.5pt;">Tanggal Pertemuan</th>
-                <th colspan="4" style="width: 84px; font-size: 9pt;">Jumlah</th>
-                <th rowspan="2" style="width: 70px; font-size: 9.5pt;">Paraf</th>
+                <th rowspan="2" style="width: 170px; font-size: 9.5pt;">Nama</th>
+                <th colspan="31" style="font-size: 9.5pt;">Tanggal Pertemuan (Paraf Kehadiran)</th>
+                <th colspan="4" style="width: 92px; font-size: 9pt;">Jumlah</th>
               </tr>
               <tr>
                 ${dateHeadersHtml}
-                <th style="width: 21px; font-size: 8.5pt;">H</th>
-                <th style="width: 21px; font-size: 8.5pt;">S</th>
-                <th style="width: 21px; font-size: 8.5pt;">I</th>
-                <th style="width: 21px; font-size: 8.5pt;">A</th>
+                <th style="width: 23px; font-size: 8.5pt;">H</th>
+                <th style="width: 23px; font-size: 8.5pt;">S</th>
+                <th style="width: 23px; font-size: 8.5pt;">I</th>
+                <th style="width: 23px; font-size: 8.5pt;">A</th>
               </tr>
             </thead>
             <tbody>
@@ -2111,7 +2121,6 @@
                 <td style="font-weight: bold; font-size: 9.5pt; background-color: #ffffff !important;">${sum.S}</td>
                 <td style="font-weight: bold; font-size: 9.5pt; background-color: #ffffff !important;">${sum.I}</td>
                 <td style="font-weight: bold; font-size: 9.5pt; background-color: #ffffff !important;">${sum.A}</td>
-                <td style="background-color: #ffffff !important;"></td>
               </tr>
             </tbody>
           </table>
@@ -2120,7 +2129,7 @@
             <strong>Keterangan:</strong>
             <ul style="margin: 2px 0 0 18px; padding: 0;">
               <li><strong>H</strong> = Hadir Mengajar &nbsp;|&nbsp; <strong>S</strong> = Sakit &nbsp;|&nbsp; <strong>I</strong> = Izin &nbsp;|&nbsp; <strong>A</strong> = Alpa / Tanpa Keterangan</li>
-              <li>Kolom berwarna <strong>Putih</strong> adalah <strong>Hari Efektif Mengajar (${escapeHtml(hariEfektifStr)})</strong> untuk diisi kehadiran/paraf, sedangkan kolom berwarna <strong>Abu-abu</strong> adalah hari tidak efektif.</li>
+              <li>Kolom tanggal berwarna <strong>Putih</strong> adalah <strong>Hari Efektif Mengajar (${escapeHtml(hariEfektifStr)})</strong> yang dikosongkan untuk paraf kehadiran, sedangkan kolom berwarna <strong>Abu-abu</strong> adalah hari tidak efektif.</li>
             </ul>
           </div>
 
