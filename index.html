@@ -1121,15 +1121,67 @@
       <form id="form-jurnal" onsubmit="saveJurnalEntry(event)" class="mt-4 space-y-3.5">
         <input type="hidden" id="jurnal-edit-id" value="" />
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Tanggal Pertemuan <span class="text-rose-500">*</span></label>
-            <select id="jurnal-tanggal-select" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-bold text-slate-800 focus:outline-none focus:border-peka-500"></select>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Tanggal Pertemuan <span class="text-rose-500">*</span></label>
+          <select id="jurnal-tanggal-select" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-bold text-slate-800 focus:outline-none focus:border-peka-500"></select>
+        </div>
+
+        <!-- Multi-select Kelas Otomatis -->
+        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="text-xs font-bold text-slate-700">Pilih Kelas Sasaran <span class="text-rose-500">*</span> <span class="text-[10px] font-normal text-slate-500">(Bisa pilih lebih dari satu)</span></label>
+            <button type="button" onclick="toggleAllJurnalKelas()" class="text-[11px] font-extrabold text-peka-600 hover:underline">
+              Pilih Semua Kelas
+            </button>
+          </div>
+          <div class="grid grid-cols-3 sm:grid-cols-6 gap-2" id="jurnal-kelas-checkboxes">
+            <label class="flex items-center justify-center gap-1.5 bg-white border border-slate-200 rounded-xl py-2 px-2 cursor-pointer hover:border-peka-500 transition">
+              <input type="checkbox" name="jurnal_kelas_cb" value="I" onchange="updateJurnalKelasPreview()" class="accent-peka-600 w-3.5 h-3.5 rounded" />
+              <span class="text-xs font-bold text-slate-700">Kls I</span>
+            </label>
+            <label class="flex items-center justify-center gap-1.5 bg-white border border-slate-200 rounded-xl py-2 px-2 cursor-pointer hover:border-peka-500 transition">
+              <input type="checkbox" name="jurnal_kelas_cb" value="II" onchange="updateJurnalKelasPreview()" class="accent-peka-600 w-3.5 h-3.5 rounded" />
+              <span class="text-xs font-bold text-slate-700">Kls II</span>
+            </label>
+            <label class="flex items-center justify-center gap-1.5 bg-white border border-slate-200 rounded-xl py-2 px-2 cursor-pointer hover:border-peka-500 transition">
+              <input type="checkbox" name="jurnal_kelas_cb" value="III" onchange="updateJurnalKelasPreview()" class="accent-peka-600 w-3.5 h-3.5 rounded" />
+              <span class="text-xs font-bold text-slate-700">Kls III</span>
+            </label>
+            <label class="flex items-center justify-center gap-1.5 bg-white border border-slate-200 rounded-xl py-2 px-2 cursor-pointer hover:border-peka-500 transition">
+              <input type="checkbox" name="jurnal_kelas_cb" value="IV" onchange="updateJurnalKelasPreview()" class="accent-peka-600 w-3.5 h-3.5 rounded" />
+              <span class="text-xs font-bold text-slate-700">Kls IV</span>
+            </label>
+            <label class="flex items-center justify-center gap-1.5 bg-white border border-slate-200 rounded-xl py-2 px-2 cursor-pointer hover:border-peka-500 transition">
+              <input type="checkbox" name="jurnal_kelas_cb" value="V" onchange="updateJurnalKelasPreview()" class="accent-peka-600 w-3.5 h-3.5 rounded" />
+              <span class="text-xs font-bold text-slate-700">Kls V</span>
+            </label>
+            <label class="flex items-center justify-center gap-1.5 bg-white border border-slate-200 rounded-xl py-2 px-2 cursor-pointer hover:border-peka-500 transition">
+              <input type="checkbox" name="jurnal_kelas_cb" value="VI" onchange="updateJurnalKelasPreview()" class="accent-peka-600 w-3.5 h-3.5 rounded" />
+              <span class="text-xs font-bold text-slate-700">Kls VI</span>
+            </label>
           </div>
 
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Kelas / Kelompok <span class="text-rose-500">*</span></label>
-            <input type="text" id="jurnal-kelas" required placeholder="Contoh: Kelas I - VI / Iqra & Al-Qur'an" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-peka-500" />
+          <!-- Opsi Kelompok Khusus Agama Islam -->
+          <div id="jurnal-kelompok-islam-wrapper" class="pt-2 border-t border-slate-200/80 space-y-1.5">
+            <label class="block text-xs font-bold text-emerald-900">
+              <i class="fa-solid fa-book-quran text-peka-600 mr-1"></i> Pilih Kelompok Belajar (Khusus Islam):
+            </label>
+            <div class="grid grid-cols-2 gap-2">
+              <label class="flex items-center gap-2 bg-emerald-50/70 border border-emerald-200 rounded-xl px-3 py-2 cursor-pointer hover:border-peka-500 transition">
+                <input type="checkbox" name="jurnal_kelompok_cb" value="Iqra" onchange="updateJurnalKelasPreview()" class="accent-peka-600 w-4 h-4 rounded" />
+                <span class="text-xs font-bold text-emerald-950">Kelompok Iqra</span>
+              </label>
+              <label class="flex items-center gap-2 bg-emerald-50/70 border border-emerald-200 rounded-xl px-3 py-2 cursor-pointer hover:border-peka-500 transition">
+                <input type="checkbox" name="jurnal_kelompok_cb" value="Al-Qur'an" onchange="updateJurnalKelasPreview()" class="accent-peka-600 w-4 h-4 rounded" />
+                <span class="text-xs font-bold text-emerald-950">Kelompok Al-Qur'an</span>
+              </label>
+            </div>
+          </div>
+
+          <input type="hidden" id="jurnal-kelas" required />
+          <div class="text-[11px] font-bold text-peka-700 bg-emerald-50/80 border border-emerald-200/70 rounded-lg px-2.5 py-1.5 flex items-center justify-between">
+            <span>Label Tercetak di Jurnal:</span>
+            <span id="jurnal-kelas-preview-badge" class="font-extrabold text-slate-800">-</span>
           </div>
         </div>
 
@@ -2016,6 +2068,88 @@
     /**
      * 7. JURNAL CRUD OPERATIONS
      */
+    function toggleAllJurnalKelas() {
+      const cbs = Array.from(document.querySelectorAll('input[name="jurnal_kelas_cb"]'));
+      const allChecked = cbs.every(cb => cb.checked);
+      cbs.forEach(cb => { cb.checked = !allChecked; });
+      updateJurnalKelasPreview();
+    }
+
+    function formatKelasAndKelompokLabel(selectedKelas, selectedKelompok, isIslam) {
+      let klsPart = "";
+      if (selectedKelas.length === 6) {
+        klsPart = "Kelas I - VI";
+      } else if (selectedKelas.length > 0) {
+        klsPart = "Kelas " + selectedKelas.join(", ");
+      }
+
+      let klpPart = "";
+      if (isIslam && selectedKelompok.length > 0) {
+        klpPart = selectedKelompok.join(" & ");
+      }
+
+      if (klsPart && klpPart) return `${klsPart} (${klpPart})`;
+      if (klsPart) return klsPart;
+      if (klpPart) return `Kelompok ${klpPart}`;
+      return "";
+    }
+
+    function updateJurnalKelasPreview() {
+      const isIslam = (masterSettings.agama || "Islam") === "Islam";
+      const selectedKelas = Array.from(document.querySelectorAll('input[name="jurnal_kelas_cb"]:checked')).map(cb => cb.value);
+      const selectedKelompok = isIslam
+        ? Array.from(document.querySelectorAll('input[name="jurnal_kelompok_cb"]:checked')).map(cb => cb.value)
+        : [];
+
+      const formatted = formatKelasAndKelompokLabel(selectedKelas, selectedKelompok, isIslam);
+      const hiddenInput = document.getElementById("jurnal-kelas");
+      const badge = document.getElementById("jurnal-kelas-preview-badge");
+      if (hiddenInput) hiddenInput.value = formatted;
+      if (badge) badge.textContent = formatted || "Pilih minimal 1 kelas";
+    }
+
+    function setJurnalKelasAndKelompokCheckboxes(kelasList = [], kelompokList = []) {
+      const isIslam = (masterSettings.agama || "Islam") === "Islam";
+      const wrapper = document.getElementById("jurnal-kelompok-islam-wrapper");
+      if (wrapper) {
+        wrapper.classList.toggle("hidden", !isIslam);
+      }
+      document.querySelectorAll('input[name="jurnal_kelas_cb"]').forEach(cb => {
+        cb.checked = kelasList.includes(cb.value);
+      });
+      document.querySelectorAll('input[name="jurnal_kelompok_cb"]').forEach(cb => {
+        cb.checked = kelompokList.includes(cb.value);
+      });
+      updateJurnalKelasPreview();
+    }
+
+    function parseLegacyKelasAndKelompok(item) {
+      let kelasArr = Array.isArray(item.kelasList) ? [...item.kelasList] : [];
+      let kelompokArr = Array.isArray(item.kelompokList) ? [...item.kelompokList] : [];
+
+      if (kelasArr.length === 0 && item.kelas) {
+        const str = String(item.kelas).toUpperCase();
+        if (str.includes("I - VI") || str.includes("1 - 6") || str.includes("SEMUA")) {
+          kelasArr = [...KELAS_LIST];
+        } else {
+          const tokens = str.replace(/[^A-Z0-9]/g, " ").split(/\s+/);
+          const romMap = { "1": "I", "2": "II", "3": "III", "4": "IV", "5": "V", "6": "VI" };
+          tokens.forEach(tok => {
+            if (KELAS_LIST.includes(tok) && !kelasArr.includes(tok)) kelasArr.push(tok);
+            if (romMap[tok] && !kelasArr.includes(romMap[tok])) kelasArr.push(romMap[tok]);
+          });
+        }
+      }
+
+      if (kelompokArr.length === 0 && item.kelas) {
+        const str = String(item.kelas).toUpperCase();
+        if (str.includes("IQRA")) kelompokArr.push("Iqra");
+        if (str.includes("QUR'AN") || str.includes("QURAN")) kelompokArr.push("Al-Qur'an");
+      }
+
+      return { kelasArr, kelompokArr };
+    }
+
     function populateJurnalDateSelect(selectedDay = null) {
       const sel = document.getElementById("jurnal-tanggal-select");
       sel.innerHTML = "";
@@ -2036,6 +2170,7 @@
 
     function openJurnalModal(dayNumber = null, editId = null) {
       const report = getActiveReport();
+      const isIslam = (masterSettings.agama || "Islam") === "Islam";
       document.getElementById("jurnal-edit-id").value = editId || "";
 
       if (editId) {
@@ -2043,7 +2178,11 @@
         if (existing) {
           document.getElementById("modal-jurnal-title").innerHTML = `<i class="fa-solid fa-pen-to-square text-peka-600"></i> Edit Jurnal Pertemuan`;
           populateJurnalDateSelect(existing.dayNumber);
-          document.getElementById("jurnal-kelas").value = existing.kelas;
+          const parsed = parseLegacyKelasAndKelompok(existing);
+          setJurnalKelasAndKelompokCheckboxes(
+            parsed.kelasArr.length > 0 ? parsed.kelasArr : [...KELAS_LIST],
+            parsed.kelompokArr.length > 0 ? parsed.kelompokArr : (isIslam ? ["Iqra", "Al-Qur'an"] : [])
+          );
           document.getElementById("jurnal-materi").value = existing.materi;
           document.getElementById("jurnal-kegiatan").value = existing.kegiatan;
           document.getElementById("jurnal-catatan").value = existing.catatan || "";
@@ -2054,7 +2193,10 @@
         const filledDays = new Set(report.jurnal.map(j => Number(j.dayNumber)));
         const nextUnfilled = scheduledDays.find(d => !filledDays.has(d)) || scheduledDays[0] || 1;
         populateJurnalDateSelect(dayNumber || nextUnfilled);
-        document.getElementById("jurnal-kelas").value = masterSettings.agama === "Islam" ? "Kelas I - VI (Iqra & Al-Qur'an)" : "Kelas I - VI";
+        setJurnalKelasAndKelompokCheckboxes(
+          [...KELAS_LIST],
+          isIslam ? ["Iqra", "Al-Qur'an"] : []
+        );
         document.getElementById("jurnal-materi").value = "";
         document.getElementById("jurnal-kegiatan").value = "";
         document.getElementById("jurnal-catatan").value = "Terlaksana dengan baik dan lancar";
@@ -2074,9 +2216,25 @@
     function saveJurnalEntry(e) {
       e.preventDefault();
       const report = getActiveReport();
+      const isIslam = (masterSettings.agama || "Islam") === "Islam";
       const editId = document.getElementById("jurnal-edit-id").value;
       const dayNumber = parseInt(document.getElementById("jurnal-tanggal-select").value, 10);
-      const kelas = document.getElementById("jurnal-kelas").value.trim();
+
+      const kelasList = Array.from(document.querySelectorAll('input[name="jurnal_kelas_cb"]:checked')).map(cb => cb.value);
+      const kelompokList = isIslam
+        ? Array.from(document.querySelectorAll('input[name="jurnal_kelompok_cb"]:checked')).map(cb => cb.value)
+        : [];
+
+      if (kelasList.length === 0) {
+        showToast("Pilih minimal 1 Kelas Sasaran!", true);
+        return;
+      }
+      if (isIslam && kelompokList.length === 0) {
+        showToast("Pilih minimal 1 Kelompok Belajar (Iqra / Al-Qur'an)!", true);
+        return;
+      }
+
+      const kelas = formatKelasAndKelompokLabel(kelasList, kelompokList, isIslam);
       const materi = document.getElementById("jurnal-materi").value.trim();
       const kegiatan = document.getElementById("jurnal-kegiatan").value.trim();
       const catatan = document.getElementById("jurnal-catatan").value.trim();
@@ -2084,13 +2242,24 @@
       if (editId) {
         const idx = report.jurnal.findIndex(item => item.id === editId);
         if (idx > -1) {
-          report.jurnal[idx] = { ...report.jurnal[idx], dayNumber, kelas, materi, kegiatan, catatan };
+          report.jurnal[idx] = {
+            ...report.jurnal[idx],
+            dayNumber,
+            kelas,
+            kelasList,
+            kelompokList,
+            materi,
+            kegiatan,
+            catatan
+          };
         }
       } else {
         report.jurnal.push({
           id: "j_" + Date.now() + "_" + Math.random().toString(36).substring(2, 6),
           dayNumber,
           kelas,
+          kelasList,
+          kelompokList,
           materi,
           kegiatan,
           catatan
@@ -2105,7 +2274,7 @@
       saveReportsToStorage();
       closeJurnalModal();
       refreshAllUI();
-      showToast("Jurnal disimpan & Presensi otomatis tercatat Hadir!");
+      showToast("Jurnal disimpan & Rekap Pelaksanaan otomatis diperbarui!");
     }
 
     function deleteJurnalEntry(id) {
@@ -2770,77 +2939,139 @@
           : (jmlPertemuanEfektif > 0 ? 100 : 0);
         return `
           <tr>
-            <td style="text-align: center; font-size: 9.5pt; padding: 2px 4px;">${idx + 1}</td>
-            <td style="font-size: 9.5pt; padding: 2px 6px; font-weight: bold;">${escapeHtml(g.label)}</td>
-            <td style="text-align: center; font-size: 9.5pt; padding: 2px 4px;">${g.anggota}</td>
-            <td style="text-align: center; font-size: 9.5pt; padding: 2px 4px; font-weight: bold;">${jmlPertemuanEfektif}</td>
-            <td style="text-align: center; font-size: 9.5pt; padding: 2px 4px;">${sVal}</td>
-            <td style="text-align: center; font-size: 9.5pt; padding: 2px 4px;">${iVal}</td>
-            <td style="text-align: center; font-size: 9.5pt; padding: 2px 4px;">${aVal}</td>
-            <td style="text-align: center; font-size: 9.5pt; padding: 2px 4px; font-weight: bold;">${pctHadir}%</td>
+            <td style="text-align: center; font-size: 9pt; padding: 2px 4px;">${idx + 1}</td>
+            <td style="font-size: 9pt; padding: 2px 6px; font-weight: bold;">${escapeHtml(g.label)}</td>
+            <td style="text-align: center; font-size: 9pt; padding: 2px 4px;">${g.anggota}</td>
+            <td style="text-align: center; font-size: 9pt; padding: 2px 4px; font-weight: bold;">${jmlPertemuanEfektif}</td>
+            <td style="text-align: center; font-size: 9pt; padding: 2px 4px;">${sVal}</td>
+            <td style="text-align: center; font-size: 9pt; padding: 2px 4px;">${iVal}</td>
+            <td style="text-align: center; font-size: 9pt; padding: 2px 4px;">${aVal}</td>
+            <td style="text-align: center; font-size: 9pt; padding: 2px 4px; font-weight: bold;">${pctHadir}%</td>
           </tr>
         `;
       }).join("");
 
-      // --- SHEET 2A: LAPORAN BULANAN (BAGIAN A, B, C, D) ---
-      const laporanBulananPage1 = `
+      // --- OLAH REKAPITULASI OTOMATIS BAGIAN E DARI JURNAL (BUKAN CATATAN JURNAL HARIAN) ---
+      const jurnalList = report.jurnal || [];
+      const rekapPerKelas = {};
+      KELAS_LIST.forEach(k => {
+        rekapPerKelas[k] = { count: 0, materiSet: new Set(), hasilSet: new Set() };
+      });
+      const rekapPerKelompok = {
+        "Iqra": { count: 0, materiSet: new Set(), hasilSet: new Set() },
+        "Al-Qur'an": { count: 0, materiSet: new Set(), hasilSet: new Set() }
+      };
+
+      jurnalList.forEach(item => {
+        const parsed = parseLegacyKelasAndKelompok(item);
+        const kArr = parsed.kelasArr.length > 0 ? parsed.kelasArr : [...KELAS_LIST];
+        const klpArr = parsed.kelompokArr.length > 0 ? parsed.kelompokArr : (isIslam ? ["Iqra", "Al-Qur'an"] : []);
+
+        kArr.forEach(k => {
+          if (rekapPerKelas[k]) {
+            rekapPerKelas[k].count++;
+            if (item.materi) rekapPerKelas[k].materiSet.add(item.materi.trim());
+            if (item.catatan) rekapPerKelas[k].hasilSet.add(item.catatan.trim());
+          }
+        });
+
+        klpArr.forEach(klp => {
+          if (rekapPerKelompok[klp]) {
+            rekapPerKelompok[klp].count++;
+            if (item.materi) rekapPerKelompok[klp].materiSet.add(item.materi.trim());
+            if (item.catatan) rekapPerKelompok[klp].hasilSet.add(item.catatan.trim());
+          }
+        });
+      });
+
+      const allMateriSummary = Array.from(new Set(jurnalList.map(j => (j.materi || "").trim()).filter(Boolean))).slice(0, 4).join("; ") || "-";
+      const allHasilSummary = Array.from(new Set(jurnalList.map(j => (j.catatan || "").trim()).filter(Boolean))).slice(0, 2).join("; ") || "Terlaksana dengan baik";
+
+      const rekapKelasCellsHead = KELAS_LIST.map(k => `<th style="font-size: 8pt; padding: 2px 3px;">Kls ${k}</th>`).join("");
+      const rekapKelasCellsBody = KELAS_LIST.map(k => `<td style="text-align: center; font-size: 8.5pt; padding: 2px 3px; font-weight: bold;">${rekapPerKelas[k].count}x</td>`).join("");
+
+      const rekapKelompokRowsHtml = isIslam ? `
+        <tr>
+          <td style="text-align: center; font-size: 8.5pt; padding: 2px 4px;">1</td>
+          <td style="font-size: 8.5pt; padding: 2px 6px; font-weight: bold;">Kelompok Iqra (${iqraTotal} Murid)</td>
+          <td style="text-align: center; font-size: 8.5pt; padding: 2px 4px; font-weight: bold;">${rekapPerKelompok["Iqra"].count} Kali</td>
+          <td style="font-size: 8.5pt; padding: 2px 6px;">${escapeHtml(Array.from(rekapPerKelompok["Iqra"].materiSet).slice(0, 3).join("; ") || allMateriSummary)}</td>
+          <td style="font-size: 8.5pt; padding: 2px 6px;">${escapeHtml(Array.from(rekapPerKelompok["Iqra"].hasilSet).slice(0, 2).join("; ") || allHasilSummary)}</td>
+        </tr>
+        <tr>
+          <td style="text-align: center; font-size: 8.5pt; padding: 2px 4px;">2</td>
+          <td style="font-size: 8.5pt; padding: 2px 6px; font-weight: bold;">Kelompok Al-Qur'an (${quranTotal} Murid)</td>
+          <td style="text-align: center; font-size: 8.5pt; padding: 2px 4px; font-weight: bold;">${rekapPerKelompok["Al-Qur'an"].count} Kali</td>
+          <td style="font-size: 8.5pt; padding: 2px 6px;">${escapeHtml(Array.from(rekapPerKelompok["Al-Qur'an"].materiSet).slice(0, 3).join("; ") || allMateriSummary)}</td>
+          <td style="font-size: 8.5pt; padding: 2px 6px;">${escapeHtml(Array.from(rekapPerKelompok["Al-Qur'an"].hasilSet).slice(0, 2).join("; ") || allHasilSummary)}</td>
+        </tr>
+      ` : `
+        <tr>
+          <td style="text-align: center; font-size: 8.5pt; padding: 2px 4px;">1</td>
+          <td style="font-size: 8.5pt; padding: 2px 6px; font-weight: bold;">Peserta PEKA ${escapeHtml(agama)} (${stuSum.pekaAll} Murid)</td>
+          <td style="text-align: center; font-size: 8.5pt; padding: 2px 4px; font-weight: bold;">${jurnalList.length} Kali</td>
+          <td style="font-size: 8.5pt; padding: 2px 6px;">${escapeHtml(allMateriSummary)}</td>
+          <td style="font-size: 8.5pt; padding: 2px 6px;">${escapeHtml(allHasilSummary)}</td>
+        </tr>
+      `;
+
+      // --- SHEET 2: LAPORAN BULANAN LENGKAP (BAGIAN A, B, C, D, E & TANDA TANGAN DALAM 1 LEMBAR REKAP) ---
+      const laporanBulananSheet = `
         <div class="${sheetClass}">
-          <div style="text-align: center; margin-bottom: 10px; border-bottom: 2px solid #000; padding-bottom: 6px;">
-            <h2 style="font-size: 13pt; font-weight: bold; text-transform: uppercase; margin: 0;">
+          <div style="text-align: center; margin-bottom: 6px; border-bottom: 2px solid #000; padding-bottom: 4px;">
+            <h2 style="font-size: 12.5pt; font-weight: bold; text-transform: uppercase; margin: 0;">
               LAPORAN BULANAN KEGIATAN EKSTRAKURIKULER PENDIDIKAN KARAKTER (PEKA)
             </h2>
-            <p style="font-size: 10.5pt; font-weight: bold; margin: 2px 0 0 0;">
+            <p style="font-size: 10pt; font-weight: bold; margin: 2px 0 0 0;">
               BULAN: ${bulanNama.toUpperCase()} ${tahun} &nbsp;|&nbsp; AGAMA: ${escapeHtml(agama.toUpperCase())}
             </p>
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 8px;">
-            <div style="border: 1px solid #000; padding: 6px 8px;">
-              <h3 style="font-size: 10pt; font-weight: bold; margin: 0 0 4px 0; text-transform: uppercase; background: #f1f5f9; padding: 2px 4px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 5px;">
+            <div style="border: 1px solid #000; padding: 4px 6px;">
+              <h3 style="font-size: 9.5pt; font-weight: bold; margin: 0 0 3px 0; text-transform: uppercase; background: #f1f5f9; padding: 1.5px 4px;">
                 A. Profil Satuan Pendidikan
               </h3>
-              <table style="width: 100%; font-size: 9.5pt; border-collapse: collapse;">
-                <tr><td style="width: 38%; padding: 1.5px 0; font-weight: bold;">Nama Sekolah</td><td style="width: 4%;">:</td><td>${escapeHtml(sekolah)}</td></tr>
-                <tr><td style="padding: 1.5px 0; font-weight: bold;">NPSN</td><td>:</td><td>${escapeHtml(masterSettings.npsn || '-')}</td></tr>
-                <tr><td style="padding: 1.5px 0; font-weight: bold;">Alamat</td><td>:</td><td>${escapeHtml(masterSettings.alamatSekolah || kecamatan)}</td></tr>
-                <tr><td style="padding: 1.5px 0; font-weight: bold;">Jumlah Rombel</td><td>:</td><td>${escapeHtml(masterSettings.rombel || '-')} Rombel</td></tr>
-                <tr><td style="padding: 1.5px 0; font-weight: bold;">Akreditasi</td><td>:</td><td>${escapeHtml(masterSettings.akreditasi || '-')}</td></tr>
+              <table style="width: 100%; font-size: 8.5pt; border-collapse: collapse;">
+                <tr><td style="width: 38%; padding: 1px 0; font-weight: bold;">Nama Sekolah</td><td style="width: 4%;">:</td><td>${escapeHtml(sekolah)}</td></tr>
+                <tr><td style="padding: 1px 0; font-weight: bold;">NPSN</td><td>:</td><td>${escapeHtml(masterSettings.npsn || '-')}</td></tr>
+                <tr><td style="padding: 1px 0; font-weight: bold;">Alamat</td><td>:</td><td>${escapeHtml(masterSettings.alamatSekolah || kecamatan)}</td></tr>
+                <tr><td style="padding: 1px 0; font-weight: bold;">Jml Rombel / Akred.</td><td>:</td><td>${escapeHtml(masterSettings.rombel || '-')} Rombel / Akreditasi ${escapeHtml(masterSettings.akreditasi || '-')}</td></tr>
               </table>
             </div>
 
-            <div style="border: 1px solid #000; padding: 6px 8px;">
-              <h3 style="font-size: 10pt; font-weight: bold; margin: 0 0 4px 0; text-transform: uppercase; background: #f1f5f9; padding: 2px 4px;">
+            <div style="border: 1px solid #000; padding: 4px 6px;">
+              <h3 style="font-size: 9.5pt; font-weight: bold; margin: 0 0 3px 0; text-transform: uppercase; background: #f1f5f9; padding: 1.5px 4px;">
                 B. Identitas Fasilitator
               </h3>
-              <table style="width: 100%; font-size: 9.5pt; border-collapse: collapse;">
-                <tr><td style="width: 38%; padding: 1.5px 0; font-weight: bold;">Nama</td><td style="width: 4%;">:</td><td style="font-weight: bold;">${escapeHtml(fasilitator)}</td></tr>
-                <tr><td style="padding: 1.5px 0; font-weight: bold;">Tempat, Tgl Lahir</td><td>:</td><td>${escapeHtml(masterSettings.fasilitatorTTL || '-')}</td></tr>
-                <tr><td style="padding: 1.5px 0; font-weight: bold;">Agama</td><td>:</td><td>${escapeHtml(agama)}</td></tr>
-                <tr><td style="padding: 1.5px 0; font-weight: bold;">Alamat</td><td>:</td><td>${escapeHtml(masterSettings.fasilitatorAlamat || '-')}</td></tr>
-                <tr><td style="padding: 1.5px 0; font-weight: bold;">Nomor HP / WA</td><td>:</td><td>${escapeHtml(masterSettings.fasilitatorHP || '-')}</td></tr>
+              <table style="width: 100%; font-size: 8.5pt; border-collapse: collapse;">
+                <tr><td style="width: 38%; padding: 1px 0; font-weight: bold;">Nama</td><td style="width: 4%;">:</td><td style="font-weight: bold;">${escapeHtml(fasilitator)}</td></tr>
+                <tr><td style="padding: 1px 0; font-weight: bold;">Tempat, Tgl Lahir</td><td>:</td><td>${escapeHtml(masterSettings.fasilitatorTTL || '-')}</td></tr>
+                <tr><td style="padding: 1px 0; font-weight: bold;">Alamat</td><td>:</td><td>${escapeHtml(masterSettings.fasilitatorAlamat || '-')}</td></tr>
+                <tr><td style="padding: 1px 0; font-weight: bold;">Nomor HP / WA</td><td>:</td><td>${escapeHtml(masterSettings.fasilitatorHP || '-')}</td></tr>
               </table>
             </div>
           </div>
 
-          <div style="margin-bottom: 8px;">
-            <h3 style="font-size: 10.5pt; font-weight: bold; margin: 0 0 3px 0; text-transform: uppercase;">
+          <div style="margin-bottom: 5px;">
+            <h3 style="font-size: 9.5pt; font-weight: bold; margin: 0 0 2px 0; text-transform: uppercase;">
               C. Data Peserta Ekstrakurikuler PEKA
             </h3>
-            <p style="font-size: 9.5pt; font-weight: bold; margin: 0 0 3px 0;">1. Data Murid Keseluruhan dan Murid yang Mengikuti PEKA</p>
+            <p style="font-size: 8.5pt; font-weight: bold; margin: 0 0 2px 0;">1. Data Murid Keseluruhan dan Murid yang Mengikuti PEKA</p>
             <table class="report-table">
               <thead>
                 <tr>
-                  <th rowspan="2" style="width: 85px; font-size: 9pt; padding: 2px 4px;">Kelas</th>
-                  <th colspan="3" style="font-size: 9pt; padding: 2px 4px;">Jumlah Murid Keseluruhan</th>
-                  <th colspan="3" style="font-size: 9pt; padding: 2px 4px;">Jumlah Murid Mengikuti Ekskul PEKA</th>
+                  <th rowspan="2" style="width: 75px; font-size: 8.5pt; padding: 1.5px 4px;">Kelas</th>
+                  <th colspan="3" style="font-size: 8.5pt; padding: 1.5px 4px;">Jumlah Murid Keseluruhan</th>
+                  <th colspan="3" style="font-size: 8.5pt; padding: 1.5px 4px;">Jumlah Murid Mengikuti Ekskul PEKA</th>
                 </tr>
                 <tr>
-                  <th style="font-size: 8.5pt; padding: 2px 4px;">L</th>
-                  <th style="font-size: 8.5pt; padding: 2px 4px;">P</th>
-                  <th style="font-size: 8.5pt; padding: 2px 4px;">Jumlah</th>
-                  <th style="font-size: 8.5pt; padding: 2px 4px;">L</th>
-                  <th style="font-size: 8.5pt; padding: 2px 4px;">P</th>
-                  <th style="font-size: 8.5pt; padding: 2px 4px;">Jumlah</th>
+                  <th style="font-size: 8pt; padding: 1.5px 4px;">L</th>
+                  <th style="font-size: 8pt; padding: 1.5px 4px;">P</th>
+                  <th style="font-size: 8pt; padding: 1.5px 4px;">Jumlah</th>
+                  <th style="font-size: 8pt; padding: 1.5px 4px;">L</th>
+                  <th style="font-size: 8pt; padding: 1.5px 4px;">P</th>
+                  <th style="font-size: 8pt; padding: 1.5px 4px;">Jumlah</th>
                 </tr>
               </thead>
               <tbody>
@@ -2851,51 +3082,46 @@
             ${islamGroupTableHtml}
           </div>
 
-          <div style="margin-bottom: 6px;">
-            <h3 style="font-size: 10.5pt; font-weight: bold; margin: 0 0 3px 0; text-transform: uppercase;">
+          <div style="margin-bottom: 5px;">
+            <h3 style="font-size: 9.5pt; font-weight: bold; margin: 0 0 2px 0; text-transform: uppercase;">
               D. Presensi (Rekap Kehadiran Fasilitator &amp; Peserta)
             </h3>
-            <p style="font-size: 9.5pt; font-weight: bold; margin: 0 0 3px 0;">1. Rekap Presensi Kehadiran Fasilitator</p>
-            <table class="report-table" style="margin-bottom: 6px;">
+            <table class="report-table" style="margin-bottom: 4px;">
               <thead>
                 <tr>
-                  <th style="font-size: 9pt; padding: 2px 4px;">Nama Fasilitator</th>
-                  <th style="width: 100px; font-size: 9pt; padding: 2px 4px;">Hari Efektif</th>
-                  <th style="width: 65px; font-size: 9pt; padding: 2px 4px;">Hadir (H)</th>
-                  <th style="width: 55px; font-size: 9pt; padding: 2px 4px;">Sakit (S)</th>
-                  <th style="width: 55px; font-size: 9pt; padding: 2px 4px;">Izin (I)</th>
-                  <th style="width: 55px; font-size: 9pt; padding: 2px 4px;">Alpa (A)</th>
-                  <th style="width: 75px; font-size: 9pt; padding: 2px 4px;">Persentase</th>
+                  <th style="font-size: 8.5pt; padding: 1.5px 4px;">Nama Fasilitator</th>
+                  <th style="width: 90px; font-size: 8.5pt; padding: 1.5px 4px;">Hari Efektif</th>
+                  <th style="width: 60px; font-size: 8.5pt; padding: 1.5px 4px;">Hadir (H)</th>
+                  <th style="width: 50px; font-size: 8.5pt; padding: 1.5px 4px;">Sakit (S)</th>
+                  <th style="width: 50px; font-size: 8.5pt; padding: 1.5px 4px;">Izin (I)</th>
+                  <th style="width: 50px; font-size: 8.5pt; padding: 1.5px 4px;">Alpa (A)</th>
+                  <th style="width: 70px; font-size: 8.5pt; padding: 1.5px 4px;">Persentase</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td style="font-size: 9.5pt; padding: 3px 6px; font-weight: bold;">${escapeHtml(fasilitator)}</td>
-                  <td style="text-align: center; font-size: 9.5pt; padding: 3px 4px;">${scheduledDaysList.length} Hari</td>
-                  <td style="text-align: center; font-size: 9.5pt; padding: 3px 4px; font-weight: bold;">${sumFas.H}</td>
-                  <td style="text-align: center; font-size: 9.5pt; padding: 3px 4px;">${sumFas.S}</td>
-                  <td style="text-align: center; font-size: 9.5pt; padding: 3px 4px;">${sumFas.I}</td>
-                  <td style="text-align: center; font-size: 9.5pt; padding: 3px 4px;">${sumFas.A}</td>
-                  <td style="text-align: center; font-size: 9.5pt; padding: 3px 4px; font-weight: bold;">${pctFasilitator}%</td>
+                  <td style="font-size: 8.5pt; padding: 2px 6px; font-weight: bold;">${escapeHtml(fasilitator)}</td>
+                  <td style="text-align: center; font-size: 8.5pt; padding: 2px 4px;">${scheduledDaysList.length} Hari</td>
+                  <td style="text-align: center; font-size: 8.5pt; padding: 2px 4px; font-weight: bold;">${sumFas.H}</td>
+                  <td style="text-align: center; font-size: 8.5pt; padding: 2px 4px;">${sumFas.S}</td>
+                  <td style="text-align: center; font-size: 8.5pt; padding: 2px 4px;">${sumFas.I}</td>
+                  <td style="text-align: center; font-size: 8.5pt; padding: 2px 4px;">${sumFas.A}</td>
+                  <td style="text-align: center; font-size: 8.5pt; padding: 2px 4px; font-weight: bold;">${pctFasilitator}%</td>
                 </tr>
               </tbody>
             </table>
 
-            <p style="font-size: 9.5pt; font-weight: bold; margin: 0 0 3px 0;">2. Rekap Kehadiran Peserta Berdasarkan Kelompok</p>
             <table class="report-table">
               <thead>
                 <tr>
-                  <th rowspan="2" style="width: 32px; font-size: 9pt; padding: 2px 4px;">No</th>
-                  <th rowspan="2" style="font-size: 9pt; padding: 2px 4px;">Kelompok Peserta</th>
-                  <th rowspan="2" style="width: 75px; font-size: 9pt; padding: 2px 4px;">Jumlah Peserta</th>
-                  <th rowspan="2" style="width: 75px; font-size: 9pt; padding: 2px 4px;">Jumlah Pertemuan</th>
-                  <th colspan="4" style="font-size: 9pt; padding: 2px 4px;">Presensi Peserta</th>
-                </tr>
-                <tr>
-                  <th style="width: 50px; font-size: 8.5pt; padding: 2px 4px;">S</th>
-                  <th style="width: 50px; font-size: 8.5pt; padding: 2px 4px;">I</th>
-                  <th style="width: 50px; font-size: 8.5pt; padding: 2px 4px;">A</th>
-                  <th style="width: 85px; font-size: 8.5pt; padding: 2px 4px;">Persentase</th>
+                  <th style="width: 28px; font-size: 8pt; padding: 1.5px 4px;">No</th>
+                  <th style="font-size: 8pt; padding: 1.5px 4px;">Kelompok Peserta</th>
+                  <th style="width: 70px; font-size: 8pt; padding: 1.5px 4px;">Jml Peserta</th>
+                  <th style="width: 75px; font-size: 8pt; padding: 1.5px 4px;">Jml Pertemuan</th>
+                  <th style="width: 42px; font-size: 8pt; padding: 1.5px 4px;">S</th>
+                  <th style="width: 42px; font-size: 8pt; padding: 1.5px 4px;">I</th>
+                  <th style="width: 42px; font-size: 8pt; padding: 1.5px 4px;">A</th>
+                  <th style="width: 75px; font-size: 8pt; padding: 1.5px 4px;">Kehadiran</th>
                 </tr>
               </thead>
               <tbody>
@@ -2904,193 +3130,52 @@
             </table>
           </div>
 
-          ${getAppWatermarkFooter("Laporan Bulanan PEKA (Bagian A - D)")}
-        </div>
-      `;
+          <div style="margin-bottom: 4px;">
+            <h3 style="font-size: 9.5pt; font-weight: bold; margin: 0 0 2px 0; text-transform: uppercase;">
+              E. Rekapitulasi Pelaksanaan Kegiatan (Berdasarkan Jurnal Bulanan)
+            </h3>
+            <table class="report-table" style="margin-bottom: 4px;">
+              <thead>
+                <tr>
+                  <th rowspan="2" style="width: 130px; font-size: 8pt; padding: 1.5px 4px;">Hari Efektif Mengajar</th>
+                  <th rowspan="2" style="width: 85px; font-size: 8pt; padding: 1.5px 4px;">Total Pertemuan</th>
+                  <th colspan="6" style="font-size: 8pt; padding: 1.5px 4px;">Frekuensi Pelaksanaan Kegiatan Per Kelas</th>
+                </tr>
+                <tr>
+                  ${rekapKelasCellsHead}
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="text-align: center; font-size: 8.5pt; padding: 2px 4px; font-weight: bold;">${escapeHtml(hariEfektifStr)}</td>
+                  <td style="text-align: center; font-size: 8.5pt; padding: 2px 4px; font-weight: bold;">${jurnalList.length} Pertemuan</td>
+                  ${rekapKelasCellsBody}
+                </tr>
+              </tbody>
+            </table>
 
-      // --- SHEET 2B & SETERUSNYA: BAGIAN E. REKAP PELAKSANAAN KEGIATAN & TANDA TANGAN ---
-      const jurnalList = report.jurnal || [];
-      const totalHariKegiatan = sumFas.H || jurnalList.length || 0;
-      const countPerKelas = {};
-      KELAS_LIST.forEach(k => { countPerKelas[k] = 0; });
-      let countIqra = 0;
-      let countQuran = 0;
-
-      jurnalList.forEach(item => {
-        const kStr = (item.kelas || "").toUpperCase();
-        KELAS_LIST.forEach(k => {
-          if (kStr.includes(`KELAS ${k}`) || kStr === k || kStr.includes(`I - VI`) || kStr.includes(`1 - 6`)) {
-            countPerKelas[k]++;
-          }
-        });
-        if (kStr.includes("IQRA") || kStr.includes("I - VI") || kStr.includes("1 - 6")) countIqra++;
-        if (kStr.includes("QURAN") || kStr.includes("QUR'AN") || kStr.includes("I - VI") || kStr.includes("1 - 6")) countQuran++;
-      });
-
-      KELAS_LIST.forEach(k => {
-        if (countPerKelas[k] === 0 && jurnalList.length > 0) countPerKelas[k] = jurnalList.length;
-      });
-      if (countIqra === 0 && jurnalList.length > 0) countIqra = jurnalList.length;
-      if (countQuran === 0 && jurnalList.length > 0) countQuran = jurnalList.length;
-
-      const summaryTableHtml = `
-        <div style="margin-bottom: 8px;">
-          <p style="font-size: 9.5pt; font-weight: bold; margin: 0 0 3px 0;">1. Ringkasan Jadwal &amp; Frekuensi Pertemuan</p>
-          <table class="report-table" style="margin-bottom: 6px;">
-            <thead>
-              <tr>
-                <th style="font-size: 8.5pt; padding: 2px 4px; width: 140px;">Hari Efektif Kegiatan</th>
-                <th style="font-size: 8.5pt; padding: 2px 4px; width: 110px;">Total Pelaksanaan</th>
-                <th style="font-size: 8.5pt; padding: 2px 4px;">Pertemuan per Kelas (I s.d. VI)</th>
-                ${isIslam ? `
-                  <th style="font-size: 8.5pt; padding: 2px 4px; width: 125px;">Kelompok Iqra</th>
-                  <th style="font-size: 8.5pt; padding: 2px 4px; width: 125px;">Kelompok Al-Qur'an</th>
-                ` : `
-                  <th style="font-size: 8.5pt; padding: 2px 4px; width: 160px;">Kelompok Peserta PEKA</th>
-                `}
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style="text-align: center; font-size: 9pt; padding: 3px 4px; font-weight: bold;">${escapeHtml(hariEfektifStr)}</td>
-                <td style="text-align: center; font-size: 9pt; padding: 3px 4px; font-weight: bold;">${totalHariKegiatan} Hari Pertemuan</td>
-                <td style="text-align: center; font-size: 8.5pt; padding: 3px 4px;">
-                  Kelas I: ${countPerKelas['I']}x | Kelas II: ${countPerKelas['II']}x | Kelas III: ${countPerKelas['III']}x<br/>
-                  Kelas IV: ${countPerKelas['IV']}x | Kelas V: ${countPerKelas['V']}x | Kelas VI: ${countPerKelas['VI']}x
-                </td>
-                ${isIslam ? `
-                  <td style="text-align: center; font-size: 9pt; padding: 3px 4px;"><strong>${countIqra} Kali</strong> (${iqraTotal} Siswa)</td>
-                  <td style="text-align: center; font-size: 9pt; padding: 3px 4px;"><strong>${countQuran} Kali</strong> (${quranTotal} Siswa)</td>
-                ` : `
-                  <td style="text-align: center; font-size: 9pt; padding: 3px 4px;"><strong>${totalHariKegiatan} Kali</strong> (${stuSum.pekaAll} Siswa)</td>
-                `}
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      `;
-
-      // Pagination cerdas untuk Rekap Pelaksanaan Kegiatan (Bagian E)
-      const allJurnal = jurnalList;
-      const MAX_ROWS_PAGE1 = 14;
-      const MAX_ROWS_PER_CONT_PAGE = 22;
-
-      const ePages = [];
-      if (allJurnal.length <= MAX_ROWS_PAGE1) {
-        ePages.push({
-          isFirst: true,
-          hasSummary: true,
-          rows: allJurnal,
-          startIdx: 0,
-          hasSignature: true
-        });
-      } else {
-        // Halaman pertama Bagian E memuat ringkasan dan 15 baris pertama
-        ePages.push({
-          isFirst: true,
-          hasSummary: true,
-          rows: allJurnal.slice(0, 15),
-          startIdx: 0,
-          hasSignature: false
-        });
-
-        let remaining = allJurnal.slice(15);
-        let currentOffset = 15;
-        while (remaining.length > 0) {
-          if (remaining.length <= MAX_ROWS_PAGE1 + 2) {
-            ePages.push({
-              isFirst: false,
-              hasSummary: false,
-              rows: remaining,
-              startIdx: currentOffset,
-              hasSignature: true
-            });
-            remaining = [];
-          } else {
-            const nextSlice = remaining.slice(0, MAX_ROWS_PER_CONT_PAGE);
-            ePages.push({
-              isFirst: false,
-              hasSummary: false,
-              rows: nextSlice,
-              startIdx: currentOffset,
-              hasSignature: false
-            });
-            remaining = remaining.slice(MAX_ROWS_PER_CONT_PAGE);
-            currentOffset += nextSlice.length;
-          }
-        }
-      }
-
-      const sectionEPagesHtml = ePages.map((pObj, pIdx) => {
-        const totalEPages = ePages.length;
-        const pageFooterLabel = totalEPages > 1
-          ? (pObj.hasSignature ? `Laporan Bulanan PEKA (Hal. ${pIdx + 2}/${totalEPages + 1}: Bagian E & Pengesahan)` : `Laporan Bulanan PEKA (Hal. ${pIdx + 2}/${totalEPages + 1}: Bagian E)`)
-          : `Laporan Bulanan PEKA (Hal. 2/2: Bagian E & Pengesahan)`;
-
-        const rowsHtml = pObj.rows.length > 0
-          ? pObj.rows.map((item, idx) => `
-              <tr>
-                <td style="text-align: center; font-size: 8.5pt; padding: 2.5px 4px;">${pObj.startIdx + idx + 1}</td>
-                <td style="font-size: 8.5pt; padding: 2.5px 5px;">${escapeHtml(formatFullHariTanggal(item.dayNumber))}</td>
-                <td style="text-align: center; font-size: 8.5pt; padding: 2.5px 4px;">${escapeHtml(item.kelas)}</td>
-                <td style="font-size: 8.5pt; padding: 2.5px 5px;">${escapeHtml(item.materi)}</td>
-                <td style="text-align: center; font-size: 8.5pt; padding: 2.5px 4px; font-weight: bold;">${escapeHtml(item.catatan || 'Terlaksana')}</td>
-              </tr>
-            `).join("")
-          : `
-              <tr>
-                <td colspan="5" style="text-align: center; font-style: italic; font-size: 9pt; padding: 12px;">
-                  Belum ada data jurnal pelaksanaan kegiatan yang diisi untuk bulan ${bulanNama} ${tahun}.
-                </td>
-              </tr>
-            `;
-
-        return `
-          <div class="${sheetClass}">
-            <div style="text-align: center; margin-bottom: 8px; border-bottom: 2px solid #000; padding-bottom: 4px;">
-              <h2 style="font-size: 12.5pt; font-weight: bold; text-transform: uppercase; margin: 0;">
-                LANJUTAN LAPORAN BULANAN — REKAP PELAKSANAAN KEGIATAN PEKA
-              </h2>
-              <p style="font-size: 10pt; font-weight: bold; margin: 2px 0 0 0;">
-                ${escapeHtml(sekolah)} &nbsp;|&nbsp; BULAN: ${bulanNama.toUpperCase()} ${tahun} &nbsp;|&nbsp; AGAMA: ${escapeHtml(agama.toUpperCase())}
-              </p>
-            </div>
-
-            <div style="margin-bottom: 6px;">
-              <h3 style="font-size: 10.5pt; font-weight: bold; margin: 0 0 4px 0; text-transform: uppercase;">
-                E. Rekap Pelaksanaan Kegiatan (Berdasarkan Jurnal)
-              </h3>
-
-              ${pObj.hasSummary ? summaryTableHtml : `
-                <div style="font-size: 9pt; font-style: italic; color: #475569; margin-bottom: 4px;">
-                  Lanjutan Rincian Rekapitulasi Pelaksanaan Kegiatan Pembelajaran — ${escapeHtml(sekolah)}
-                </div>
-              `}
-
-              <p style="font-size: 9.5pt; font-weight: bold; margin: 0 0 3px 0;">${pObj.hasSummary ? '2. Rincian Rekapitulasi Pelaksanaan Kegiatan Pembelajaran' : ''}</p>
-              <table class="report-table">
-                <thead>
-                  <tr>
-                    <th style="width: 32px; font-size: 8.5pt; padding: 2.5px 4px;">No</th>
-                    <th style="width: 135px; font-size: 8.5pt; padding: 2.5px 4px;">Hari &amp; Tanggal</th>
-                    <th style="width: 85px; font-size: 8.5pt; padding: 2.5px 4px;">Kelas / Sasaran</th>
-                    <th style="font-size: 8.5pt; padding: 2.5px 4px;">Materi Pokok Pembelajaran</th>
-                    <th style="width: 120px; font-size: 8.5pt; padding: 2.5px 4px;">Keterangan / Hasil</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  ${rowsHtml}
-                </tbody>
-              </table>
-            </div>
-
-            ${pObj.hasSignature ? signatureBlock : ''}
-            ${getAppWatermarkFooter(pageFooterLabel)}
+            <table class="report-table">
+              <thead>
+                <tr>
+                  <th style="width: 28px; font-size: 8pt; padding: 1.5px 4px;">No</th>
+                  <th style="width: 155px; font-size: 8pt; padding: 1.5px 4px;">Kelompok / Sasaran</th>
+                  <th style="width: 75px; font-size: 8pt; padding: 1.5px 4px;">Terlaksana</th>
+                  <th style="font-size: 8pt; padding: 1.5px 4px;">Rangkuman Materi Pokok yang Diajarkan</th>
+                  <th style="width: 145px; font-size: 8pt; padding: 1.5px 4px;">Hasil / Capaian</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rekapKelompokRowsHtml}
+              </tbody>
+            </table>
           </div>
-        `;
-      }).join("");
 
-      // --- SHEET 2B (MULTI-PAGE): RINCIAN JURNAL KEGIATAN PEMBELAJARAN HARIAN ---
+          ${signatureBlock}
+          ${getAppWatermarkFooter("Laporan Bulanan PEKA")}
+        </div>
+      `;
+
+      // --- SHEET 3 (MULTI-PAGE): RINCIAN JURNAL KEGIATAN PEMBELAJARAN HARIAN ---
       const jurnalPages = [];
 
       if (jurnalList.length === 0) {
@@ -3351,7 +3436,7 @@
         </div>
       `;
 
-      return coverSheet + laporanBulananPage1 + sectionEPagesHtml + jurnalSheet + presensiSheet + dokumentasiSheet;
+      return coverSheet + laporanBulananSheet + jurnalSheet + presensiSheet + dokumentasiSheet;
     }
 
     function renderF4ReportPreview() {
