@@ -73,6 +73,19 @@
       color: #1e293b;
       -webkit-tap-highlight-color: transparent;
       overflow-x: hidden;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    input,
+    textarea,
+    select {
+      -webkit-user-select: text;
+      -moz-user-select: text;
+      -ms-user-select: text;
+      user-select: text;
     }
 
     .emerald-header-curve {
@@ -3730,6 +3743,63 @@
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
     }
+
+    /**
+     * 13. PROTEKSI KEAMANAN (ANTI KLIK KANAN & ANTI INSPECT ELEMENT)
+     */
+    (function initClientSecurity() {
+      // 1. Blokir Klik Kanan (Context Menu)
+      document.addEventListener("contextmenu", function (e) {
+        e.preventDefault();
+        showToast("Akses klik kanan dinonaktifkan demi keamanan aplikasi.", true);
+        return false;
+      });
+
+      // 2. Blokir Shortcut Keyboard DevTools, View Source & Save Page
+      document.addEventListener("keydown", function (e) {
+        const key = (e.key || "").toUpperCase();
+        const isCtrlOrCmd = e.ctrlKey || e.metaKey;
+
+        // F12
+        if (e.keyCode === 123 || key === "F12") {
+          e.preventDefault();
+          e.stopPropagation();
+          showToast("Fitur Inspect Element dinonaktifkan!", true);
+          return false;
+        }
+
+        // Ctrl+Shift+I (Inspect), Ctrl+Shift+J (Console), Ctrl+Shift+C (Element Picker), Ctrl+Shift+K
+        if (isCtrlOrCmd && e.shiftKey && ["I", "J", "C", "K"].includes(key)) {
+          e.preventDefault();
+          e.stopPropagation();
+          showToast("Fitur Developer Tools dinonaktifkan!", true);
+          return false;
+        }
+
+        // Mac Option+Cmd+I / J / C / U
+        if (e.metaKey && e.altKey && ["I", "J", "C", "U"].includes(key)) {
+          e.preventDefault();
+          e.stopPropagation();
+          showToast("Fitur Developer Tools dinonaktifkan!", true);
+          return false;
+        }
+
+        // Ctrl+U (View Source) & Ctrl+S (Save HTML)
+        if (isCtrlOrCmd && ["U", "S"].includes(key)) {
+          e.preventDefault();
+          e.stopPropagation();
+          showToast("Akses kode sumber halaman dikunci!", true);
+          return false;
+        }
+      });
+
+      // 3. Blokir Drag Gambar/Elemen kecuali di area Dropzone Dokumentasi
+      document.addEventListener("dragstart", function (e) {
+        if (!e.target.closest("#dropzone-area")) {
+          e.preventDefault();
+        }
+      });
+    })();
   </script>
 </body>
 
