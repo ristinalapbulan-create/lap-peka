@@ -2008,6 +2008,7 @@
       });
       return {
         totL, totP, totAll: totL + totP,
+        totalL: totL, totalP: totP, totalAll: totL + totP,
         pekaL, pekaP, pekaAll: pekaL + pekaP
       };
     }
@@ -2694,9 +2695,9 @@
       cTableRows += `
         <tr style="background-color: #f1f5f9 !important; font-weight: bold;">
           <td style="text-align: center; font-size: 9pt; padding: 2px 4px;">Jumlah</td>
-          <td style="text-align: center; font-size: 9pt; padding: 2px 4px;">${stuSum.totalL}</td>
-          <td style="text-align: center; font-size: 9pt; padding: 2px 4px;">${stuSum.totalP}</td>
-          <td style="text-align: center; font-size: 9pt; padding: 2px 4px;">${stuSum.totalAll}</td>
+          <td style="text-align: center; font-size: 9pt; padding: 2px 4px;">${stuSum.totalL ?? stuSum.totL ?? 0}</td>
+          <td style="text-align: center; font-size: 9pt; padding: 2px 4px;">${stuSum.totalP ?? stuSum.totP ?? 0}</td>
+          <td style="text-align: center; font-size: 9pt; padding: 2px 4px;">${stuSum.totalAll ?? stuSum.totAll ?? 0}</td>
           <td style="text-align: center; font-size: 9pt; padding: 2px 4px;">${stuSum.pekaL}</td>
           <td style="text-align: center; font-size: 9pt; padding: 2px 4px;">${stuSum.pekaP}</td>
           <td style="text-align: center; font-size: 9pt; padding: 2px 4px;">${stuSum.pekaAll}</td>
@@ -2781,333 +2782,313 @@
         `;
       }).join("");
 
-      // --- REKAP PELAKSANAAN KEGIATAN BERDASARKAN JURNAL (BAGIAN E) ---
-      const jurnalList = report.jurnal || [];
-      const rekapJurnalRowsHtml = (jurnalList.length > 0)
-        ? jurnalList.map((item, idx) => `
-            <tr>
-              <td style="text-align: center; font-size: 8.5pt; padding: 2px 4px;">${idx + 1}</td>
-              <td style="font-size: 8.5pt; padding: 2px 5px;">${escapeHtml(formatFullHariTanggal(item.dayNumber))}</td>
-              <td style="text-align: center; font-size: 8.5pt; padding: 2px 4px;">${escapeHtml(item.kelas)}</td>
-              <td style="font-size: 8.5pt; padding: 2px 5px;">${escapeHtml(item.materi)}</td>
-              <td style="text-align: center; font-size: 8.5pt; padding: 2px 4px; font-weight: bold;">${escapeHtml(item.catatan || 'Terlaksana')}</td>
-            </tr>
-          `).join("")
-        : `
-            <tr>
-              <td colspan="5" style="text-align: center; font-style: italic; font-size: 8.5pt; padding: 8px;">
-                Belum ada data pelaksanaan/jurnal kegiatan yang diisi untuk bulan ${bulanNama} ${tahun}.
-              </td>
-            </tr>
-          `;
+      // --- SHEET 2A: LAPORAN BULANAN (BAGIAN A, B, C, D) ---
+      const laporanBulananPage1 = `
+        <div class="${sheetClass}">
+          <div style="text-align: center; margin-bottom: 10px; border-bottom: 2px solid #000; padding-bottom: 6px;">
+            <h2 style="font-size: 13pt; font-weight: bold; text-transform: uppercase; margin: 0;">
+              LAPORAN BULANAN KEGIATAN EKSTRAKURIKULER PENDIDIKAN KARAKTER (PEKA)
+            </h2>
+            <p style="font-size: 10.5pt; font-weight: bold; margin: 2px 0 0 0;">
+              BULAN: ${bulanNama.toUpperCase()} ${tahun} &nbsp;|&nbsp; AGAMA: ${escapeHtml(agama.toUpperCase())}
+            </p>
+          </div>
 
-      let laporanBulananSheets = "";
-      if (jurnalList.length <= 10) {
-        laporanBulananSheets = `
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 8px;">
+            <div style="border: 1px solid #000; padding: 6px 8px;">
+              <h3 style="font-size: 10pt; font-weight: bold; margin: 0 0 4px 0; text-transform: uppercase; background: #f1f5f9; padding: 2px 4px;">
+                A. Profil Satuan Pendidikan
+              </h3>
+              <table style="width: 100%; font-size: 9.5pt; border-collapse: collapse;">
+                <tr><td style="width: 38%; padding: 1.5px 0; font-weight: bold;">Nama Sekolah</td><td style="width: 4%;">:</td><td>${escapeHtml(sekolah)}</td></tr>
+                <tr><td style="padding: 1.5px 0; font-weight: bold;">NPSN</td><td>:</td><td>${escapeHtml(masterSettings.npsn || '-')}</td></tr>
+                <tr><td style="padding: 1.5px 0; font-weight: bold;">Alamat</td><td>:</td><td>${escapeHtml(masterSettings.alamatSekolah || kecamatan)}</td></tr>
+                <tr><td style="padding: 1.5px 0; font-weight: bold;">Jumlah Rombel</td><td>:</td><td>${escapeHtml(masterSettings.rombel || '-')} Rombel</td></tr>
+                <tr><td style="padding: 1.5px 0; font-weight: bold;">Akreditasi</td><td>:</td><td>${escapeHtml(masterSettings.akreditasi || '-')}</td></tr>
+              </table>
+            </div>
+
+            <div style="border: 1px solid #000; padding: 6px 8px;">
+              <h3 style="font-size: 10pt; font-weight: bold; margin: 0 0 4px 0; text-transform: uppercase; background: #f1f5f9; padding: 2px 4px;">
+                B. Identitas Fasilitator
+              </h3>
+              <table style="width: 100%; font-size: 9.5pt; border-collapse: collapse;">
+                <tr><td style="width: 38%; padding: 1.5px 0; font-weight: bold;">Nama</td><td style="width: 4%;">:</td><td style="font-weight: bold;">${escapeHtml(fasilitator)}</td></tr>
+                <tr><td style="padding: 1.5px 0; font-weight: bold;">Tempat, Tgl Lahir</td><td>:</td><td>${escapeHtml(masterSettings.fasilitatorTTL || '-')}</td></tr>
+                <tr><td style="padding: 1.5px 0; font-weight: bold;">Agama</td><td>:</td><td>${escapeHtml(agama)}</td></tr>
+                <tr><td style="padding: 1.5px 0; font-weight: bold;">Alamat</td><td>:</td><td>${escapeHtml(masterSettings.fasilitatorAlamat || '-')}</td></tr>
+                <tr><td style="padding: 1.5px 0; font-weight: bold;">Nomor HP / WA</td><td>:</td><td>${escapeHtml(masterSettings.fasilitatorHP || '-')}</td></tr>
+              </table>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 8px;">
+            <h3 style="font-size: 10.5pt; font-weight: bold; margin: 0 0 3px 0; text-transform: uppercase;">
+              C. Data Peserta Ekstrakurikuler PEKA
+            </h3>
+            <p style="font-size: 9.5pt; font-weight: bold; margin: 0 0 3px 0;">1. Data Murid Keseluruhan dan Murid yang Mengikuti PEKA</p>
+            <table class="report-table">
+              <thead>
+                <tr>
+                  <th rowspan="2" style="width: 85px; font-size: 9pt; padding: 2px 4px;">Kelas</th>
+                  <th colspan="3" style="font-size: 9pt; padding: 2px 4px;">Jumlah Murid Keseluruhan</th>
+                  <th colspan="3" style="font-size: 9pt; padding: 2px 4px;">Jumlah Murid Mengikuti Ekskul PEKA</th>
+                </tr>
+                <tr>
+                  <th style="font-size: 8.5pt; padding: 2px 4px;">L</th>
+                  <th style="font-size: 8.5pt; padding: 2px 4px;">P</th>
+                  <th style="font-size: 8.5pt; padding: 2px 4px;">Jumlah</th>
+                  <th style="font-size: 8.5pt; padding: 2px 4px;">L</th>
+                  <th style="font-size: 8.5pt; padding: 2px 4px;">P</th>
+                  <th style="font-size: 8.5pt; padding: 2px 4px;">Jumlah</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${cTableRows}
+              </tbody>
+            </table>
+
+            ${islamGroupTableHtml}
+          </div>
+
+          <div style="margin-bottom: 6px;">
+            <h3 style="font-size: 10.5pt; font-weight: bold; margin: 0 0 3px 0; text-transform: uppercase;">
+              D. Presensi (Rekap Kehadiran Fasilitator &amp; Peserta)
+            </h3>
+            <p style="font-size: 9.5pt; font-weight: bold; margin: 0 0 3px 0;">1. Rekap Presensi Kehadiran Fasilitator</p>
+            <table class="report-table" style="margin-bottom: 6px;">
+              <thead>
+                <tr>
+                  <th style="font-size: 9pt; padding: 2px 4px;">Nama Fasilitator</th>
+                  <th style="width: 100px; font-size: 9pt; padding: 2px 4px;">Hari Efektif</th>
+                  <th style="width: 65px; font-size: 9pt; padding: 2px 4px;">Hadir (H)</th>
+                  <th style="width: 55px; font-size: 9pt; padding: 2px 4px;">Sakit (S)</th>
+                  <th style="width: 55px; font-size: 9pt; padding: 2px 4px;">Izin (I)</th>
+                  <th style="width: 55px; font-size: 9pt; padding: 2px 4px;">Alpa (A)</th>
+                  <th style="width: 75px; font-size: 9pt; padding: 2px 4px;">Persentase</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="font-size: 9.5pt; padding: 3px 6px; font-weight: bold;">${escapeHtml(fasilitator)}</td>
+                  <td style="text-align: center; font-size: 9.5pt; padding: 3px 4px;">${scheduledDaysList.length} Hari</td>
+                  <td style="text-align: center; font-size: 9.5pt; padding: 3px 4px; font-weight: bold;">${sumFas.H}</td>
+                  <td style="text-align: center; font-size: 9.5pt; padding: 3px 4px;">${sumFas.S}</td>
+                  <td style="text-align: center; font-size: 9.5pt; padding: 3px 4px;">${sumFas.I}</td>
+                  <td style="text-align: center; font-size: 9.5pt; padding: 3px 4px;">${sumFas.A}</td>
+                  <td style="text-align: center; font-size: 9.5pt; padding: 3px 4px; font-weight: bold;">${pctFasilitator}%</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p style="font-size: 9.5pt; font-weight: bold; margin: 0 0 3px 0;">2. Rekap Kehadiran Peserta Berdasarkan Kelompok</p>
+            <table class="report-table">
+              <thead>
+                <tr>
+                  <th rowspan="2" style="width: 32px; font-size: 9pt; padding: 2px 4px;">No</th>
+                  <th rowspan="2" style="font-size: 9pt; padding: 2px 4px;">Kelompok Peserta</th>
+                  <th rowspan="2" style="width: 75px; font-size: 9pt; padding: 2px 4px;">Jumlah Peserta</th>
+                  <th rowspan="2" style="width: 75px; font-size: 9pt; padding: 2px 4px;">Jumlah Pertemuan</th>
+                  <th colspan="4" style="font-size: 9pt; padding: 2px 4px;">Presensi Peserta</th>
+                </tr>
+                <tr>
+                  <th style="width: 50px; font-size: 8.5pt; padding: 2px 4px;">S</th>
+                  <th style="width: 50px; font-size: 8.5pt; padding: 2px 4px;">I</th>
+                  <th style="width: 50px; font-size: 8.5pt; padding: 2px 4px;">A</th>
+                  <th style="width: 85px; font-size: 8.5pt; padding: 2px 4px;">Persentase</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${groupPresensiRowsHtml}
+              </tbody>
+            </table>
+          </div>
+
+          ${getAppWatermarkFooter("Laporan Bulanan PEKA (Bagian A - D)")}
+        </div>
+      `;
+
+      // --- SHEET 2B & SETERUSNYA: BAGIAN E. REKAP PELAKSANAAN KEGIATAN & TANDA TANGAN ---
+      const jurnalList = report.jurnal || [];
+      const totalHariKegiatan = sumFas.H || jurnalList.length || 0;
+      const countPerKelas = {};
+      KELAS_LIST.forEach(k => { countPerKelas[k] = 0; });
+      let countIqra = 0;
+      let countQuran = 0;
+
+      jurnalList.forEach(item => {
+        const kStr = (item.kelas || "").toUpperCase();
+        KELAS_LIST.forEach(k => {
+          if (kStr.includes(`KELAS ${k}`) || kStr === k || kStr.includes(`I - VI`) || kStr.includes(`1 - 6`)) {
+            countPerKelas[k]++;
+          }
+        });
+        if (kStr.includes("IQRA") || kStr.includes("I - VI") || kStr.includes("1 - 6")) countIqra++;
+        if (kStr.includes("QURAN") || kStr.includes("QUR'AN") || kStr.includes("I - VI") || kStr.includes("1 - 6")) countQuran++;
+      });
+
+      KELAS_LIST.forEach(k => {
+        if (countPerKelas[k] === 0 && jurnalList.length > 0) countPerKelas[k] = jurnalList.length;
+      });
+      if (countIqra === 0 && jurnalList.length > 0) countIqra = jurnalList.length;
+      if (countQuran === 0 && jurnalList.length > 0) countQuran = jurnalList.length;
+
+      const summaryTableHtml = `
+        <div style="margin-bottom: 8px;">
+          <p style="font-size: 9.5pt; font-weight: bold; margin: 0 0 3px 0;">1. Ringkasan Jadwal &amp; Frekuensi Pertemuan</p>
+          <table class="report-table" style="margin-bottom: 6px;">
+            <thead>
+              <tr>
+                <th style="font-size: 8.5pt; padding: 2px 4px; width: 140px;">Hari Efektif Kegiatan</th>
+                <th style="font-size: 8.5pt; padding: 2px 4px; width: 110px;">Total Pelaksanaan</th>
+                <th style="font-size: 8.5pt; padding: 2px 4px;">Pertemuan per Kelas (I s.d. VI)</th>
+                ${isIslam ? `
+                  <th style="font-size: 8.5pt; padding: 2px 4px; width: 125px;">Kelompok Iqra</th>
+                  <th style="font-size: 8.5pt; padding: 2px 4px; width: 125px;">Kelompok Al-Qur'an</th>
+                ` : `
+                  <th style="font-size: 8.5pt; padding: 2px 4px; width: 160px;">Kelompok Peserta PEKA</th>
+                `}
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align: center; font-size: 9pt; padding: 3px 4px; font-weight: bold;">${escapeHtml(hariEfektifStr)}</td>
+                <td style="text-align: center; font-size: 9pt; padding: 3px 4px; font-weight: bold;">${totalHariKegiatan} Hari Pertemuan</td>
+                <td style="text-align: center; font-size: 8.5pt; padding: 3px 4px;">
+                  Kelas I: ${countPerKelas['I']}x | Kelas II: ${countPerKelas['II']}x | Kelas III: ${countPerKelas['III']}x<br/>
+                  Kelas IV: ${countPerKelas['IV']}x | Kelas V: ${countPerKelas['V']}x | Kelas VI: ${countPerKelas['VI']}x
+                </td>
+                ${isIslam ? `
+                  <td style="text-align: center; font-size: 9pt; padding: 3px 4px;"><strong>${countIqra} Kali</strong> (${iqraTotal} Siswa)</td>
+                  <td style="text-align: center; font-size: 9pt; padding: 3px 4px;"><strong>${countQuran} Kali</strong> (${quranTotal} Siswa)</td>
+                ` : `
+                  <td style="text-align: center; font-size: 9pt; padding: 3px 4px;"><strong>${totalHariKegiatan} Kali</strong> (${stuSum.pekaAll} Siswa)</td>
+                `}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      `;
+
+      // Pagination cerdas untuk Rekap Pelaksanaan Kegiatan (Bagian E)
+      const allJurnal = jurnalList;
+      const MAX_ROWS_PAGE1 = 14;
+      const MAX_ROWS_PER_CONT_PAGE = 22;
+
+      const ePages = [];
+      if (allJurnal.length <= MAX_ROWS_PAGE1) {
+        ePages.push({
+          isFirst: true,
+          hasSummary: true,
+          rows: allJurnal,
+          startIdx: 0,
+          hasSignature: true
+        });
+      } else {
+        // Halaman pertama Bagian E memuat ringkasan dan 15 baris pertama
+        ePages.push({
+          isFirst: true,
+          hasSummary: true,
+          rows: allJurnal.slice(0, 15),
+          startIdx: 0,
+          hasSignature: false
+        });
+
+        let remaining = allJurnal.slice(15);
+        let currentOffset = 15;
+        while (remaining.length > 0) {
+          if (remaining.length <= MAX_ROWS_PAGE1 + 2) {
+            ePages.push({
+              isFirst: false,
+              hasSummary: false,
+              rows: remaining,
+              startIdx: currentOffset,
+              hasSignature: true
+            });
+            remaining = [];
+          } else {
+            const nextSlice = remaining.slice(0, MAX_ROWS_PER_CONT_PAGE);
+            ePages.push({
+              isFirst: false,
+              hasSummary: false,
+              rows: nextSlice,
+              startIdx: currentOffset,
+              hasSignature: false
+            });
+            remaining = remaining.slice(MAX_ROWS_PER_CONT_PAGE);
+            currentOffset += nextSlice.length;
+          }
+        }
+      }
+
+      const sectionEPagesHtml = ePages.map((pObj, pIdx) => {
+        const totalEPages = ePages.length;
+        const pageFooterLabel = totalEPages > 1
+          ? (pObj.hasSignature ? `Laporan Bulanan PEKA (Hal. ${pIdx + 2}/${totalEPages + 1}: Bagian E & Pengesahan)` : `Laporan Bulanan PEKA (Hal. ${pIdx + 2}/${totalEPages + 1}: Bagian E)`)
+          : `Laporan Bulanan PEKA (Hal. 2/2: Bagian E & Pengesahan)`;
+
+        const rowsHtml = pObj.rows.length > 0
+          ? pObj.rows.map((item, idx) => `
+              <tr>
+                <td style="text-align: center; font-size: 8.5pt; padding: 2.5px 4px;">${pObj.startIdx + idx + 1}</td>
+                <td style="font-size: 8.5pt; padding: 2.5px 5px;">${escapeHtml(formatFullHariTanggal(item.dayNumber))}</td>
+                <td style="text-align: center; font-size: 8.5pt; padding: 2.5px 4px;">${escapeHtml(item.kelas)}</td>
+                <td style="font-size: 8.5pt; padding: 2.5px 5px;">${escapeHtml(item.materi)}</td>
+                <td style="text-align: center; font-size: 8.5pt; padding: 2.5px 4px; font-weight: bold;">${escapeHtml(item.catatan || 'Terlaksana')}</td>
+              </tr>
+            `).join("")
+          : `
+              <tr>
+                <td colspan="5" style="text-align: center; font-style: italic; font-size: 9pt; padding: 12px;">
+                  Belum ada data jurnal pelaksanaan kegiatan yang diisi untuk bulan ${bulanNama} ${tahun}.
+                </td>
+              </tr>
+            `;
+
+        return `
           <div class="${sheetClass}">
             <div style="text-align: center; margin-bottom: 8px; border-bottom: 2px solid #000; padding-bottom: 4px;">
               <h2 style="font-size: 12.5pt; font-weight: bold; text-transform: uppercase; margin: 0;">
-                LAPORAN BULANAN KEGIATAN EKSTRAKURIKULER PENDIDIKAN KARAKTER (PEKA)
+                LANJUTAN LAPORAN BULANAN — REKAP PELAKSANAAN KEGIATAN PEKA
               </h2>
               <p style="font-size: 10pt; font-weight: bold; margin: 2px 0 0 0;">
-                BULAN: ${bulanNama.toUpperCase()} ${tahun} &nbsp;|&nbsp; AGAMA: ${escapeHtml(agama.toUpperCase())}
+                ${escapeHtml(sekolah)} &nbsp;|&nbsp; BULAN: ${bulanNama.toUpperCase()} ${tahun} &nbsp;|&nbsp; AGAMA: ${escapeHtml(agama.toUpperCase())}
               </p>
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 6px;">
-              <div style="border: 1px solid #000; padding: 5px 7px;">
-                <h3 style="font-size: 9.5pt; font-weight: bold; margin: 0 0 3px 0; text-transform: uppercase; background: #f1f5f9; padding: 1.5px 4px;">
-                  A. Profil Satuan Pendidikan
-                </h3>
-                <table style="width: 100%; font-size: 9pt; border-collapse: collapse;">
-                  <tr><td style="width: 38%; padding: 1px 0; font-weight: bold;">Nama Sekolah</td><td style="width: 4%;">:</td><td>${escapeHtml(sekolah)}</td></tr>
-                  <tr><td style="padding: 1px 0; font-weight: bold;">NPSN</td><td>:</td><td>${escapeHtml(masterSettings.npsn || '-')}</td></tr>
-                  <tr><td style="padding: 1px 0; font-weight: bold;">Alamat</td><td>:</td><td>${escapeHtml(masterSettings.alamatSekolah || kecamatan)}</td></tr>
-                  <tr><td style="padding: 1px 0; font-weight: bold;">Jumlah Rombel</td><td>:</td><td>${escapeHtml(masterSettings.rombel || '-')} Rombel</td></tr>
-                  <tr><td style="padding: 1px 0; font-weight: bold;">Akreditasi</td><td>:</td><td>${escapeHtml(masterSettings.akreditasi || '-')}</td></tr>
-                </table>
-              </div>
-
-              <div style="border: 1px solid #000; padding: 5px 7px;">
-                <h3 style="font-size: 9.5pt; font-weight: bold; margin: 0 0 3px 0; text-transform: uppercase; background: #f1f5f9; padding: 1.5px 4px;">
-                  B. Identitas Fasilitator
-                </h3>
-                <table style="width: 100%; font-size: 9pt; border-collapse: collapse;">
-                  <tr><td style="width: 38%; padding: 1px 0; font-weight: bold;">Nama</td><td style="width: 4%;">:</td><td style="font-weight: bold;">${escapeHtml(fasilitator)}</td></tr>
-                  <tr><td style="padding: 1px 0; font-weight: bold;">Tempat, Tgl Lahir</td><td>:</td><td>${escapeHtml(masterSettings.fasilitatorTTL || '-')}</td></tr>
-                  <tr><td style="padding: 1px 0; font-weight: bold;">Agama</td><td>:</td><td>${escapeHtml(agama)}</td></tr>
-                  <tr><td style="padding: 1px 0; font-weight: bold;">Alamat</td><td>:</td><td>${escapeHtml(masterSettings.fasilitatorAlamat || '-')}</td></tr>
-                  <tr><td style="padding: 1px 0; font-weight: bold;">Nomor HP / WA</td><td>:</td><td>${escapeHtml(masterSettings.fasilitatorHP || '-')}</td></tr>
-                </table>
-              </div>
-            </div>
-
-            <div style="margin-bottom: 5px;">
-              <h3 style="font-size: 9.5pt; font-weight: bold; margin: 0 0 2px 0; text-transform: uppercase;">
-                C. Data Peserta Ekstrakurikuler PEKA
-              </h3>
-              <p style="font-size: 8.5pt; font-weight: bold; margin: 0 0 2px 0;">1. Data Murid Keseluruhan dan Murid yang Mengikuti PEKA</p>
-              <table class="report-table" style="margin-bottom: 4px;">
-                <thead>
-                  <tr>
-                    <th rowspan="2" style="width: 80px; font-size: 8pt; padding: 1.5px 3px;">Kelas</th>
-                    <th colspan="3" style="font-size: 8pt; padding: 1.5px 3px;">Jumlah Murid Keseluruhan</th>
-                    <th colspan="3" style="font-size: 8pt; padding: 1.5px 3px;">Jumlah Murid Mengikuti Ekskul PEKA</th>
-                  </tr>
-                  <tr>
-                    <th style="font-size: 7.5pt; padding: 1.5px 3px;">L</th>
-                    <th style="font-size: 7.5pt; padding: 1.5px 3px;">P</th>
-                    <th style="font-size: 7.5pt; padding: 1.5px 3px;">Jml</th>
-                    <th style="font-size: 7.5pt; padding: 1.5px 3px;">L</th>
-                    <th style="font-size: 7.5pt; padding: 1.5px 3px;">P</th>
-                    <th style="font-size: 7.5pt; padding: 1.5px 3px;">Jml</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  ${cTableRows}
-                </tbody>
-              </table>
-
-              ${islamGroupTableHtml}
-            </div>
-
-            <div style="margin-bottom: 5px;">
-              <h3 style="font-size: 9.5pt; font-weight: bold; margin: 0 0 2px 0; text-transform: uppercase;">
-                D. Presensi (Rekap Kehadiran Fasilitator &amp; Peserta)
-              </h3>
-              <p style="font-size: 8.5pt; font-weight: bold; margin: 0 0 2px 0;">1. Rekap Presensi Kehadiran Fasilitator</p>
-              <table class="report-table" style="margin-bottom: 4px;">
-                <thead>
-                  <tr>
-                    <th style="font-size: 8pt; padding: 1.5px 3px;">Nama Fasilitator</th>
-                    <th style="width: 95px; font-size: 8pt; padding: 1.5px 3px;">Hari Efektif</th>
-                    <th style="width: 55px; font-size: 8pt; padding: 1.5px 3px;">Hadir (H)</th>
-                    <th style="width: 48px; font-size: 8pt; padding: 1.5px 3px;">Sakit (S)</th>
-                    <th style="width: 48px; font-size: 8pt; padding: 1.5px 3px;">Izin (I)</th>
-                    <th style="width: 48px; font-size: 8pt; padding: 1.5px 3px;">Alpa (A)</th>
-                    <th style="width: 70px; font-size: 8pt; padding: 1.5px 3px;">Persentase</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td style="font-size: 8.5pt; padding: 2px 5px; font-weight: bold;">${escapeHtml(fasilitator)}</td>
-                    <td style="text-align: center; font-size: 8.5pt; padding: 2px 3px;">${scheduledDaysList.length} Hari</td>
-                    <td style="text-align: center; font-size: 8.5pt; padding: 2px 3px; font-weight: bold;">${sumFas.H}</td>
-                    <td style="text-align: center; font-size: 8.5pt; padding: 2px 3px;">${sumFas.S}</td>
-                    <td style="text-align: center; font-size: 8.5pt; padding: 2px 3px;">${sumFas.I}</td>
-                    <td style="text-align: center; font-size: 8.5pt; padding: 2px 3px;">${sumFas.A}</td>
-                    <td style="text-align: center; font-size: 8.5pt; padding: 2px 3px; font-weight: bold;">${pctFasilitator}%</td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <p style="font-size: 8.5pt; font-weight: bold; margin: 0 0 2px 0;">2. Rekap Kehadiran Peserta Berdasarkan Kelompok</p>
-              <table class="report-table" style="margin-bottom: 4px;">
-                <thead>
-                  <tr>
-                    <th rowspan="2" style="width: 28px; font-size: 8pt; padding: 1.5px 3px;">No</th>
-                    <th rowspan="2" style="font-size: 8pt; padding: 1.5px 3px;">Kelompok Peserta</th>
-                    <th rowspan="2" style="width: 70px; font-size: 8pt; padding: 1.5px 3px;">Jumlah Peserta</th>
-                    <th rowspan="2" style="width: 70px; font-size: 8pt; padding: 1.5px 3px;">Jumlah Pertemuan</th>
-                    <th colspan="4" style="font-size: 8pt; padding: 1.5px 3px;">Presensi Peserta</th>
-                  </tr>
-                  <tr>
-                    <th style="width: 45px; font-size: 7.5pt; padding: 1.5px 3px;">S</th>
-                    <th style="width: 45px; font-size: 7.5pt; padding: 1.5px 3px;">I</th>
-                    <th style="width: 45px; font-size: 7.5pt; padding: 1.5px 3px;">A</th>
-                    <th style="width: 70px; font-size: 7.5pt; padding: 1.5px 3px;">Persentase</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  ${groupPresensiRowsHtml}
-                </tbody>
-              </table>
-            </div>
-
-            <div style="margin-bottom: 4px;">
-              <h3 style="font-size: 9.5pt; font-weight: bold; margin: 0 0 2px 0; text-transform: uppercase;">
-                E. Rekap Pelaksanaan Kegiatan (Berdasarkan Jurnal)
-              </h3>
-              <table class="report-table">
-                <thead>
-                  <tr>
-                    <th style="width: 28px; font-size: 8pt; padding: 1.5px 3px;">No</th>
-                    <th style="width: 120px; font-size: 8pt; padding: 1.5px 3px;">Hari &amp; Tanggal</th>
-                    <th style="width: 70px; font-size: 8pt; padding: 1.5px 3px;">Kelas / Sasaran</th>
-                    <th style="font-size: 8pt; padding: 1.5px 3px;">Materi Pokok Pembelajaran</th>
-                    <th style="width: 105px; font-size: 8pt; padding: 1.5px 3px;">Keterangan</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  ${rekapJurnalRowsHtml}
-                </tbody>
-              </table>
-            </div>
-
-            ${signatureBlock}
-            ${getAppWatermarkFooter("Laporan Bulanan PEKA (Bagian A - E)")}
-          </div>
-        `;
-      } else {
-        laporanBulananSheets = `
-          <div class="${sheetClass}">
-            <div style="text-align: center; margin-bottom: 10px; border-bottom: 2px solid #000; padding-bottom: 6px;">
-              <h2 style="font-size: 13pt; font-weight: bold; text-transform: uppercase; margin: 0;">
-                LAPORAN BULANAN KEGIATAN EKSTRAKURIKULER PENDIDIKAN KARAKTER (PEKA)
-              </h2>
-              <p style="font-size: 10.5pt; font-weight: bold; margin: 2px 0 0 0;">
-                BULAN: ${bulanNama.toUpperCase()} ${tahun} &nbsp;|&nbsp; AGAMA: ${escapeHtml(agama.toUpperCase())}
-              </p>
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 8px;">
-              <div style="border: 1px solid #000; padding: 6px 8px;">
-                <h3 style="font-size: 10pt; font-weight: bold; margin: 0 0 4px 0; text-transform: uppercase; background: #f1f5f9; padding: 2px 4px;">
-                  A. Profil Satuan Pendidikan
-                </h3>
-                <table style="width: 100%; font-size: 9.5pt; border-collapse: collapse;">
-                  <tr><td style="width: 38%; padding: 1.5px 0; font-weight: bold;">Nama Sekolah</td><td style="width: 4%;">:</td><td>${escapeHtml(sekolah)}</td></tr>
-                  <tr><td style="padding: 1.5px 0; font-weight: bold;">NPSN</td><td>:</td><td>${escapeHtml(masterSettings.npsn || '-')}</td></tr>
-                  <tr><td style="padding: 1.5px 0; font-weight: bold;">Alamat</td><td>:</td><td>${escapeHtml(masterSettings.alamatSekolah || kecamatan)}</td></tr>
-                  <tr><td style="padding: 1.5px 0; font-weight: bold;">Jumlah Rombel</td><td>:</td><td>${escapeHtml(masterSettings.rombel || '-')} Rombel</td></tr>
-                  <tr><td style="padding: 1.5px 0; font-weight: bold;">Akreditasi</td><td>:</td><td>${escapeHtml(masterSettings.akreditasi || '-')}</td></tr>
-                </table>
-              </div>
-
-              <div style="border: 1px solid #000; padding: 6px 8px;">
-                <h3 style="font-size: 10pt; font-weight: bold; margin: 0 0 4px 0; text-transform: uppercase; background: #f1f5f9; padding: 2px 4px;">
-                  B. Identitas Fasilitator
-                </h3>
-                <table style="width: 100%; font-size: 9.5pt; border-collapse: collapse;">
-                  <tr><td style="width: 38%; padding: 1.5px 0; font-weight: bold;">Nama</td><td style="width: 4%;">:</td><td style="font-weight: bold;">${escapeHtml(fasilitator)}</td></tr>
-                  <tr><td style="padding: 1.5px 0; font-weight: bold;">Tempat, Tgl Lahir</td><td>:</td><td>${escapeHtml(masterSettings.fasilitatorTTL || '-')}</td></tr>
-                  <tr><td style="padding: 1.5px 0; font-weight: bold;">Agama</td><td>:</td><td>${escapeHtml(agama)}</td></tr>
-                  <tr><td style="padding: 1.5px 0; font-weight: bold;">Alamat</td><td>:</td><td>${escapeHtml(masterSettings.fasilitatorAlamat || '-')}</td></tr>
-                  <tr><td style="padding: 1.5px 0; font-weight: bold;">Nomor HP / WA</td><td>:</td><td>${escapeHtml(masterSettings.fasilitatorHP || '-')}</td></tr>
-                </table>
-              </div>
-            </div>
-
-            <div style="margin-bottom: 8px;">
-              <h3 style="font-size: 10.5pt; font-weight: bold; margin: 0 0 3px 0; text-transform: uppercase;">
-                C. Data Peserta Ekstrakurikuler PEKA
-              </h3>
-              <p style="font-size: 9.5pt; font-weight: bold; margin: 0 0 3px 0;">1. Data Murid Keseluruhan dan Murid yang Mengikuti PEKA</p>
-              <table class="report-table">
-                <thead>
-                  <tr>
-                    <th rowspan="2" style="width: 85px; font-size: 9pt; padding: 2px 4px;">Kelas</th>
-                    <th colspan="3" style="font-size: 9pt; padding: 2px 4px;">Jumlah Murid Keseluruhan</th>
-                    <th colspan="3" style="font-size: 9pt; padding: 2px 4px;">Jumlah Murid Mengikuti Ekskul PEKA</th>
-                  </tr>
-                  <tr>
-                    <th style="font-size: 8.5pt; padding: 2px 4px;">L</th>
-                    <th style="font-size: 8.5pt; padding: 2px 4px;">P</th>
-                    <th style="font-size: 8.5pt; padding: 2px 4px;">Jml</th>
-                    <th style="font-size: 8.5pt; padding: 2px 4px;">L</th>
-                    <th style="font-size: 8.5pt; padding: 2px 4px;">P</th>
-                    <th style="font-size: 8.5pt; padding: 2px 4px;">Jml</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  ${cTableRows}
-                </tbody>
-              </table>
-
-              ${islamGroupTableHtml}
             </div>
 
             <div style="margin-bottom: 6px;">
-              <h3 style="font-size: 10.5pt; font-weight: bold; margin: 0 0 3px 0; text-transform: uppercase;">
-                D. Presensi (Rekap Kehadiran Fasilitator &amp; Peserta)
-              </h3>
-              <p style="font-size: 9.5pt; font-weight: bold; margin: 0 0 3px 0;">1. Rekap Presensi Kehadiran Fasilitator</p>
-              <table class="report-table" style="margin-bottom: 6px;">
-                <thead>
-                  <tr>
-                    <th style="font-size: 9pt; padding: 2px 4px;">Nama Fasilitator</th>
-                    <th style="width: 100px; font-size: 9pt; padding: 2px 4px;">Hari Efektif</th>
-                    <th style="width: 65px; font-size: 9pt; padding: 2px 4px;">Hadir (H)</th>
-                    <th style="width: 55px; font-size: 9pt; padding: 2px 4px;">Sakit (S)</th>
-                    <th style="width: 55px; font-size: 9pt; padding: 2px 4px;">Izin (I)</th>
-                    <th style="width: 55px; font-size: 9pt; padding: 2px 4px;">Alpa (A)</th>
-                    <th style="width: 75px; font-size: 9pt; padding: 2px 4px;">Persentase</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td style="font-size: 9.5pt; padding: 3px 6px; font-weight: bold;">${escapeHtml(fasilitator)}</td>
-                    <td style="text-align: center; font-size: 9.5pt; padding: 3px 4px;">${scheduledDaysList.length} Hari</td>
-                    <td style="text-align: center; font-size: 9.5pt; padding: 3px 4px; font-weight: bold;">${sumFas.H}</td>
-                    <td style="text-align: center; font-size: 9.5pt; padding: 3px 4px;">${sumFas.S}</td>
-                    <td style="text-align: center; font-size: 9.5pt; padding: 3px 4px;">${sumFas.I}</td>
-                    <td style="text-align: center; font-size: 9.5pt; padding: 3px 4px;">${sumFas.A}</td>
-                    <td style="text-align: center; font-size: 9.5pt; padding: 3px 4px; font-weight: bold;">${pctFasilitator}%</td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <p style="font-size: 9.5pt; font-weight: bold; margin: 0 0 3px 0;">2. Rekap Kehadiran Peserta Berdasarkan Kelompok</p>
-              <table class="report-table">
-                <thead>
-                  <tr>
-                    <th rowspan="2" style="width: 32px; font-size: 9pt; padding: 2px 4px;">No</th>
-                    <th rowspan="2" style="font-size: 9pt; padding: 2px 4px;">Kelompok Peserta</th>
-                    <th rowspan="2" style="width: 75px; font-size: 9pt; padding: 2px 4px;">Jumlah Peserta</th>
-                    <th rowspan="2" style="width: 75px; font-size: 9pt; padding: 2px 4px;">Jumlah Pertemuan</th>
-                    <th colspan="4" style="font-size: 9pt; padding: 2px 4px;">Presensi Peserta</th>
-                  </tr>
-                  <tr>
-                    <th style="width: 50px; font-size: 8.5pt; padding: 2px 4px;">S</th>
-                    <th style="width: 50px; font-size: 8.5pt; padding: 2px 4px;">I</th>
-                    <th style="width: 50px; font-size: 8.5pt; padding: 2px 4px;">A</th>
-                    <th style="width: 85px; font-size: 8.5pt; padding: 2px 4px;">Persentase</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  ${groupPresensiRowsHtml}
-                </tbody>
-              </table>
-            </div>
-
-            ${getAppWatermarkFooter("Laporan Bulanan PEKA (Hal. 1/2: Bagian A - D)")}
-          </div>
-
-          <div class="${sheetClass}">
-            <div style="text-align: center; margin-bottom: 12px; border-bottom: 2px solid #000; padding-bottom: 6px;">
-              <h2 style="font-size: 13pt; font-weight: bold; text-transform: uppercase; margin: 0;">
-                LANJUTAN LAPORAN BULANAN — REKAP PELAKSANAAN KEGIATAN PEKA
-              </h2>
-              <p style="font-size: 10.5pt; font-weight: bold; margin: 2px 0 0 0;">
-                ${escapeHtml(sekolah)} &nbsp;|&nbsp; BULAN: ${bulanNama.toUpperCase()} ${tahun}
-              </p>
-            </div>
-
-            <div style="margin-bottom: 10px;">
               <h3 style="font-size: 10.5pt; font-weight: bold; margin: 0 0 4px 0; text-transform: uppercase;">
                 E. Rekap Pelaksanaan Kegiatan (Berdasarkan Jurnal)
               </h3>
+
+              ${pObj.hasSummary ? summaryTableHtml : `
+                <div style="font-size: 9pt; font-style: italic; color: #475569; margin-bottom: 4px;">
+                  Lanjutan Rincian Rekapitulasi Pelaksanaan Kegiatan Pembelajaran — ${escapeHtml(sekolah)}
+                </div>
+              `}
+
+              <p style="font-size: 9.5pt; font-weight: bold; margin: 0 0 3px 0;">${pObj.hasSummary ? '2. Rincian Rekapitulasi Pelaksanaan Kegiatan Pembelajaran' : ''}</p>
               <table class="report-table">
                 <thead>
                   <tr>
-                    <th style="width: 32px; font-size: 9pt; padding: 3px 4px;">No</th>
-                    <th style="width: 135px; font-size: 9pt; padding: 3px 4px;">Hari &amp; Tanggal</th>
-                    <th style="width: 85px; font-size: 9pt; padding: 3px 4px;">Kelas / Sasaran</th>
-                    <th style="font-size: 9pt; padding: 3px 4px;">Materi Pokok Pembelajaran</th>
-                    <th style="width: 120px; font-size: 9pt; padding: 3px 4px;">Keterangan</th>
+                    <th style="width: 32px; font-size: 8.5pt; padding: 2.5px 4px;">No</th>
+                    <th style="width: 135px; font-size: 8.5pt; padding: 2.5px 4px;">Hari &amp; Tanggal</th>
+                    <th style="width: 85px; font-size: 8.5pt; padding: 2.5px 4px;">Kelas / Sasaran</th>
+                    <th style="font-size: 8.5pt; padding: 2.5px 4px;">Materi Pokok Pembelajaran</th>
+                    <th style="width: 120px; font-size: 8.5pt; padding: 2.5px 4px;">Keterangan / Hasil</th>
                   </tr>
                 </thead>
                 <tbody>
-                  ${rekapJurnalRowsHtml}
+                  ${rowsHtml}
                 </tbody>
               </table>
             </div>
 
-            ${signatureBlock}
-            ${getAppWatermarkFooter("Laporan Bulanan PEKA (Hal. 2/2: Bagian E & Pengesahan)")}
+            ${pObj.hasSignature ? signatureBlock : ''}
+            ${getAppWatermarkFooter(pageFooterLabel)}
           </div>
         `;
-      }
+      }).join("");
 
       // --- SHEET 2B (MULTI-PAGE): RINCIAN JURNAL KEGIATAN PEMBELAJARAN HARIAN ---
       const jurnalPages = [];
@@ -3370,7 +3351,7 @@
         </div>
       `;
 
-      return coverSheet + laporanBulananSheets + jurnalSheet + presensiSheet + dokumentasiSheet;
+      return coverSheet + laporanBulananPage1 + sectionEPagesHtml + jurnalSheet + presensiSheet + dokumentasiSheet;
     }
 
     function renderF4ReportPreview() {
