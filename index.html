@@ -3313,188 +3313,64 @@
         </tr>
       `;
 
-      // Generate activity rows for Table E.3
-      const rekapActivityRows = jurnalList.map((item, idx) => `
-        <tr>
-          <td style="text-align: center; font-size: 12px; padding: 4px 6px; width: 35px;">${idx + 1}</td>
-          <td style="font-size: 12px; padding: 4px 6px; width: 135px;">${escapeHtml(formatFullHariTanggal(item.dayNumber))}</td>
-          <td style="text-align: center; font-size: 12px; padding: 4px 6px; width: 80px; font-weight: bold;">${escapeHtml(item.kelas)}</td>
-          <td style="font-size: 12px; padding: 4px 6px;">${escapeHtml(item.materi)}</td>
-          <td style="font-size: 12px; padding: 4px 6px; width: 140px;">${escapeHtml(item.catatan || 'Terlaksana dengan baik')}</td>
-        </tr>
-      `);
+      const laporanBulananHal2Sheets = `
+        <div class="${sheetClass}">
+          <div style="text-align: center; margin-bottom: 10px; border-bottom: 2px solid #000; padding-bottom: 6px;">
+            <h2 style="font-size: 13pt; font-weight: bold; text-transform: uppercase; margin: 0;">
+              LAPORAN BULANAN KEGIATAN EKSTRAKURIKULER PENDIDIKAN KARAKTER (PEKA)
+            </h2>
+            <p style="font-size: 10.5pt; font-weight: bold; margin: 3px 0 0 0;">
+              BULAN: ${bulanNama.toUpperCase()} ${tahun} &nbsp;|&nbsp; AGAMA: ${escapeHtml(agama.toUpperCase())}
+            </p>
+          </div>
 
-      const emptyActivityRow = `
-        <tr>
-          <td colspan="5" style="text-align: center; padding: 18px; font-style: italic; font-size: 12px;">
-            Belum ada data pelaksanaan/jurnal kegiatan yang diisi untuk bulan ${bulanNama} ${tahun}.
-          </td>
-        </tr>
+          <div style="margin-bottom: 12px;">
+            <h3 style="font-size: 13px; font-weight: bold; margin: 0 0 6px 0; text-transform: uppercase;">
+              E. Rekapitulasi Pelaksanaan Kegiatan (Berdasarkan Jurnal Bulanan)
+            </h3>
+
+            <p style="font-size: 12px; font-weight: bold; margin: 0 0 4px 0;">1. Ringkasan Hari Efektif &amp; Frekuensi Pelaksanaan Kegiatan Per Kelas</p>
+            <table class="report-table" style="margin-bottom: 10px;">
+              <thead>
+                <tr>
+                  <th rowspan="2" style="width: 140px; font-size: 12px; padding: 4px 6px;">Hari Efektif Mengajar</th>
+                  <th rowspan="2" style="width: 110px; font-size: 12px; padding: 4px 6px;">Total Pertemuan</th>
+                  <th colspan="6" style="font-size: 12px; padding: 4px 6px;">Frekuensi Pelaksanaan Kegiatan Per Kelas</th>
+                </tr>
+                <tr>
+                  ${rekapKelasCellsHead}
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="text-align: center; font-size: 12px; padding: 4px 6px; font-weight: bold;">${escapeHtml(hariEfektifStr)}</td>
+                  <td style="text-align: center; font-size: 12px; padding: 4px 6px; font-weight: bold;">${jurnalList.length} Pertemuan</td>
+                  ${rekapKelasCellsBody}
+                </tr>
+              </tbody>
+            </table>
+
+            <p style="font-size: 12px; font-weight: bold; margin: 0 0 4px 0;">2. Rekapitulasi Capaian Kelompok Belajar</p>
+            <table class="report-table">
+              <thead>
+                <tr>
+                  <th style="width: 35px; font-size: 12px; padding: 4px 6px;">No</th>
+                  <th style="width: 175px; font-size: 12px; padding: 4px 6px;">Kelompok / Sasaran</th>
+                  <th style="width: 90px; font-size: 12px; padding: 4px 6px;">Terlaksana</th>
+                  <th style="font-size: 12px; padding: 4px 6px;">Rangkuman Materi Pokok yang Diajarkan</th>
+                  <th style="width: 160px; font-size: 12px; padding: 4px 6px;">Hasil / Capaian</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rekapKelompokRowsHtml}
+              </tbody>
+            </table>
+          </div>
+
+          ${signatureBlock}
+          ${getAppWatermarkFooter("Laporan Bulanan PEKA (Hal. 2: Bagian E & Pengesahan)")}
+        </div>
       `;
-
-      // Pagination calculation for Bagian E
-      const bagianEPages = [];
-      const FIRST_PAGE_LIMIT = 8;
-      const FIRST_PAGE_NO_SIG_LIMIT = 12;
-      const NEXT_PAGE_LIMIT = 15;
-
-      if (rekapActivityRows.length <= FIRST_PAGE_LIMIT) {
-        bagianEPages.push({
-          pageIndex: 0,
-          rows: rekapActivityRows.length > 0 ? rekapActivityRows : [emptyActivityRow],
-          isFirst: true,
-          showSignature: true
-        });
-      } else {
-        const firstBatch = rekapActivityRows.slice(0, FIRST_PAGE_NO_SIG_LIMIT);
-        bagianEPages.push({
-          pageIndex: 0,
-          rows: firstBatch,
-          isFirst: true,
-          showSignature: false
-        });
-
-        let remaining = rekapActivityRows.slice(FIRST_PAGE_NO_SIG_LIMIT);
-        let nextPIdx = 1;
-
-        while (remaining.length > 0) {
-          if (remaining.length <= NEXT_PAGE_LIMIT) {
-            bagianEPages.push({
-              pageIndex: nextPIdx,
-              rows: remaining,
-              isFirst: false,
-              showSignature: true
-            });
-            break;
-          } else {
-            const batch = remaining.slice(0, NEXT_PAGE_LIMIT);
-            remaining = remaining.slice(NEXT_PAGE_LIMIT);
-            const isLast = remaining.length === 0;
-            bagianEPages.push({
-              pageIndex: nextPIdx,
-              rows: batch,
-              isFirst: false,
-              showSignature: isLast
-            });
-            nextPIdx++;
-          }
-        }
-      }
-
-      const totalBagianEPages = bagianEPages.length;
-      const laporanBulananHal2Sheets = bagianEPages.map((page, pIdx) => {
-        const pageNum = 2 + pIdx;
-        const totalLaporanPages = 1 + totalBagianEPages;
-
-        const footerLabel = totalBagianEPages === 1
-          ? "Laporan Bulanan PEKA (Hal. 2: Bagian E & Pengesahan)"
-          : (page.showSignature
-              ? `Laporan Bulanan PEKA (Hal. ${pageNum}/${totalLaporanPages}: Lanjutan Bagian E & Pengesahan)`
-              : `Laporan Bulanan PEKA (Hal. ${pageNum}/${totalLaporanPages}: Bagian E)`);
-
-        if (page.isFirst) {
-          return `
-            <div class="${sheetClass}">
-              <div style="text-align: center; margin-bottom: 10px; border-bottom: 2px solid #000; padding-bottom: 6px;">
-                <h2 style="font-size: 13pt; font-weight: bold; text-transform: uppercase; margin: 0;">
-                  LAPORAN BULANAN KEGIATAN EKSTRAKURIKULER PENDIDIKAN KARAKTER (PEKA)
-                </h2>
-                <p style="font-size: 10.5pt; font-weight: bold; margin: 3px 0 0 0;">
-                  BULAN: ${bulanNama.toUpperCase()} ${tahun} &nbsp;|&nbsp; AGAMA: ${escapeHtml(agama.toUpperCase())}
-                </p>
-              </div>
-
-              <div style="margin-bottom: 8px;">
-                <h3 style="font-size: 13px; font-weight: bold; margin: 0 0 6px 0; text-transform: uppercase;">
-                  E. Rekapitulasi Pelaksanaan Kegiatan (Berdasarkan Jurnal Bulanan)
-                </h3>
-
-                <p style="font-size: 12px; font-weight: bold; margin: 0 0 4px 0;">1. Ringkasan Hari Efektif &amp; Frekuensi Pelaksanaan Kegiatan Per Kelas</p>
-                <table class="report-table" style="margin-bottom: 8px;">
-                  <thead>
-                    <tr>
-                      <th rowspan="2" style="width: 140px; font-size: 12px; padding: 4px 6px;">Hari Efektif Mengajar</th>
-                      <th rowspan="2" style="width: 110px; font-size: 12px; padding: 4px 6px;">Total Pertemuan</th>
-                      <th colspan="6" style="font-size: 12px; padding: 4px 6px;">Frekuensi Pelaksanaan Kegiatan Per Kelas</th>
-                    </tr>
-                    <tr>
-                      ${rekapKelasCellsHead}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td style="text-align: center; font-size: 12px; padding: 4px 6px; font-weight: bold;">${escapeHtml(hariEfektifStr)}</td>
-                      <td style="text-align: center; font-size: 12px; padding: 4px 6px; font-weight: bold;">${jurnalList.length} Pertemuan</td>
-                      ${rekapKelasCellsBody}
-                    </tr>
-                  </tbody>
-                </table>
-
-                <p style="font-size: 12px; font-weight: bold; margin: 0 0 4px 0;">2. Rekapitulasi Capaian Kelompok Belajar</p>
-                <table class="report-table" style="margin-bottom: 8px;">
-                  <thead>
-                    <tr>
-                      <th style="width: 35px; font-size: 12px; padding: 4px 6px;">No</th>
-                      <th style="width: 175px; font-size: 12px; padding: 4px 6px;">Kelompok / Sasaran</th>
-                      <th style="width: 90px; font-size: 12px; padding: 4px 6px;">Terlaksana</th>
-                      <th style="font-size: 12px; padding: 4px 6px;">Rangkuman Materi Pokok yang Diajarkan</th>
-                      <th style="width: 160px; font-size: 12px; padding: 4px 6px;">Hasil / Capaian</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    ${rekapKelompokRowsHtml}
-                  </tbody>
-                </table>
-
-                <p style="font-size: 12px; font-weight: bold; margin: 0 0 4px 0;">3. Rincian Agenda Pelaksanaan Kegiatan Pembelajaran</p>
-                <table class="report-table">
-                  <thead>
-                    <tr>
-                      <th style="width: 35px; font-size: 12px; padding: 4px 6px;">No</th>
-                      <th style="width: 135px; font-size: 12px; padding: 4px 6px;">Hari &amp; Tanggal</th>
-                      <th style="width: 80px; font-size: 12px; padding: 4px 6px;">Kelas</th>
-                      <th style="font-size: 12px; padding: 4px 6px;">Materi Pembelajaran</th>
-                      <th style="width: 140px; font-size: 12px; padding: 4px 6px;">Hasil / Catatan</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    ${page.rows.join("")}
-                  </tbody>
-                </table>
-              </div>
-
-              ${page.showSignature ? signatureBlock : ''}
-              ${getAppWatermarkFooter(footerLabel)}
-            </div>
-          `;
-        } else {
-          return `
-            <div class="${sheetClass}">
-              <div style="font-size: 11pt; font-style: italic; color: #334155; margin-bottom: 8px; border-bottom: 1px solid #cbd5e1; padding-bottom: 4px;">
-                Lanjutan Bagian E: Rekapitulasi Pelaksanaan Kegiatan Pembelajaran — ${escapeHtml(sekolah)} (Bulan ${bulanNama} ${tahun})
-              </div>
-
-              <table class="report-table">
-                <thead>
-                  <tr>
-                    <th style="width: 35px; font-size: 12px; padding: 4px 6px;">No</th>
-                    <th style="width: 135px; font-size: 12px; padding: 4px 6px;">Hari &amp; Tanggal</th>
-                    <th style="width: 80px; font-size: 12px; padding: 4px 6px;">Kelas</th>
-                    <th style="font-size: 12px; padding: 4px 6px;">Materi Pembelajaran</th>
-                    <th style="width: 140px; font-size: 12px; padding: 4px 6px;">Hasil / Catatan</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  ${page.rows.join("")}
-                </tbody>
-              </table>
-
-              ${page.showSignature ? signatureBlock : ''}
-              ${getAppWatermarkFooter(footerLabel)}
-            </div>
-          `;
-        }
-      }).join("");
 
       // --- SHEET 3 (MULTI-PAGE): RINCIAN JURNAL KEGIATAN PEMBELAJARAN HARIAN ---
       const jurnalPages = [];
