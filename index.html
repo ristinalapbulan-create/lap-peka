@@ -8,8 +8,13 @@
   <meta name="theme-color" content="#108A44" />
 
   <!-- Favicon, PWA Icons & OpenGraph Thumbnail -->
-  <link rel="icon" type="image/png" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh1LklSYTcej0n282IA4zjqXazCcUbdZ0QBZ9Am2yi4cRvoFLmx2vU89loDTwo7yaSatEr9cMG5B9CpJf344OZLtDBnqZ18AS_4WQRRPmG44Y5mgaw6rIPbJQgVLfrc0JgUGpZkM0RcbXYtM-opDmuQblffAmB9uZKx1y47JunIDE9JJ8n5Xi1cfqxhcD7T/s1600/logo%20sahabat%20peka%20new.png" />
-  <link rel="apple-touch-icon" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh1LklSYTcej0n282IA4zjqXazCcUbdZ0QBZ9Am2yi4cRvoFLmx2vU89loDTwo7yaSatEr9cMG5B9CpJf344OZLtDBnqZ18AS_4WQRRPmG44Y5mgaw6rIPbJQgVLfrc0JgUGpZkM0RcbXYtM-opDmuQblffAmB9uZKx1y47JunIDE9JJ8n5Xi1cfqxhcD7T/s1600/logo%20sahabat%20peka%20new.png" />
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Sahabat PEKA" />
   <meta property="og:title" content="SAHABAT PEKA SD - Kabupaten Tabalong" />
   <meta property="og:description" content="Aplikasi Pembuat Laporan Bulanan, Jurnal Kegiatan, Daftar Hadir & Dokumentasi Pendidikan Karakter (PEKA) SD se-Kabupaten Tabalong." />
   <meta property="og:image" content="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh1LklSYTcej0n282IA4zjqXazCcUbdZ0QBZ9Am2yi4cRvoFLmx2vU89loDTwo7yaSatEr9cMG5B9CpJf344OZLtDBnqZ18AS_4WQRRPmG44Y5mgaw6rIPbJQgVLfrc0JgUGpZkM0RcbXYtM-opDmuQblffAmB9uZKx1y47JunIDE9JJ8n5Xi1cfqxhcD7T/s1600/logo%20sahabat%20peka%20new.png" />
@@ -633,8 +638,8 @@
               </h3>
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
                 <div>
-                  <label class="block text-xs font-bold text-slate-700 mb-1">NPSN Sekolah</label>
-                  <input type="text" id="set-npsn" placeholder="Contoh: 3030xxxx" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-semibold focus:outline-none focus:border-peka-500 focus:bg-white" />
+                  <label class="block text-xs font-bold text-slate-700 mb-1">NPSN Sekolah (Otomatis Sesuai Database)</label>
+                  <input type="text" id="set-npsn" readonly placeholder="Otomatis terisi saat memilih sekolah" class="w-full bg-emerald-50/70 border border-emerald-200 text-emerald-900 rounded-xl px-3.5 py-2 text-xs font-extrabold focus:outline-none cursor-not-allowed" />
                 </div>
                 <div>
                   <label class="block text-xs font-bold text-slate-700 mb-1">Jumlah Rombel</label>
@@ -650,8 +655,8 @@
                   </select>
                 </div>
                 <div class="sm:col-span-3">
-                  <label class="block text-xs font-bold text-slate-700 mb-1">Alamat Satuan Pendidikan</label>
-                  <input type="text" id="set-alamat-sekolah" placeholder="Contoh: Jl. Jend. Ahmad Yani RT. 04 Desa/Kel..., Kec..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-semibold focus:outline-none focus:border-peka-500 focus:bg-white" />
+                  <label class="block text-xs font-bold text-slate-700 mb-1">Alamat Satuan Pendidikan (Sekolah)</label>
+                  <input type="text" id="set-alamat-sekolah" placeholder="Contoh: Jl. Jend. Ahmad Yani RT. 04 Kec. Tanjung" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-semibold focus:outline-none focus:border-peka-500 focus:bg-white" />
                 </div>
                 <div>
                   <label class="block text-xs font-bold text-slate-700 mb-1">Tempat, Tanggal Lahir Fasilitator</label>
@@ -838,7 +843,7 @@
             </div>
             <div class="flex items-center gap-2">
               <button onclick="generateScheduledDatesHelper()" class="bg-emerald-50 hover:bg-emerald-100 text-peka-700 border border-emerald-200 text-xs font-bold h-10 px-3.5 rounded-xl transition flex items-center gap-1.5">
-                <i class="fa-solid fa-wand-magic-sparkles"></i>ampilkan Tanggal Efektif
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Tampilkan Tanggal Efektif
               </button>
               <button onclick="openJurnalModal()" class="peka-btn-primary text-xs font-bold h-10 px-4 rounded-xl flex items-center gap-1.5">
                 <i class="fa-solid fa-plus"></i> Tambah Jurnal
@@ -1160,569 +1165,247 @@
        ============================================================ -->
   <script>
     /**
-     * 1. DATABASE RESMI 226 SD SE-KABUPATEN TABALONG (SESUAI FILE DB SD se-Tabalong.xlsx)
-     * Lengkap dengan pemetaan otomatis NPSN saat sekolah dipilih.
+     * 1. DATABASE RESMI 213 SD SE-KABUPATEN TABALONG (100% SESUAI FILE DB SD se-Tabalong.csv)
+     * Lengkap dengan pemetaan otomatis NPSN valid saat sekolah dipilih.
      */
     const DB_SD_TABALONG = {
       "Banua Lawas": [
-        "SD NEGERI 1 BANUA LAWAS",
-        "SD NEGERI 1 BANUA RANTAU",
-        "SD NEGERI 1 BATANG BANYU",
-        "SD NEGERI 1 BUNGIN",
-        "SD NEGERI 1 HABAU",
-        "SD NEGERI 1 HABAU HULU",
-        "SD NEGERI 1 HAPALAH",
-        "SD NEGERI 1 HARIANG",
-        "SD NEGERI 1 PEMATANG",
-        "SD NEGERI 1 PURAI",
-        "SD NEGERI 1 SUNGAI ANYAR",
-        "SD NEGERI 1 SUNGAI DURIAN",
-        "SD NEGERI 1 TALAN",
-        "SD NEGERI 2 BANUA LAWAS",
-        "SD NEGERI 2 BANUA RANTAU",
-        "SD NEGERI 2 BUNGIN",
-        "SD NEGERI 2 HABAU",
-        "SD NEGERI 2 HAPALAH",
-        "SD NEGERI 2 HARIANG",
-        "SD NEGERI 2 SUNGAI ANYAR",
-        "SD NEGERI 2 TALAN",
-        "SD NEGERI 3 BANUA RANTAU",
-        "SD NEGERI 3 BATANG BANYU",
-        "SD NEGERI BANGKILING RAYA",
-        "SD NEGERI BANTAI"
+        { nama: "SD NEGERI 1 HAPALAH", npsn: "30303194" },
+        { nama: "SD NEGERI 2 HAPALAH", npsn: "30303195" },
+        { nama: "SD NEGERI BANGKILING", npsn: "30303067" },
+        { nama: "SD NEGERI BANUA RANTAU", npsn: "30303068" },
+        { nama: "SD NEGERI BATANG BANYU", npsn: "30303059" },
+        { nama: "SD NEGERI HABAU", npsn: "30303191" },
+        { nama: "SD NEGERI HABAU HULU", npsn: "30303192" },
+        { nama: "SD NEGERI HARIANG", npsn: "30303196" },
+        { nama: "SD NEGERI KUALA PERAK", npsn: "30303149" },
+        { nama: "SD NEGERI PASAR ARBA", npsn: "30302924" },
+        { nama: "SD NEGERI PEMATANG", npsn: "30302929" },
+        { nama: "SD NEGERI PURAI", npsn: "30302864" },
+        { nama: "SD NEGERI SEI HANYAR 2", npsn: "30302897" },
+        { nama: "SD NEGERI TALAN", npsn: "30302941" },
+        { nama: "SD NEGERI TELAGA RAYA", npsn: "30302989" }
       ],
       "Bintang Ara": [
-        "SD NEGERI 1 ARGO MULYO",
-        "SD NEGERI 1 BINTANG ARA",
-        "SD NEGERI 1 BUMI MAKMUR",
-        "SD NEGERI 1 BURUM",
-        "SD NEGERI 1 HEGAR MANAH",
-        "SD NEGERI 1 PANAAN",
-        "SD NEGERI 1 USIH",
-        "SD NEGERI 2 ARGO MULYO",
-        "SD NEGERI 2 BUMI MAKMUR",
-        "SD NEGERI 2 BURUM",
-        "SD NEGERI 2 HEGAR MANAH",
-        "SD NEGERI 2 USIH",
-        "SD NEGERI DAMBUNG RAYA",
-        "SD NEGERI DUKUH",
-        "SD NEGERI KOU",
-        "SD NEGERI WALING"
+        { nama: "SD NEGERI 1 BINTANG ARA", npsn: "30303171" },
+        { nama: "SD NEGERI 1 BURUM", npsn: "30303166" },
+        { nama: "SD NEGERI 1 DAMBUNG", npsn: "30303066" },
+        { nama: "SD NEGERI 1 USIH", npsn: "30303005" },
+        { nama: "SD NEGERI 1 WALING", npsn: "30303021" },
+        { nama: "SD NEGERI 2 WALING", npsn: "30303022" },
+        { nama: "SD NEGERI BINTANG ARA", npsn: "30303172" },
+        { nama: "SD NEGERI BURUM", npsn: "30303158" },
+        { nama: "SD NEGERI DAMBUNG", npsn: "30303161" },
+        { nama: "SD NEGERI DUYUN BARU", npsn: "30303165" },
+        { nama: "SD NEGERI KUWARI", npsn: "30303151" },
+        { nama: "SD NEGERI MANTUYUP", npsn: "30302913" },
+        { nama: "SD NEGERI MEHO", npsn: "30302910" },
+        { nama: "SD NEGERI PANAAN", npsn: "30302939" },
+        { nama: "SD NEGERI SEI MISSIM", npsn: "30302886" },
+        { nama: "SD NEGERI USIH", npsn: "30303006" }
       ],
       "Haruai": [
-        "SD NEGERI 1 BONGKANG",
-        "SD NEGERI 1 HALONG",
-        "SD NEGERI 1 HAYUP",
-        "SD NEGERI 1 KEMBANG KUNING",
-        "SD NEGERI 1 LOK BATU",
-        "SD NEGERI 1 MARINDI",
-        "SD NEGERI 1 NAWIN",
-        "SD NEGERI 1 SERADANG",
-        "SD NEGERI 1 WIRANG",
-        "SD NEGERI 2 BONGKANG",
-        "SD NEGERI 2 HALONG",
-        "SD NEGERI 2 HAYUP",
-        "SD NEGERI 2 KEMBANG KUNING",
-        "SD NEGERI 2 LOK BATU",
-        "SD NEGERI 2 MARINDI",
-        "SD NEGERI 2 NAWIN",
-        "SD NEGERI 2 SERADANG",
-        "SD NEGERI 2 WIRANG",
-        "SD NEGERI 3 HAYUP",
-        "SD NEGERI 3 KEMBANG KUNING",
-        "SD NEGERI 3 MARINDI",
-        "SD NEGERI 4 HAYUP",
-        "SD NEGERI 5 HAYUP",
-        "SD NEGERI CATUR KARYA",
-        "SD NEGERI MAHE PASAR",
-        "SD NEGERI SUATO TAMPANG",
-        "SD NEGERI SURIAN"
+        { nama: "SD NEGERI 1 BATU PULUT", npsn: "30303051" },
+        { nama: "SD NEGERI 1 BONGKANG", npsn: "30303174" },
+        { nama: "SD NEGERI 1 HAYUP", npsn: "30303189" },
+        { nama: "SD NEGERI 1 LOK BATU", npsn: "30303146" },
+        { nama: "SD NEGERI 1 MAHE PASAR", npsn: "30303142" },
+        { nama: "SD NEGERI 1 NAWIN HILIR", npsn: "30302906" },
+        { nama: "SD NEGERI 1 SARADANG", npsn: "30302863" },
+        { nama: "SD NEGERI 1.2 SUPUT", npsn: "30302882" },
+        { nama: "SD NEGERI 2 BONGKANG", npsn: "30303175" },
+        { nama: "SD NEGERI 2 KEMBANG KUNING", npsn: "30303135" },
+        { nama: "SD NEGERI 2 LOK BATU", npsn: "30303145" },
+        { nama: "SD NEGERI 2 NAWIN HILIR", npsn: "30302907" },
+        { nama: "SD NEGERI 2.3 HAYUP", npsn: "30303188" },
+        { nama: "SD NEGERI 3 BONGKANG", npsn: "30303167" },
+        { nama: "SD NEGERI 3 KEMBANG KUNING", npsn: "30303136" },
+        { nama: "SD NEGERI 4 HAYUP", npsn: "30303179" },
+        { nama: "SD NEGERI AGUNG", npsn: "30303049" },
+        { nama: "SD NEGERI DANAU", npsn: "30303162" },
+        { nama: "SD NEGERI JURAN", npsn: "30303128" },
+        { nama: "SD NEGERI LAMPAHUNGIN", npsn: "30303153" },
+        { nama: "SD NEGERI MARINDI", npsn: "30302914" },
+        { nama: "SD NEGERI NAWIN", npsn: "30302905" },
+        { nama: "SD NEGERI SARADANG", npsn: "30302862" },
+        { nama: "SD NEGERI SURIAN", npsn: "30302884" },
+        { nama: "SD NEGERI WIRANG", npsn: "30303018" }
       ],
       "Jaro": [
-        "SD NEGERI 1 GARAGATA",
-        "SD NEGERI 1 JARO",
-        "SD NEGERI 1 LANO",
-        "SD NEGERI 1 MUANG",
-        "SD NEGERI 1 SOLAN",
-        "SD NEGERI 2 GARAGATA",
-        "SD NEGERI 2 JARO",
-        "SD NEGERI 2 LANO",
-        "SD NEGERI 2 NAUI",
-        "SD NEGERI 2 SOLAN",
-        "SD NEGERI 3 JARO",
-        "SD NEGERI 3 MUANG",
-        "SD NEGERI NAMO",
-        "SD NEGERI PURUI",
-        "SD NEGERI TERATAU"
+        { nama: "SD NEGERI 1 GARAGATA", npsn: "30303176" },
+        { nama: "SD NEGERI 1 JARO", npsn: "30303114" },
+        { nama: "SD NEGERI 1 MUANG", npsn: "30302909" },
+        { nama: "SD NEGERI 1 NALUI", npsn: "30302903" },
+        { nama: "SD NEGERI 1 NAMUN", npsn: "30302904" },
+        { nama: "SD NEGERI 1 SOLAN", npsn: "30302889" },
+        { nama: "SD NEGERI 2 GARAGATA", npsn: "30303177" },
+        { nama: "SD NEGERI 2 JARO", npsn: "30305470" },
+        { nama: "SD NEGERI 2 MUANG", npsn: "30302901" },
+        { nama: "SD NEGERI 2 NAMUN", npsn: "30311729" },
+        { nama: "SD NEGERI 3 JARO", npsn: "30303126" },
+        { nama: "SD NEGERI 3 SOLAN", npsn: "30302891" },
+        { nama: "SD NEGERI LANO", npsn: "30303154" },
+        { nama: "SD NEGERI PURUI", npsn: "30302856" },
+        { nama: "SD NEGERI TERATAU", npsn: "30302990" }
       ],
       "Kelua": [
-        "SD NEGERI 1 AMPUKUNG",
-        "SD NEGERI 1 BAHUNGIN",
-        "SD NEGERI 1 BINTURU",
-        "SD NEGERI 1 KARANGAN PUTIH",
-        "SD NEGERI 1 MASINTAN",
-        "SD NEGERI 1 PALIAT",
-        "SD NEGERI 1 PASAR PANAS",
-        "SD NEGERI 1 PUDAK SETEGAL",
-        "SD NEGERI 1 PULAU",
-        "SD NEGERI 1 SUNGAI BULUH",
-        "SD NEGERI 1 TAKULAT",
-        "SD NEGERI 2 AMPUKUNG",
-        "SD NEGERI 2 BAHUNGIN",
-        "SD NEGERI 2 BINTURU",
-        "SD NEGERI 2 KARANGAN PUTIH",
-        "SD NEGERI 2 MASINTAN",
-        "SD NEGERI 2 PALIAT",
-        "SD NEGERI 2 PASAR PANAS",
-        "SD NEGERI 2 PUDAK SETEGAL",
-        "SD NEGERI 2 PULAU",
-        "SD NEGERI 2 SUNGAI BULUH",
-        "SD NEGERI 2 TAKULAT",
-        "SD NEGERI 3 PASAR PANAS",
-        "SD NEGERI 3 PULAU",
-        "SD NEGERI TELAGA ITAR"
+        { nama: "SD NEGERI 1 PULAU", npsn: "30302871" },
+        { nama: "SD NEGERI 1 SUNGAI BULUH", npsn: "30302894" },
+        { nama: "SD NEGERI 1.2 PUDAK SETEGAL", npsn: "30302868" },
+        { nama: "SD NEGERI 2 KARANGAN PUTIH", npsn: "30311728" },
+        { nama: "SD NEGERI 2 SEI BULUH", npsn: "30302895" },
+        { nama: "SD NEGERI 2.3 PULAU", npsn: "30302872" },
+        { nama: "SD NEGERI AMPUKUNG HULU", npsn: "30303063" },
+        { nama: "SD NEGERI ASAM PAUH", npsn: "30303064" },
+        { nama: "SD NEGERI BAHUNGIN", npsn: "30303065" },
+        { nama: "SD NEGERI BINTURU", npsn: "30303173" },
+        { nama: "SD NEGERI GAYAM", npsn: "30303190" },
+        { nama: "SD NEGERI KARANGAN PUTIH", npsn: "30305366" },
+        { nama: "SD NEGERI MASINTAN", npsn: "30302917" },
+        { nama: "SD NEGERI PALIAT", npsn: "30302933" },
+        { nama: "SD NEGERI PARI PARI", npsn: "30302923" },
+        { nama: "SD NEGERI PASAR MINGGU", npsn: "30302927" },
+        { nama: "SD NEGERI PASAR PANAS", npsn: "30302928" },
+        { nama: "SD NEGERI TAKULAT", npsn: "30302898" }
       ],
       "Muara Harus": [
-        "SD NEGERI 1 HARUS",
-        "SD NEGERI 1 MADANG",
-        "SD NEGERI 1 MANDUIN",
-        "SD NEGERI 1 MANTUIL",
-        "SD NEGERI 1 PADANGIN",
-        "SD NEGERI 1 TANTARINGIN",
-        "SD NEGERI 2 HARUS",
-        "SD NEGERI 2 MADANG",
-        "SD NEGERI 2 MANDUIN",
-        "SD NEGERI 2 MANTUIL",
-        "SD NEGERI 2 PADANGIN",
-        "SD NEGERI 2 TANTARINGIN",
-        "SD NEGERI 3 TANTARINGIN",
-        "SD NEGERI MURUNG KARANGAN"
+        { nama: "SD NEGERI 1 TANTARINGIN", npsn: "30302987" },
+        { nama: "SD NEGERI 2 TANTARINGIN", npsn: "30302988" },
+        { nama: "SD NEGERI MADANG", npsn: "30303141" },
+        { nama: "SD NEGERI MANDUIN", npsn: "30303144" },
+        { nama: "SD NEGERI MANTUIL", npsn: "30302912" },
+        { nama: "SD NEGERI MURUNG KARANGAN", npsn: "30302902" },
+        { nama: "SDN PADANGIN", npsn: "30302931" }
       ],
       "Muara Uya": [
-        "SD NEGERI 1 BINJAI",
-        "SD NEGERI 1 KUPANG NUNDING",
-        "SD NEGERI 1 LUMBANG",
-        "SD NEGERI 1 MANGKUPUM",
-        "SD NEGERI 1 MUARA UYA",
-        "SD NEGERI 1 PALAPI",
-        "SD NEGERI 1 PASAR BATU",
-        "SD NEGERI 1 RIBANG",
-        "SD NEGERI 1 SANTUUN",
-        "SD NEGERI 1 SIMPUNG LAYUNG",
-        "SD NEGERI 1 UWI",
-        "SD NEGERI 2 KUPANG NUNDING",
-        "SD NEGERI 2 LUMBANG",
-        "SD NEGERI 2 MANGKUPUM",
-        "SD NEGERI 2 MUARA UYA",
-        "SD NEGERI 2 PALAPI",
-        "SD NEGERI 2 PASAR BATU",
-        "SD NEGERI 2 RIBANG",
-        "SD NEGERI 2 SANTUUN",
-        "SD NEGERI 2 SIMPUNG LAYUNG",
-        "SD NEGERI 2 UWI",
-        "SD NEGERI 3 LUMBANG",
-        "SD NEGERI 3 MUARA UYA",
-        "SD NEGERI 4 MUARA UYA",
-        "SD NEGERI SALIKUNG",
-        "SD NEGERI SUNGAI KUMAP"
+        { nama: "SD NEGERI 1 BINJAI", npsn: "30303169" },
+        { nama: "SD NEGERI 1 MANGKUPUM", npsn: "30303155" },
+        { nama: "SD NEGERI 1 PALAPI", npsn: "30302921" },
+        { nama: "SD NEGERI 1 PASAR BATU", npsn: "30302925" },
+        { nama: "SD NEGERI 1 PULAU KUU", npsn: "30302866" },
+        { nama: "SD NEGERI 1 RIBANG", npsn: "30305371" },
+        { nama: "SD NEGERI 1 SIMPUNG LAYUNG", npsn: "30302876" },
+        { nama: "SD NEGERI 1 UWIE", npsn: "30303007" },
+        { nama: "SD NEGERI 2 BINJAI", npsn: "30303170" },
+        { nama: "SD NEGERI 2 MANGKUPUM", npsn: "30303028" },
+        { nama: "SD NEGERI 2 PALAPI", npsn: "30302932" },
+        { nama: "SD NEGERI 2 PASAR BATU", npsn: "30302926" },
+        { nama: "SD NEGERI 2 PULAU KUU", npsn: "30302865" },
+        { nama: "SD NEGERI 2 SIMPUNG LAYUNG", npsn: "30302877" },
+        { nama: "SD NEGERI 2 UWIE", npsn: "30303019" },
+        { nama: "SD NEGERI 2.3 RIBANG", npsn: "30302858" },
+        { nama: "SD NEGERI KAMPUNG BARU", npsn: "30303115" },
+        { nama: "SD NEGERI KUPANG NUNDING", npsn: "30303150" },
+        { nama: "SD NEGERI LUMBANG", npsn: "30303138" },
+        { nama: "SD NEGERI RANDU", npsn: "30302857" },
+        { nama: "SD NEGERI SALIKUNG", npsn: "30302860" },
+        { nama: "SD NEGERI SANTUUN", npsn: "30302861" },
+        { nama: "SD NEGERI SUNGAI KUMAP", npsn: "30302887" }
       ],
       "Murung Pudak": [
-        "SD HIDAYATULLAH",
-        "SD INTEGRAL HIDAYATULLAH",
-        "SD ISLAM TERPADU AN-NAHL",
-        "SD ISLAM TERPADU ASHABUL KAHFI TABALONG",
-        "SD KATOLIK MURUNG PUDAK",
-        "SD MUHAMMADIYAH",
-        "SD NEGERI 1 BELIMBING",
-        "SD NEGERI 1 BELIMBING RAYA",
-        "SD NEGERI 1 KAPAR",
-        "SD NEGERI 1 KASIAU",
-        "SD NEGERI 1 MABUUN",
-        "SD NEGERI 1 MASUKAU",
-        "SD NEGERI 1 PEMBATAAN",
-        "SD NEGERI 1 SULINGAN",
-        "SD NEGERI 1.2 BELIMBING",
-        "SD NEGERI 2 BELIMBING RAYA",
-        "SD NEGERI 2 KAPAR",
-        "SD NEGERI 2 KASIAU",
-        "SD NEGERI 2 MABUUN",
-        "SD NEGERI 2 MASUKAU",
-        "SD NEGERI 2 PEMBATAAN",
-        "SD NEGERI 2 SULINGAN",
-        "SD NEGERI 3 BELIMBING",
-        "SD NEGERI 3 BELIMBING RAYA",
-        "SD NEGERI 3 KAPAR",
-        "SD NEGERI 3 MABUUN",
-        "SD NEGERI 3 PEMBATAAN",
-        "SD NEGERI 4 BELIMBING",
-        "SD NEGERI 4 KAPAR",
-        "SD NEGERI 4 PEMBATAAN",
-        "SD NEGERI 5.8 BELIMBING",
-        "SD NEGERI 6 BELIMBING",
-        "SD NEGERI KASIAU RAYA",
-        "SD NEGERI MABUUN RAYA",
-        "SD PLUS MURUNG PUDAK",
-        "SDTQ AL MADANI",
-        "SDIT Darul Ulum Tabalong"
+        { nama: "SD NEGERI 1 JAING HILIR", npsn: "30303183" },
+        { nama: "SD NEGERI 1 KAPAR", npsn: "30303116" },
+        { nama: "SD NEGERI 1.2 BELIMBING RAYA", npsn: "30303057" },
+        { nama: "SD NEGERI 1.2 SULINGAN", npsn: "30302892" },
+        { nama: "SD NEGERI 1.5 BELIMBING", npsn: "30303052" },
+        { nama: "SD NEGERI 2 BELIMBING", npsn: "30303053" },
+        { nama: "SD NEGERI 2 JAING HILIR", npsn: "30303184" },
+        { nama: "SD NEGERI 2 KAPAR", npsn: "30303117" },
+        { nama: "SD NEGERI 2 MABUUN", npsn: "69987459" },
+        { nama: "SD NEGERI 2 PEMBATAAN", npsn: "30305473" },
+        { nama: "SD NEGERI 3 BELIMBING", npsn: "30303054" },
+        { nama: "SD NEGERI 3 BELIMBING RAYA", npsn: "30303069" },
+        { nama: "SD NEGERI 3 KAPAR", npsn: "30303118" },
+        { nama: "SD NEGERI 3 PEMBATAAN", npsn: "70058521" },
+        { nama: "SD NEGERI 4 BELIMBING", npsn: "30303055" },
+        { nama: "SD NEGERI 4 BELIMBING RAYA", npsn: "30303113" },
+        { nama: "SD NEGERI CAKUNG PERMATA NUSA", npsn: "30305365" },
+        { nama: "SD NEGERI KAPAR HULU", npsn: "30303119" },
+        { nama: "SD NEGERI KASIAU", npsn: "30303121" },
+        { nama: "SD NEGERI KASIAU RAYA", npsn: "30303120" },
+        { nama: "SD NEGERI MABUUN", npsn: "30303140" },
+        { nama: "SD NEGERI MASUKAU", npsn: "30302918" },
+        { nama: "SD NEGERI MASUKAU LUAR", npsn: "30305368" },
+        { nama: "SD NEGERI PEMBATAAN", npsn: "30302940" },
+        { nama: "SDN MABURAI", npsn: "30303139" }
       ],
       "Pugaan": [
-        "SD NEGERI 1 HALANGAN",
-        "SD NEGERI 1 PAMPANAN",
-        "SD NEGERI 1 PUGAAN",
-        "SD NEGERI 1 SUNGAI RUKAM 1",
-        "SD NEGERI 1 SUNGAI RUKAM 2",
-        "SD NEGERI 1 TAMUNTI",
-        "SD NEGERI 2 HALANGAN",
-        "SD NEGERI 2 PUGAAN",
-        "SD NEGERI 2 SUNGAI RUKAM I",
-        "SD NEGERI 2 SUNGAI RUKAM II",
-        "SD NEGERI 2 TAMUNTI",
-        "SD NEGERI JIRAK"
+        { nama: "SD NEGERI 1 SEI RUKAM I", npsn: "30302879" },
+        { nama: "SD NEGERI 1 SEI RUKAM II", npsn: "30302880" },
+        { nama: "SD NEGERI JIRAK", npsn: "30303127" },
+        { nama: "SD NEGERI KAYU GATAH", npsn: "30303122" },
+        { nama: "SD NEGERI PUGAAN", npsn: "30302870" },
+        { nama: "SD NEGERI SEI RUKAM I.2", npsn: "30305372" },
+        { nama: "SD NEGERI TAMUNTI", npsn: "30302995" }
       ],
       "Tanjung": [
-        "SD AL-MADANIYAH JANGKUNG",
-        "SD ISLAM TERPADU INSAN MADANI",
-        "SD NEGERI 1 AGUNG",
-        "SD NEGERI 1 BANYU TAJUN",
-        "SD NEGERI 1 HIKUN",
-        "SD NEGERI 1 JANGKUNG",
-        "SD NEGERI 1 JUAI",
-        "SD NEGERI 1 KAMBITIN",
-        "SD NEGERI 1 KITANG",
-        "SD NEGERI 1 PAMAAR",
-        "SD NEGERI 1 SUNGAI PIMPI",
-        "SD NEGERI 1 TANJUNG",
-        "SD NEGERI 1 WAYAU",
-        "SD NEGERI 1.2 KAMBITIN RAYA",
-        "SD NEGERI 2 AGUNG",
-        "SD NEGERI 2 BANYU TAJUN",
-        "SD NEGERI 2 HIKUN",
-        "SD NEGERI 2 JANGKUNG",
-        "SD NEGERI 2 KAMBITIN",
-        "SD NEGERI 2 KITANG",
-        "SD NEGERI 2 TANJUNG",
-        "SD NEGERI 2 WAYAU",
-        "SD NEGERI 3 AGUNG",
-        "SD NEGERI 3 BANYU TAJUN",
-        "SD NEGERI 3 JANGKUNG",
-        "SD NEGERI 3 KAMBITIN",
-        "SD NEGERI 3 TANJUNG",
-        "SD NEGERI 4 TANJUNG",
-        "SD NEGERI 5.7 TANJUNG",
-        "SD NEGERI 6 TANJUNG",
-        "SD NEGERI 8 TANJUNG",
-        "SD NEGERI 9 TANJUNG",
-        "SD NEGERI GARUNGGAU",
-        "SD NEGERI MAHE SEBERANG",
-        "SD NEGERI PUIN",
-        "SD NEGERI SUNGAI HANYAR"
+        { nama: "SD NEGERI 1 AGUNG", npsn: "30303050" },
+        { nama: "SD NEGERI 1 HIKUN", npsn: "30303180" },
+        { nama: "SD NEGERI 1 JANGKUNG", npsn: "30303185" },
+        { nama: "SD NEGERI 1 KALAHANG", npsn: "30303131" },
+        { nama: "SD NEGERI 1 PAMARANGAN KIWA", npsn: "30302937" },
+        { nama: "SD NEGERI 1 TANJUNG", npsn: "30302996" },
+        { nama: "SD NEGERI 1 WAYAU", npsn: "30303024" },
+        { nama: "SD NEGERI 1.2 KAMBITIN", npsn: "30303125" },
+        { nama: "SD NEGERI 2 AGUNG", npsn: "30303061" },
+        { nama: "SD NEGERI 2 HIKUN", npsn: "30303181" },
+        { nama: "SD NEGERI 2 JANGKUNG", npsn: "30303186" },
+        { nama: "SD NEGERI 2 KALAHANG", npsn: "30303132" },
+        { nama: "SD NEGERI 2 PAMARANGAN KIWA", npsn: "30302934" },
+        { nama: "SD NEGERI 2 TANJUNG", npsn: "30302997" },
+        { nama: "SD NEGERI 2 WAYAU", npsn: "30303025" },
+        { nama: "SD NEGERI 3 HIKUN", npsn: "30303182" },
+        { nama: "SD NEGERI 3 JANGKUNG", npsn: "30303156" },
+        { nama: "SD NEGERI 3 TANJUNG", npsn: "30302998" },
+        { nama: "SD NEGERI 5.8 TANJUNG", npsn: "30303001" },
+        { nama: "SD NEGERI 6 TANJUNG", npsn: "30303002" },
+        { nama: "SD NEGERI 9 TANJUNG", npsn: "30303004" },
+        { nama: "SD NEGERI BANYU TAJUN", npsn: "30303060" },
+        { nama: "SD NEGERI DUKUH", npsn: "30303164" },
+        { nama: "SD NEGERI GARUNGGUNG", npsn: "30303178" },
+        { nama: "SD NEGERI KABUAU", npsn: "30303129" },
+        { nama: "SD NEGERI KAMBITIN", npsn: "30303133" },
+        { nama: "SD NEGERI MAHE SEBERANG", npsn: "30303143" },
+        { nama: "SD NEGERI PANGI", npsn: "30302922" },
+        { nama: "SD NEGERI PUAIN KIWA", npsn: "30302867" },
+        { nama: "SD NEGERI SEI PIMPING", npsn: "30302878" },
+        { nama: "SD NEGERI SIDOREJO", npsn: "30302875" },
+        { nama: "SD NEGERI TABING SIRING", npsn: "30302885" },
+        { nama: "SD NEGERI WIKAU", npsn: "30303026" }
       ],
       "Tanta": [
-        "SD NEGERI 1 LUK BAYUR",
-        "SD NEGERI 1 MANGKUSIP",
-        "SD NEGERI 1 PADANG PANJANG",
-        "SD NEGERI 1 PULAU KUU",
-        "SD NEGERI 1 TAMIYANG",
-        "SD NEGERI 1 TANTA",
-        "SD NEGERI 1 WARUKIN",
-        "SD NEGERI 2 MANGKUSIP",
-        "SD NEGERI 2 PADANG PANJANG",
-        "SD NEGERI 2 PULAU KUU",
-        "SD NEGERI 2 TAMIYANG",
-        "SD NEGERI 2 TANTA",
-        "SD NEGERI 2 WARUKIN",
-        "SD NEGERI 3 TAMIYANG",
-        "SD NEGERI 3 WARUKIN",
-        "SD NEGERI BARIMBUN",
-        "SD NEGERI MURUNG BARU",
-        "SD NEGERI PADANGIN",
-        "SD NEGERI PAMARANGAN KANAN",
-        "SD NEGERI PUDAK SETEGAL",
-        "SD NEGERI TANTA HULU",
-        "SD NEGERI WALANGKIR"
+        { nama: "SD NEGERI 1 PADANG PANJANG", npsn: "30302908" },
+        { nama: "SD NEGERI 1 TANTA TIMUR", npsn: "30302985" },
+        { nama: "SD NEGERI 1.2 MANGKUSIP", npsn: "30302911" },
+        { nama: "SD NEGERI 2 TANTA TIMUR", npsn: "30302986" },
+        { nama: "SD NEGERI BINGKAI SARI", npsn: "30303168" },
+        { nama: "SD NEGERI DAHUR", npsn: "30303160" },
+        { nama: "SD NEGERI DUHAT", npsn: "30303163" },
+        { nama: "SD NEGERI HAUS", npsn: "30303197" },
+        { nama: "SD NEGERI LABURAN", npsn: "30303152" },
+        { nama: "SD NEGERI LUKBAYUR", npsn: "30303137" },
+        { nama: "SD Negeri Padangin", npsn: "30302920" },
+        { nama: "SD NEGERI PAMARANGAN KANAN", npsn: "30302936" },
+        { nama: "SD NEGERI PAMARANGAN RAYA", npsn: "30302935" },
+        { nama: "SD NEGERI PUAIN KANAN", npsn: "30302899" },
+        { nama: "SD NEGERI PULAU KUU", npsn: "30302874" },
+        { nama: "SD NEGERI TAMIYANG", npsn: "30302984" },
+        { nama: "SD NEGERI TANTA", npsn: "30302994" },
+        { nama: "SD NEGERI TANTA HULU", npsn: "30302993" },
+        { nama: "SD NEGERI URATA", npsn: "30302992" },
+        { nama: "SD NEGERI WALANGKIR", npsn: "30303020" },
+        { nama: "SD NEGERI WARUKIN", npsn: "30303023" }
       ],
       "Upau": [
-        "SD NEGERI 1 BILAS",
-        "SD NEGERI 1 KAONG",
-        "SD NEGERI 1 KINARUM",
-        "SD NEGERI 1 MASINGAI I",
-        "SD NEGERI 1 MASINGAI II",
-        "SD NEGERI 1 PANGELAK",
-        "SD NEGERI 2 BILAS",
-        "SD NEGERI 2 KINARUM",
-        "SD NEGERI 2 MASINGAI I",
-        "SD NEGERI 2 MASINGAI II",
-        "SD NEGERI 2 PANGELAK"
+        { nama: "SD NEGERI 1 BILAS", npsn: "30303157" },
+        { nama: "SD NEGERI 1 KINARUM", npsn: "30303147" },
+        { nama: "SD NEGERI 1 MASINGAI I", npsn: "30302915" },
+        { nama: "SD NEGERI 1 MASINGAI II", npsn: "30302916" },
+        { nama: "SD NEGERI 1.2 PANGELAK", npsn: "30305369" },
+        { nama: "SD NEGERI 2 KINARUM", npsn: "30303148" },
+        { nama: "SD NEGERI 2 MASINGAI II", npsn: "30305367" },
+        { nama: "SD NEGERI SUNGAI RUMBIA", npsn: "30302881" }
       ]
-    };
-
-    const DB_NPSN_TABALONG = {
-      "Banua Lawas|SD NEGERI 1 BANUA LAWAS": "30302925",
-      "Banua Lawas|SD NEGERI 1 BANUA RANTAU": "30302926",
-      "Banua Lawas|SD NEGERI 1 BATANG BANYU": "30302927",
-      "Banua Lawas|SD NEGERI 1 BUNGIN": "30302940",
-      "Banua Lawas|SD NEGERI 1 HABAU": "30302943",
-      "Banua Lawas|SD NEGERI 1 HABAU HULU": "30302944",
-      "Banua Lawas|SD NEGERI 1 HAPALAH": "30302957",
-      "Banua Lawas|SD NEGERI 1 HARIANG": "30302958",
-      "Banua Lawas|SD NEGERI 1 PEMATANG": "30303097",
-      "Banua Lawas|SD NEGERI 1 PURAI": "30303105",
-      "Banua Lawas|SD NEGERI 1 SUNGAI ANYAR": "30303110",
-      "Banua Lawas|SD NEGERI 1 SUNGAI DURIAN": "30303101",
-      "Banua Lawas|SD NEGERI 1 TALAN": "30303103",
-      "Banua Lawas|SD NEGERI 2 BANUA LAWAS": "30303121",
-      "Banua Lawas|SD NEGERI 2 BANUA RANTAU": "30303122",
-      "Banua Lawas|SD NEGERI 2 BUNGIN": "30303139",
-      "Banua Lawas|SD NEGERI 2 HABAU": "30303125",
-      "Banua Lawas|SD NEGERI 2 HAPALAH": "30303127",
-      "Banua Lawas|SD NEGERI 2 HARIANG": "30303128",
-      "Banua Lawas|SD NEGERI 2 SUNGAI ANYAR": "30303009",
-      "Banua Lawas|SD NEGERI 2 TALAN": "30303012",
-      "Banua Lawas|SD NEGERI 3 BANUA RANTAU": "30303019",
-      "Banua Lawas|SD NEGERI 3 BATANG BANYU": "30303020",
-      "Banua Lawas|SD NEGERI BANGKILING RAYA": "30302892",
-      "Banua Lawas|SD NEGERI BANTAI": "30302893",
-      "Bintang Ara|SD NEGERI 1 ARGO MULYO": "30302914",
-      "Bintang Ara|SD NEGERI 1 BINTANG ARA": "30302938",
-      "Bintang Ara|SD NEGERI 1 BUMI MAKMUR": "30302939",
-      "Bintang Ara|SD NEGERI 1 BURUM": "30302941",
-      "Bintang Ara|SD NEGERI 1 HEGAR MANAH": "30302960",
-      "Bintang Ara|SD NEGERI 1 PANAAN": "30303093",
-      "Bintang Ara|SD NEGERI 1 USIH": "30303116",
-      "Bintang Ara|SD NEGERI 2 ARGO MULYO": "30303119",
-      "Bintang Ara|SD NEGERI 2 BUMI MAKMUR": "30303138",
-      "Bintang Ara|SD NEGERI 2 BURUM": "30303140",
-      "Bintang Ara|SD NEGERI 2 HEGAR MANAH": "30303130",
-      "Bintang Ara|SD NEGERI 2 USIH": "30302997",
-      "Bintang Ara|SD NEGERI DAMBUNG RAYA": "30302896",
-      "Bintang Ara|SD NEGERI DUKUH": "30302897",
-      "Bintang Ara|SD NEGERI KOU": "30302902",
-      "Bintang Ara|SD NEGERI WALING": "30302983",
-      "Haruai|SD NEGERI 1 BONGKANG": "30302921",
-      "Haruai|SD NEGERI 1 HALONG": "30302956",
-      "Haruai|SD NEGERI 1 HAYUP": "30302959",
-      "Haruai|SD NEGERI 1 KEMBANG KUNING": "30302952",
-      "Haruai|SD NEGERI 1 LOK BATU": "30302946",
-      "Haruai|SD NEGERI 1 MARINDI": "30302965",
-      "Haruai|SD NEGERI 1 NAWIN": "30303084",
-      "Haruai|SD NEGERI 1 SERADANG": "30303108",
-      "Haruai|SD NEGERI 1 WIRANG": "30303118",
-      "Haruai|SD NEGERI 2 BONGKANG": "30303137",
-      "Haruai|SD NEGERI 2 HALONG": "30303126",
-      "Haruai|SD NEGERI 2 HAYUP": "30303129",
-      "Haruai|SD NEGERI 2 KEMBANG KUNING": "30302993",
-      "Haruai|SD NEGERI 2 LOK BATU": "30302995",
-      "Haruai|SD NEGERI 2 MARINDI": "30302988",
-      "Haruai|SD NEGERI 2 NAWIN": "30302981",
-      "Haruai|SD NEGERI 2 SERADANG": "30303007",
-      "Haruai|SD NEGERI 2 WIRANG": "30302999",
-      "Haruai|SD NEGERI 3 HAYUP": "30303023",
-      "Haruai|SD NEGERI 3 KEMBANG KUNING": "30303027",
-      "Haruai|SD NEGERI 3 MARINDI": "30303030",
-      "Haruai|SD NEGERI 4 HAYUP": "30303037",
-      "Haruai|SD NEGERI 5 HAYUP": "30303002",
-      "Haruai|SD NEGERI CATUR KARYA": "30302895",
-      "Haruai|SD NEGERI MAHE PASAR": "30302904",
-      "Haruai|SD NEGERI SUATO TAMPANG": "30302975",
-      "Haruai|SD NEGERI SURIAN": "30302979",
-      "Jaro|SD NEGERI 1 GARAGATA": "30302942",
-      "Jaro|SD NEGERI 1 JARO": "30302962",
-      "Jaro|SD NEGERI 1 LANO": "30302955",
-      "Jaro|SD NEGERI 1 MUANG": "30302969",
-      "Jaro|SD NEGERI 1 SOLAN": "30303109",
-      "Jaro|SD NEGERI 2 GARAGATA": "30303124",
-      "Jaro|SD NEGERI 2 JARO": "30303132",
-      "Jaro|SD NEGERI 2 LANO": "30302994",
-      "Jaro|SD NEGERI 2 NAUI": "30302980",
-      "Jaro|SD NEGERI 2 SOLAN": "30303008",
-      "Jaro|SD NEGERI 3 JARO": "30303025",
-      "Jaro|SD NEGERI 3 MUANG": "30303032",
-      "Jaro|SD NEGERI NAMO": "30302908",
-      "Jaro|SD NEGERI PURUI": "30302998",
-      "Jaro|SD NEGERI TERATAU": "30302982",
-      "Kelua|SD NEGERI 1 AMPUKUNG": "30302923",
-      "Kelua|SD NEGERI 1 BAHUNGIN": "30302924",
-      "Kelua|SD NEGERI 1 BINTURU": "30302920",
-      "Kelua|SD NEGERI 1 KARANGAN PUTIH": "30302949",
-      "Kelua|SD NEGERI 1 MASINTAN": "30302968",
-      "Kelua|SD NEGERI 1 PALIAT": "30303091",
-      "Kelua|SD NEGERI 1 PASAR PANAS": "30303095",
-      "Kelua|SD NEGERI 1 PUDAK SETEGAL": "30303108",
-      "Kelua|SD NEGERI 1 PULAU": "30303104",
-      "Kelua|SD NEGERI 1 SUNGAI BULUH": "30303100",
-      "Kelua|SD NEGERI 1 TAKULAT": "30303102",
-      "Kelua|SD NEGERI 2 AMPUKUNG": "30303118",
-      "Kelua|SD NEGERI 2 BAHUNGIN": "30303120",
-      "Kelua|SD NEGERI 2 BINTURU": "30303136",
-      "Kelua|SD NEGERI 2 KARANGAN PUTIH": "30303135",
-      "Kelua|SD NEGERI 2 MASINTAN": "30302990",
-      "Kelua|SD NEGERI 2 PALIAT": "30302983",
-      "Kelua|SD NEGERI 2 PASAR PANAS": "30303003",
-      "Kelua|SD NEGERI 2 PUDAK SETEGAL": "30303004",
-      "Kelua|SD NEGERI 2 PULAU": "30303005",
-      "Kelua|SD NEGERI 2 SUNGAI BULUH": "30303010",
-      "Kelua|SD NEGERI 2 TAKULAT": "30303011",
-      "Kelua|SD NEGERI 3 PASAR PANAS": "30303034",
-      "Kelua|SD NEGERI 3 PULAU": "30303036",
-      "Kelua|SD NEGERI TELAGA ITAR": "30302981",
-      "Muara Harus|SD NEGERI 1 HARUS": "30302945",
-      "Muara Harus|SD NEGERI 1 MADANG": "30302948",
-      "Muara Harus|SD NEGERI 1 MANDUIN": "30302963",
-      "Muara Harus|SD NEGERI 1 MANTUIL": "30302964",
-      "Muara Harus|SD NEGERI 1 PADANGIN": "30303090",
-      "Muara Harus|SD NEGERI 1 TANTARINGIN": "30303114",
-      "Muara Harus|SD NEGERI 2 HARUS": "30303123",
-      "Muara Harus|SD NEGERI 2 MADANG": "30302997",
-      "Muara Harus|SD NEGERI 2 MANDUIN": "30302986",
-      "Muara Harus|SD NEGERI 2 MANTUIL": "30302987",
-      "Muara Harus|SD NEGERI 2 PADANGIN": "30302982",
-      "Muara Harus|SD NEGERI 2 TANTARINGIN": "30303016",
-      "Muara Harus|SD NEGERI 3 TANTARINGIN": "30303018",
-      "Muara Harus|SD NEGERI MURUNG KARANGAN": "30302907",
-      "Muara Uya|SD NEGERI 1 BINJAI": "30302919",
-      "Muara Uya|SD NEGERI 1 KUPANG NUNDING": "30302954",
-      "Muara Uya|SD NEGERI 1 LUMBANG": "30302947",
-      "Muara Uya|SD NEGERI 1 MANGKUPUM": "30302972",
-      "Muara Uya|SD NEGERI 1 MUARA UYA": "30302970",
-      "Muara Uya|SD NEGERI 1 PALAPI": "30303083",
-      "Muara Uya|SD NEGERI 1 PASAR BATU": "30303094",
-      "Muara Uya|SD NEGERI 1 RIBANG": "30303107",
-      "Muara Uya|SD NEGERI 1 SANTUUN": "30303106",
-      "Muara Uya|SD NEGERI 1 SIMPUNG LAYUNG": "30303112",
-      "Muara Uya|SD NEGERI 1 UWI": "30303117",
-      "Muara Uya|SD NEGERI 2 KUPANG NUNDING": "30302996",
-      "Muara Uya|SD NEGERI 2 LUMBANG": "30302996",
-      "Muara Uya|SD NEGERI 2 MANGKUPUM": "30302985",
-      "Muara Uya|SD NEGERI 2 MUARA UYA": "30302979",
-      "Muara Uya|SD NEGERI 2 PALAPI": "30302984",
-      "Muara Uya|SD NEGERI 2 PASAR BATU": "30303002",
-      "Muara Uya|SD NEGERI 2 RIBANG": "30303006",
-      "Muara Uya|SD NEGERI 2 SANTUUN": "30303015",
-      "Muara Uya|SD NEGERI 2 SIMPUNG LAYUNG": "30303007",
-      "Muara Uya|SD NEGERI 2 UWI": "30302998",
-      "Muara Uya|SD NEGERI 3 LUMBANG": "30303028",
-      "Muara Uya|SD NEGERI 3 MUARA UYA": "30303033",
-      "Muara Uya|SD NEGERI 4 MUARA UYA": "30303039",
-      "Muara Uya|SD NEGERI SALIKUNG": "30302974",
-      "Muara Uya|SD NEGERI SUNGAI KUMAP": "30302977",
-      "Murung Pudak|SD HIDAYATULLAH": "30305411",
-      "Murung Pudak|SD INTEGRAL HIDAYATULLAH": "30314212",
-      "Murung Pudak|SD ISLAM TERPADU AN-NAHL": "30305412",
-      "Murung Pudak|SD ISLAM TERPADU ASHABUL KAHFI TABALONG": "69964994",
-      "Murung Pudak|SD KATOLIK MURUNG PUDAK": "30302911",
-      "Murung Pudak|SD MUHAMMADIYAH": "30302912",
-      "Murung Pudak|SD NEGERI 1 BELIMBING": "30302928",
-      "Murung Pudak|SD NEGERI 1 BELIMBING RAYA": "30302929",
-      "Murung Pudak|SD NEGERI 1 KAPAR": "30302967",
-      "Murung Pudak|SD NEGERI 1 KASIAU": "30302951",
-      "Murung Pudak|SD NEGERI 1 MABUUN": "30302947",
-      "Murung Pudak|SD NEGERI 1 MASUKAU": "30302969",
-      "Murung Pudak|SD NEGERI 1 PEMBATAAN": "30303096",
-      "Murung Pudak|SD NEGERI 1 SULINGAN": "30303111",
-      "Murung Pudak|SD NEGERI 1.2 BELIMBING": "30302930",
-      "Murung Pudak|SD NEGERI 2 BELIMBING RAYA": "30303134",
-      "Murung Pudak|SD NEGERI 2 KAPAR": "30303134",
-      "Murung Pudak|SD NEGERI 2 KASIAU": "30302991",
-      "Murung Pudak|SD NEGERI 2 MABUUN": "30302998",
-      "Murung Pudak|SD NEGERI 2 MASUKAU": "30302991",
-      "Murung Pudak|SD NEGERI 2 PEMBATAAN": "30303001",
-      "Murung Pudak|SD NEGERI 2 SULINGAN": "30303008",
-      "Murung Pudak|SD NEGERI 3 BELIMBING": "30303021",
-      "Murung Pudak|SD NEGERI 3 BELIMBING RAYA": "30303022",
-      "Murung Pudak|SD NEGERI 3 KAPAR": "30303026",
-      "Murung Pudak|SD NEGERI 3 MABUUN": "30303029",
-      "Murung Pudak|SD NEGERI 3 PEMBATAAN": "30303035",
-      "Murung Pudak|SD NEGERI 4 BELIMBING": "30303036",
-      "Murung Pudak|SD NEGERI 4 KAPAR": "30303038",
-      "Murung Pudak|SD NEGERI 4 PEMBATAAN": "30303040",
-      "Murung Pudak|SD NEGERI 5.8 BELIMBING": "30303001",
-      "Murung Pudak|SD NEGERI 6 BELIMBING": "30303004",
-      "Murung Pudak|SD NEGERI KASIAU RAYA": "30302901",
-      "Murung Pudak|SD NEGERI MABUUN RAYA": "30302903",
-      "Murung Pudak|SD PLUS MURUNG PUDAK": "30311509",
-      "Murung Pudak|SDTQ AL MADANI": "70037948",
-      "Murung Pudak|SDIT Darul Ulum Tabalong": "70046287",
-      "Pugaan|SD NEGERI 1 HALANGAN": "30302945",
-      "Pugaan|SD NEGERI 1 PAMPANAN": "30303092",
-      "Pugaan|SD NEGERI 1 PUGAAN": "30303099",
-      "Pugaan|SD NEGERI 1 SUNGAI RUKAM 1": "30303099",
-      "Pugaan|SD NEGERI 1 SUNGAI RUKAM 2": "30303100",
-      "Pugaan|SD NEGERI 1 TAMUNTI": "30303104",
-      "Pugaan|SD NEGERI 2 HALANGAN": "30303126",
-      "Pugaan|SD NEGERI 2 PUGAAN": "30303005",
-      "Pugaan|SD NEGERI 2 SUNGAI RUKAM I": "30303011",
-      "Pugaan|SD NEGERI 2 SUNGAI RUKAM II": "30303012",
-      "Pugaan|SD NEGERI 2 TAMUNTI": "30303013",
-      "Pugaan|SD NEGERI JIRAK": "30302899",
-      "Tanjung|SD AL-MADANIYAH JANGKUNG": "69988492",
-      "Tanjung|SD ISLAM TERPADU INSAN MADANI": "69947378",
-      "Tanjung|SD NEGERI 1 AGUNG": "30302913",
-      "Tanjung|SD NEGERI 1 BANYU TAJUN": "30302916",
-      "Tanjung|SD NEGERI 1 HIKUN": "30302961",
-      "Tanjung|SD NEGERI 1 JANGKUNG": "30302961",
-      "Tanjung|SD NEGERI 1 JUAI": "30302963",
-      "Tanjung|SD NEGERI 1 KAMBITIN": "30302965",
-      "Tanjung|SD NEGERI 1 KITANG": "30302953",
-      "Tanjung|SD NEGERI 1 PAMAAR": "30303092",
-      "Tanjung|SD NEGERI 1 SUNGAI PIMPI": "30303098",
-      "Tanjung|SD NEGERI 1 TANJUNG": "30303113",
-      "Tanjung|SD NEGERI 1 WAYAU": "30303117",
-      "Tanjung|SD NEGERI 1.2 KAMBITIN RAYA": "30302966",
-      "Tanjung|SD NEGERI 2 AGUNG": "30303117",
-      "Tanjung|SD NEGERI 2 BANYU TAJUN": "30303123",
-      "Tanjung|SD NEGERI 2 HIKUN": "30303131",
-      "Tanjung|SD NEGERI 2 JANGKUNG": "30303131",
-      "Tanjung|SD NEGERI 2 KAMBITIN": "30303133",
-      "Tanjung|SD NEGERI 2 KITANG": "30302992",
-      "Tanjung|SD NEGERI 2 TANJUNG": "30303015",
-      "Tanjung|SD NEGERI 2 WAYAU": "30303000",
-      "Tanjung|SD NEGERI 3 AGUNG": "30303017",
-      "Tanjung|SD NEGERI 3 BANYU TAJUN": "30303019",
-      "Tanjung|SD NEGERI 3 JANGKUNG": "30303024",
-      "Tanjung|SD NEGERI 3 KAMBITIN": "30303025",
-      "Tanjung|SD NEGERI 3 TANJUNG": "30303017",
-      "Tanjung|SD NEGERI 4 TANJUNG": "30303041",
-      "Tanjung|SD NEGERI 5.7 TANJUNG": "30303003",
-      "Tanjung|SD NEGERI 6 TANJUNG": "30303005",
-      "Tanjung|SD NEGERI 8 TANJUNG": "30303006",
-      "Tanjung|SD NEGERI 9 TANJUNG": "30303007",
-      "Tanjung|SD NEGERI GARUNGGAU": "30302898",
-      "Tanjung|SD NEGERI MAHE SEBERANG": "30302905",
-      "Tanjung|SD NEGERI PUIN": "30302973",
-      "Tanjung|SD NEGERI SUNGAI HANYAR": "30302976",
-      "Tanta|SD NEGERI 1 LUK BAYUR": "30302946",
-      "Tanta|SD NEGERI 1 MANGKUSIP": "30302973",
-      "Tanta|SD NEGERI 1 PADANG PANJANG": "30303089",
-      "Tanta|SD NEGERI 1 PULAU KUU": "30303106",
-      "Tanta|SD NEGERI 1 TAMIYANG": "30303105",
-      "Tanta|SD NEGERI 1 TANTA": "30303112",
-      "Tanta|SD NEGERI 1 WARUKIN": "30303115",
-      "Tanta|SD NEGERI 2 MANGKUSIP": "30302989",
-      "Tanta|SD NEGERI 2 PADANG PANJANG": "30302981",
-      "Tanta|SD NEGERI 2 PULAU KUU": "30303006",
-      "Tanta|SD NEGERI 2 TAMIYANG": "30303014",
-      "Tanta|SD NEGERI 2 TANTA": "30303014",
-      "Tanta|SD NEGERI 2 WARUKIN": "30302996",
-      "Tanta|SD NEGERI 3 TAMIYANG": "30303016",
-      "Tanta|SD NEGERI 3 WARUKIN": "30303018",
-      "Tanta|SD NEGERI BARIMBUN": "30302894",
-      "Tanta|SD NEGERI MURUNG BARU": "30302906",
-      "Tanta|SD NEGERI PADANGIN": "30302909",
-      "Tanta|SD NEGERI PAMARANGAN KANAN": "30302910",
-      "Tanta|SD NEGERI PUDAK SETEGAL": "30302972",
-      "Tanta|SD NEGERI TANTA HULU": "30302980",
-      "Tanta|SD NEGERI WALANGKIR": "30302984",
-      "Upau|SD NEGERI 1 BILAS": "30302918",
-      "Upau|SD NEGERI 1 KAONG": "30302968",
-      "Upau|SD NEGERI 1 KINARUM": "30302950",
-      "Upau|SD NEGERI 1 MASINGAI I": "30302966",
-      "Upau|SD NEGERI 1 MASINGAI II": "30302967",
-      "Upau|SD NEGERI 1 PANGELAK": "30303094",
-      "Upau|SD NEGERI 2 BILAS": "30303135",
-      "Upau|SD NEGERI 2 KINARUM": "30302990",
-      "Upau|SD NEGERI 2 MASINGAI I": "30302989",
-      "Upau|SD NEGERI 2 MASINGAI II": "30302978",
-      "Upau|SD NEGERI 2 PANGELAK": "30303000"
     };
 
     const BULAN_NAMES = [
@@ -1753,7 +1436,7 @@
       agama: "Islam",
       kecamatan: "Tanjung",
       sekolah: "SD NEGERI 1 TANJUNG",
-      npsn: "",
+      npsn: "30302996",
       alamatSekolah: "",
       rombel: "6",
       akreditasi: "B",
@@ -1788,7 +1471,30 @@
       if (agamaSelect) {
         agamaSelect.addEventListener("change", toggleIslamGroupVisibility);
       }
+
+      // Registrasi Service Worker untuk PWA Offline 100%
+      initServiceWorker();
     };
+
+    function initServiceWorker() {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => {
+            console.log('[PWA] Service Worker aktif di scope:', reg.scope);
+          })
+          .catch(err => {
+            console.warn('[PWA] Gagal registrasi Service Worker:', err);
+          });
+      }
+
+      window.addEventListener('online', () => {
+        showToast('Koneksi internet terhubung kembali (Online)');
+      });
+
+      window.addEventListener('offline', () => {
+        showToast('Mode Offline aktif. Semua data tetap tersimpan aman di HP!', false);
+      });
+    }
 
     function loadFromStorage() {
       try {
@@ -1801,6 +1507,21 @@
             siswaPerKelas: { ...createDefaultSiswaPerKelas(), ...(parsed.siswaPerKelas || {}) },
             kelompokIslam: { ...masterSettings.kelompokIslam, ...(parsed.kelompokIslam || {}) }
           };
+          // Validasi ketat: pastikan kecamatan & sekolah ada di database resmi DB_SD_TABALONG (CSV)
+          if (!DB_SD_TABALONG[masterSettings.kecamatan]) {
+            masterSettings.kecamatan = "Tanjung";
+          }
+          const validKecList = DB_SD_TABALONG[masterSettings.kecamatan] || [];
+          const matchedSekolah = validKecList.find(s => s.nama === masterSettings.sekolah);
+          if (matchedSekolah) {
+            masterSettings.npsn = matchedSekolah.npsn;
+          } else {
+            // Jika nama sekolah dummy / tidak ditemukan di CSV, hapus dan alihkan ke sekolah valid
+            if (validKecList.length > 0) {
+              masterSettings.sekolah = validKecList[0].nama;
+              masterSettings.npsn = validKecList[0].npsn;
+            }
+          }
         }
         const savedReports = localStorage.getItem(STORAGE_KEY_REPORTS) || localStorage.getItem("simpeka_tabalong_reports_v1");
         if (savedReports) {
@@ -1942,6 +1663,18 @@
     /**
      * 5. MASTER SETTINGS & STUDENT / GROUP SETUP
      */
+    function getNpsnFromDb(kecamatan, sekolahNama) {
+      if (kecamatan && DB_SD_TABALONG[kecamatan]) {
+        const found = DB_SD_TABALONG[kecamatan].find(item => item.nama === sekolahNama);
+        if (found) return found.npsn;
+      }
+      for (const kec of Object.keys(DB_SD_TABALONG)) {
+        const found = DB_SD_TABALONG[kec].find(item => item.nama === sekolahNama);
+        if (found) return found.npsn;
+      }
+      return "";
+    }
+
     function initKecamatanDropdown() {
       const kecSelect = document.getElementById("set-kecamatan");
       kecSelect.innerHTML = "";
@@ -1955,7 +1688,7 @@
 
     function onKecamatanChange() {
       const kec = document.getElementById("set-kecamatan").value;
-      const firstSchool = kec && DB_SD_TABALONG[kec] ? DB_SD_TABALONG[kec][0] : "";
+      const firstSchool = kec && DB_SD_TABALONG[kec] && DB_SD_TABALONG[kec][0] ? DB_SD_TABALONG[kec][0].nama : "";
       populateSchoolDropdown(firstSchool);
       onSekolahChange();
     }
@@ -1964,8 +1697,8 @@
       const kec = document.getElementById("set-kecamatan")?.value || "";
       const sek = document.getElementById("set-sekolah")?.value || "";
       const npsnInput = document.getElementById("set-npsn");
-      const matchedNpsn = DB_NPSN_TABALONG[`${kec}|${sek}`];
-      if (npsnInput && matchedNpsn) {
+      const matchedNpsn = getNpsnFromDb(kec, sek);
+      if (npsnInput) {
         npsnInput.value = matchedNpsn;
       }
     }
@@ -1976,11 +1709,15 @@
       sekSelect.innerHTML = "";
       if (!kec || !DB_SD_TABALONG[kec]) return;
 
-      DB_SD_TABALONG[kec].forEach(schoolName => {
+      const schools = DB_SD_TABALONG[kec];
+      const hasMatch = schools.some(item => item.nama === selectedSchool);
+      const targetSchool = hasMatch ? selectedSchool : (schools[0]?.nama || "");
+
+      schools.forEach(item => {
         const opt = document.createElement("option");
-        opt.value = schoolName;
-        opt.textContent = schoolName;
-        if (schoolName === selectedSchool) opt.selected = true;
+        opt.value = item.nama;
+        opt.textContent = item.nama;
+        if (item.nama === targetSchool) opt.selected = true;
         sekSelect.appendChild(opt);
       });
     }
@@ -2075,10 +1812,16 @@
       document.getElementById("set-kecamatan").value = masterSettings.kecamatan || "Tanjung";
       populateSchoolDropdown(masterSettings.sekolah);
 
-      document.getElementById("set-npsn").value = masterSettings.npsn || "";
+      const currentKec = document.getElementById("set-kecamatan").value;
+      const currentSek = document.getElementById("set-sekolah").value;
+      masterSettings.sekolah = currentSek;
+      masterSettings.npsn = getNpsnFromDb(currentKec, currentSek) || masterSettings.npsn || "";
+
+      document.getElementById("set-npsn").value = masterSettings.npsn;
       document.getElementById("set-rombel").value = masterSettings.rombel || "6";
       document.getElementById("set-akreditasi").value = masterSettings.akreditasi || "B";
-      document.getElementById("set-alamat-sekolah").value = masterSettings.alamatSekolah || "";
+      const alamatSekEl = document.getElementById("set-alamat-sekolah");
+      if (alamatSekEl) alamatSekEl.value = masterSettings.alamatSekolah || "";
 
       document.getElementById("set-kepsek-jabatan").value = masterSettings.kepsekJabatan || "Kepala Sekolah";
       document.getElementById("set-kepsek-nama").value = masterSettings.kepsekNama || "";
@@ -2127,10 +1870,12 @@
       masterSettings.kecamatan = document.getElementById("set-kecamatan").value;
       masterSettings.sekolah = document.getElementById("set-sekolah").value;
 
-      masterSettings.npsn = document.getElementById("set-npsn").value.trim();
+      // Selalu pastikan NPSN valid dan sinkron sesuai database resmi CSV
+      masterSettings.npsn = getNpsnFromDb(masterSettings.kecamatan, masterSettings.sekolah) || document.getElementById("set-npsn").value.trim();
       masterSettings.rombel = document.getElementById("set-rombel").value.trim() || "6";
       masterSettings.akreditasi = document.getElementById("set-akreditasi").value;
-      masterSettings.alamatSekolah = document.getElementById("set-alamat-sekolah").value.trim();
+      const alamatSekEl = document.getElementById("set-alamat-sekolah");
+      masterSettings.alamatSekolah = alamatSekEl ? alamatSekEl.value.trim() : "";
 
       masterSettings.kepsekJabatan = document.getElementById("set-kepsek-jabatan").value || "Kepala Sekolah";
       masterSettings.kepsekNama = document.getElementById("set-kepsek-nama").value.trim();
@@ -3453,7 +3198,20 @@
       reader.onload = function (e) {
         try {
           const data = JSON.parse(e.target.result);
-          if (data.masterSettings) masterSettings = data.masterSettings;
+          if (data.masterSettings) {
+            masterSettings = data.masterSettings;
+            if (!DB_SD_TABALONG[masterSettings.kecamatan]) {
+              masterSettings.kecamatan = "Tanjung";
+            }
+            const validKecList = DB_SD_TABALONG[masterSettings.kecamatan] || [];
+            const matchedSekolah = validKecList.find(s => s.nama === masterSettings.sekolah);
+            if (matchedSekolah) {
+              masterSettings.npsn = matchedSekolah.npsn;
+            } else if (validKecList.length > 0) {
+              masterSettings.sekolah = validKecList[0].nama;
+              masterSettings.npsn = validKecList[0].npsn;
+            }
+          }
           if (data.reportsStore) reportsStore = data.reportsStore;
           saveMasterToStorage();
           saveReportsToStorage();
