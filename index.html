@@ -2333,7 +2333,7 @@
 
       if (kelompokArr.length === 0 && item.kelas) {
         const str = String(item.kelas).toUpperCase();
-        if (str.includes("IQRA")) kelompokArr.push("Iqra");
+        if (str.includes("IQRA") || str.includes("IQRO")) kelompokArr.push("Iqra");
         if (str.includes("QUR'AN") || str.includes("QURAN")) kelompokArr.push("Al-Qur'an");
       }
 
@@ -2383,9 +2383,18 @@
         const filledDays = new Set(report.jurnal.map(j => Number(j.dayNumber)));
         const nextUnfilled = scheduledDays.find(d => !filledDays.has(d)) || scheduledDays[0] || 1;
         populateJurnalDateSelect(dayNumber || nextUnfilled);
+        const klp = masterSettings.kelompokIslam || { iqraL: 0, iqraP: 0, quranL: 0, quranP: 0 };
+        const hasIqra = ((Number(klp.iqraL) || 0) + (Number(klp.iqraP) || 0)) > 0;
+        const hasQuran = ((Number(klp.quranL) || 0) + (Number(klp.quranP) || 0)) > 0;
+        let defaultKelompok = [];
+        if (isIslam) {
+          if (hasIqra && !hasQuran) defaultKelompok = ["Iqra"];
+          else if (!hasIqra && hasQuran) defaultKelompok = ["Al-Qur'an"];
+          else defaultKelompok = ["Iqra", "Al-Qur'an"];
+        }
         setJurnalKelasAndKelompokCheckboxes(
           [...KELAS_LIST],
-          isIslam ? ["Iqra", "Al-Qur'an"] : []
+          defaultKelompok
         );
         document.getElementById("jurnal-materi").value = "";
         document.getElementById("jurnal-kegiatan").value = "";
@@ -3273,10 +3282,22 @@
         "Al-Qur'an": { count: 0, materiSet: new Set(), hasilSet: new Set() }
       };
 
+      const hasAnyExplicitKelompok = jurnalList.some(item => parseLegacyKelasAndKelompok(item).kelompokArr.length > 0);
+
       jurnalList.forEach(item => {
         const parsed = parseLegacyKelasAndKelompok(item);
         const kArr = parsed.kelasArr.length > 0 ? parsed.kelasArr : [...KELAS_LIST];
-        const klpArr = parsed.kelompokArr.length > 0 ? parsed.kelompokArr : (isIslam ? ["Iqra", "Al-Qur'an"] : []);
+        
+        let klpArr = parsed.kelompokArr;
+        if (klpArr.length === 0 && isIslam && !hasAnyExplicitKelompok) {
+          // Hanya fallback jika sama sekali tidak ada entri jurnal yang menyebut kelompok
+          const klp = masterSettings.kelompokIslam || { iqraL: 0, iqraP: 0, quranL: 0, quranP: 0 };
+          const hasIqra = ((Number(klp.iqraL) || 0) + (Number(klp.iqraP) || 0)) > 0;
+          const hasQuran = ((Number(klp.quranL) || 0) + (Number(klp.quranP) || 0)) > 0;
+          if (hasIqra && !hasQuran) klpArr = ["Iqra"];
+          else if (!hasIqra && hasQuran) klpArr = ["Al-Qur'an"];
+          else klpArr = ["Iqra", "Al-Qur'an"];
+        }
 
         kArr.forEach(k => {
           if (rekapPerKelas[k]) {
@@ -3289,8 +3310,8 @@
         klpArr.forEach(klp => {
           if (rekapPerKelompok[klp]) {
             rekapPerKelompok[klp].count++;
-            if (item.materi) rekapPerKelompok[klp].materiSet.add(item.materi.trim());
-            if (item.catatan) rekapPerKelompok[klp].hasilSet.add(item.catatan.trim());
+            if (item.materi && item.materi.trim()) rekapPerKelompok[klp].materiSet.add(item.materi.trim());
+            if (item.catatan && item.catatan.trim()) rekapPerKelompok[klp].hasilSet.add(item.catatan.trim());
           }
         });
       });
@@ -3301,30 +3322,71 @@
       const rekapKelasCellsHead = KELAS_LIST.map(k => `<th style="font-size: 12px; padding: 4px 6px;">Kelas ${k}</th>`).join("");
       const rekapKelasCellsBody = KELAS_LIST.map(k => `<td style="text-align: center; font-size: 12px; padding: 4px 6px; font-weight: bold;">${rekapPerKelas[k].count}x</td>`).join("");
 
-      const rekapKelompokRowsHtml = isIslam ? `
-        <tr>
-          <td style="text-align: center; font-size: 12px; padding: 4px 6px;">1</td>
-          <td style="font-size: 12px; padding: 4px 6px; font-weight: bold;">Kelompok Iqra (${iqraTotal} Murid)</td>
-          <td style="text-align: center; font-size: 12px; padding: 4px 6px; font-weight: bold;">${rekapPerKelompok["Iqra"].count} Kali</td>
-          <td style="font-size: 12px; padding: 4px 6px;">${escapeHtml(Array.from(rekapPerKelompok["Iqra"].materiSet).slice(0, 3).join("; ") || allMateriSummary)}</td>
-          <td style="font-size: 12px; padding: 4px 6px;">${escapeHtml(Array.from(rekapPerKelompok["Iqra"].hasilSet).slice(0, 2).join("; ") || allHasilSummary)}</td>
-        </tr>
-        <tr>
-          <td style="text-align: center; font-size: 12px; padding: 4px 6px;">2</td>
-          <td style="font-size: 12px; padding: 4px 6px; font-weight: bold;">Kelompok Al-Qur'an (${quranTotal} Murid)</td>
-          <td style="text-align: center; font-size: 12px; padding: 4px 6px; font-weight: bold;">${rekapPerKelompok["Al-Qur'an"].count} Kali</td>
-          <td style="font-size: 12px; padding: 4px 6px;">${escapeHtml(Array.from(rekapPerKelompok["Al-Qur'an"].materiSet).slice(0, 3).join("; ") || allMateriSummary)}</td>
-          <td style="font-size: 12px; padding: 4px 6px;">${escapeHtml(Array.from(rekapPerKelompok["Al-Qur'an"].hasilSet).slice(0, 2).join("; ") || allHasilSummary)}</td>
-        </tr>
-      ` : `
-        <tr>
-          <td style="text-align: center; font-size: 12px; padding: 4px 6px;">1</td>
-          <td style="font-size: 12px; padding: 4px 6px; font-weight: bold;">Peserta PEKA ${escapeHtml(agama)} (${stuSum.pekaAll} Murid)</td>
-          <td style="text-align: center; font-size: 12px; padding: 4px 6px; font-weight: bold;">${jurnalList.length} Kali</td>
-          <td style="font-size: 12px; padding: 4px 6px;">${escapeHtml(allMateriSummary)}</td>
-          <td style="font-size: 12px; padding: 4px 6px;">${escapeHtml(allHasilSummary)}</td>
-        </tr>
-      `;
+      // Olah baris tabel capaian kelompok belajar secara dinamis berdasarkan isian jurnal
+      const activeKelompokRows = [];
+      let rowNum = 1;
+
+      if (isIslam) {
+        const iqraCount = rekapPerKelompok["Iqra"] ? rekapPerKelompok["Iqra"].count : 0;
+        const quranCount = rekapPerKelompok["Al-Qur'an"] ? rekapPerKelompok["Al-Qur'an"].count : 0;
+
+        // Hanya tampilkan Kelompok Iqra jika pada jurnal diisi kelompok Iqra (iqraCount > 0)
+        if (iqraCount > 0) {
+          const materiIqra = Array.from(rekapPerKelompok["Iqra"].materiSet).filter(Boolean).slice(0, 4).join("; ") || "-";
+          const hasilIqra = Array.from(rekapPerKelompok["Iqra"].hasilSet).filter(Boolean).slice(0, 2).join("; ") || "Terlaksana dengan baik";
+          const labelIqra = iqraTotal > 0 ? `Kelompok Iqra (${iqraTotal} Murid)` : `Kelompok Iqra`;
+
+          activeKelompokRows.push(`
+            <tr>
+              <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${rowNum++}</td>
+              <td style="font-size: 12px; padding: 4px 6px; font-weight: bold;">${escapeHtml(labelIqra)}</td>
+              <td style="text-align: center; font-size: 12px; padding: 4px 6px; font-weight: bold;">${iqraCount} Kali</td>
+              <td style="font-size: 12px; padding: 4px 6px;">${escapeHtml(materiIqra)}</td>
+              <td style="font-size: 12px; padding: 4px 6px;">${escapeHtml(hasilIqra)}</td>
+            </tr>
+          `);
+        }
+
+        // Hanya tampilkan Kelompok Al-Qur'an jika pada jurnal diisi kelompok Al-Qur'an (quranCount > 0)
+        if (quranCount > 0) {
+          const materiQuran = Array.from(rekapPerKelompok["Al-Qur'an"].materiSet).filter(Boolean).slice(0, 4).join("; ") || "-";
+          const hasilQuran = Array.from(rekapPerKelompok["Al-Qur'an"].hasilSet).filter(Boolean).slice(0, 2).join("; ") || "Terlaksana dengan baik";
+          const labelQuran = quranTotal > 0 ? `Kelompok Al-Qur'an (${quranTotal} Murid)` : `Kelompok Al-Qur'an`;
+
+          activeKelompokRows.push(`
+            <tr>
+              <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${rowNum++}</td>
+              <td style="font-size: 12px; padding: 4px 6px; font-weight: bold;">${escapeHtml(labelQuran)}</td>
+              <td style="text-align: center; font-size: 12px; padding: 4px 6px; font-weight: bold;">${quranCount} Kali</td>
+              <td style="font-size: 12px; padding: 4px 6px;">${escapeHtml(materiQuran)}</td>
+              <td style="font-size: 12px; padding: 4px 6px;">${escapeHtml(hasilQuran)}</td>
+            </tr>
+          `);
+        }
+      } else {
+        // Agama Non-Islam
+        if (jurnalList.length > 0) {
+          activeKelompokRows.push(`
+            <tr>
+              <td style="text-align: center; font-size: 12px; padding: 4px 6px;">1</td>
+              <td style="font-size: 12px; padding: 4px 6px; font-weight: bold;">Peserta PEKA ${escapeHtml(agama)} (${stuSum.pekaAll} Murid)</td>
+              <td style="text-align: center; font-size: 12px; padding: 4px 6px; font-weight: bold;">${jurnalList.length} Kali</td>
+              <td style="font-size: 12px; padding: 4px 6px;">${escapeHtml(allMateriSummary)}</td>
+              <td style="font-size: 12px; padding: 4px 6px;">${escapeHtml(allHasilSummary)}</td>
+            </tr>
+          `);
+        }
+      }
+
+      const rekapKelompokRowsHtml = activeKelompokRows.length > 0
+        ? activeKelompokRows.join("")
+        : `
+          <tr>
+            <td colspan="5" style="text-align: center; padding: 12px; font-style: italic; font-size: 12px; color: #64748b;">
+              Belum ada data pelaksanaan capaian kelompok belajar yang diisi pada bulan ini.
+            </td>
+          </tr>
+        `;
 
       const laporanBulananHal2Sheets = `
         <div class="${sheetClass}">
@@ -3720,8 +3782,8 @@
       const container = document.getElementById("toast-container");
       const toast = document.createElement("div");
       toast.className = `pointer-events-auto px-4 py-3 rounded-2xl shadow-lg text-xs font-bold flex items-center gap-2.5 border transition-all ${isError
-          ? "bg-rose-600 text-white border-rose-700"
-          : "bg-slate-900 text-white border-slate-800"
+        ? "bg-rose-600 text-white border-rose-700"
+        : "bg-slate-900 text-white border-slate-800"
         }`;
       toast.innerHTML = `
         <i class="fa-solid ${isError ? "fa-circle-exclamation text-amber-300" : "fa-circle-check text-emerald-400"} text-sm"></i>
