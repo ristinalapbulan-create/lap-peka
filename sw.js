@@ -3,25 +3,22 @@
  * Mendukung akses offline 100% baik di Vercel maupun GitHub Pages.
  */
 
-const CACHE_NAME = 'sahabat-peka-v3';
+const CACHE_NAME = 'sahabat-peka-v4';
 
 // Aset lokal penting yang di-cache saat instalasi
 const PRECACHE_ASSETS = [
   './',
   './index.html',
   './manifest.json',
+  './logo%20sahabat%20peka%20new.png',
+  './logo sahabat peka new.png',
+  './logo-sahabat-peka-new.png',
   './icon-192.png',
   './icon-512.png',
   './icon-maskable-192.png',
   './icon-maskable-512.png',
   './apple-touch-icon.png',
   './apple-touch-icon-precomposed.png',
-  './icon-192.png?v=3',
-  './icon-512.png?v=3',
-  './icon-maskable-192.png?v=3',
-  './icon-maskable-512.png?v=3',
-  './apple-touch-icon.png?v=3',
-  './apple-touch-icon-precomposed.png?v=3',
   'https://cdn.tailwindcss.com',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
   'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Tinos:ital,wght@0,400;0,700;1,400&display=swap'
