@@ -3,7 +3,7 @@
  * Mendukung akses offline 100% baik di Vercel maupun GitHub Pages.
  */
 
-const CACHE_NAME = 'sahabat-peka-v1';
+const CACHE_NAME = 'sahabat-peka-v3';
 
 // Aset lokal penting yang di-cache saat instalasi
 const PRECACHE_ASSETS = [
@@ -12,6 +12,16 @@ const PRECACHE_ASSETS = [
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
+  './icon-maskable-192.png',
+  './icon-maskable-512.png',
+  './apple-touch-icon.png',
+  './apple-touch-icon-precomposed.png',
+  './icon-192.png?v=3',
+  './icon-512.png?v=3',
+  './icon-maskable-192.png?v=3',
+  './icon-maskable-512.png?v=3',
+  './apple-touch-icon.png?v=3',
+  './apple-touch-icon-precomposed.png?v=3',
   'https://cdn.tailwindcss.com',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
   'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Tinos:ital,wght@0,400;0,700;1,400&display=swap'
@@ -70,7 +80,7 @@ self.addEventListener('fetch', (event) => {
         })
         .catch(() => {
           // Jika offline, ambil dari cache
-          return caches.match(event.request).then((cachedResponse) => {
+          return caches.match(event.request, { ignoreSearch: true }).then((cachedResponse) => {
             return cachedResponse || caches.match('./index.html') || caches.match('./');
           });
         })
@@ -80,7 +90,7 @@ self.addEventListener('fetch', (event) => {
 
   // Strategi untuk Aset Statis & CDN (Tailwind, FontAwesome, Fonts, Images)
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
+    caches.match(event.request, { ignoreSearch: true }).then((cachedResponse) => {
       if (cachedResponse) {
         // Jika ada di cache, segera kembalikan & perbarui di background jika online
         fetch(event.request)
