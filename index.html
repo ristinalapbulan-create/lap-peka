@@ -3068,7 +3068,7 @@
         const aVal = Number(rec.A) || 0;
         const maxHadir = g.anggota * jmlPertemuan;
         const jmlHadir = Math.max(0, maxHadir - (sVal + iVal + aVal));
-        const pct = maxHadir > 0 ? Math.round((jmlHadir / maxHadir) * 100) : (jmlPertemuan > 0 ? 100 : 0);
+        const pct = maxHadir > 0 ? formatPercentage(jmlHadir, maxHadir) : "0%";
 
         return `
           <tr class="border-b border-slate-100">
@@ -3085,7 +3085,7 @@
               <input type="number" min="0" value="${aVal}" oninput="updateGroupAttendance('${g.key}', 'A', this.value)" class="w-14 bg-rose-50 border border-rose-200 rounded-lg py-1 text-center font-bold text-rose-900" />
             </td>
             <td class="py-2.5 px-3 text-center font-extrabold text-emerald-700 bg-emerald-50/60">
-              ${jmlHadir} <span class="text-[10px] font-semibold text-slate-500">(${pct}%)</span>
+              ${jmlHadir} <span class="text-[10px] font-semibold text-slate-500">(${pct})</span>
             </td>
           </tr>
         `;
@@ -3391,6 +3391,20 @@
       `;
     }
 
+    function formatPercentage(hadir, total) {
+      if (total <= 0) return "0%";
+      if (hadir >= total) return "100%";
+      if (hadir <= 0) return "0%";
+      const raw = (hadir / total) * 100;
+      // Jika ada ketidakhadiran, jangan dibulatkan ke atas menjadi 100%
+      const val = Math.min(99.9, Math.max(0.1, raw));
+      const rounded1 = Number(val.toFixed(1));
+      const formattedStr = rounded1 % 1 === 0
+        ? rounded1.toString()
+        : rounded1.toFixed(1).replace(".", ",");
+      return `${formattedStr}%`;
+    }
+
     function toTitleCase(str) {
       if (!str) return "";
       return String(str)
@@ -3514,8 +3528,8 @@
       const scheduledDaysList = getScheduledDayNumbersInMonth();
       const jmlPertemuanEfektif = sumFas.H || (report.jurnal || []).length || 0;
       const pctFasilitator = scheduledDaysList.length > 0
-        ? Math.min(100, Math.round((sumFas.H / scheduledDaysList.length) * 100))
-        : (sumFas.H > 0 ? 100 : 0);
+        ? formatPercentage(sumFas.H, scheduledDaysList.length)
+        : (sumFas.H > 0 ? "100%" : "0%");
 
       let cTableRows = KELAS_LIST.map(k => {
         const r = siswaData[k] || { totalL: 0, totalP: 0, pekaL: 0, pekaP: 0 };
@@ -3610,8 +3624,8 @@
         const maxH = g.anggota * jmlPertemuanEfektif;
         const hadirCount = Math.max(0, maxH - (sVal + iVal + aVal));
         const pctHadir = maxH > 0
-          ? Math.min(100, Math.round((hadirCount / maxH) * 100))
-          : (jmlPertemuanEfektif > 0 ? 100 : 0);
+          ? formatPercentage(hadirCount, maxH)
+          : (jmlPertemuanEfektif > 0 ? "100%" : "0%");
         return `
           <tr>
             <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${idx + 1}</td>
@@ -3621,7 +3635,7 @@
             <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${sVal}</td>
             <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${iVal}</td>
             <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${aVal}</td>
-            <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle; font-weight: bold;">${pctHadir}%</td>
+            <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle; font-weight: bold;">${pctHadir}</td>
           </tr>
         `;
       }).join("");
@@ -3718,7 +3732,7 @@
                   <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${sumFas.S}</td>
                   <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${sumFas.I}</td>
                   <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${sumFas.A}</td>
-                  <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle; font-weight: bold;">${pctFasilitator}%</td>
+                  <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle; font-weight: bold;">${pctFasilitator}</td>
                 </tr>
               </tbody>
             </table>
