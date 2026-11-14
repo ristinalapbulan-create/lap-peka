@@ -287,10 +287,11 @@
     .report-table th,
     .report-table td {
       border: 1px solid #000000;
-      padding: 4px 6px;
-      vertical-align: top;
+      padding: 6px 8px 7px 8px;
+      vertical-align: middle;
       font-size: 12px;
-      line-height: 1.35;
+      line-height: 1.42;
+      box-sizing: border-box;
     }
 
     .report-table th {
@@ -313,12 +314,13 @@
     .presensi-table th,
     .presensi-table td {
       border: 1px solid #000000;
-      padding: 3px 1px;
+      padding: 4px 1px 5px 1px;
       text-align: center;
       vertical-align: middle;
       font-size: 8.5pt;
-      line-height: 1.15;
+      line-height: 1.25;
       overflow: hidden;
+      box-sizing: border-box;
     }
 
     .presensi-table th {
@@ -3523,26 +3525,26 @@
         const pp = Number(r.pekaP || 0);
         return `
           <tr>
-            <td style="text-align: center; font-size: 12px; padding: 4px 6px; font-weight: bold;">Kelas ${k}</td>
-            <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${tl}</td>
-            <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${tp}</td>
-            <td style="text-align: center; font-size: 12px; padding: 4px 6px; font-weight: bold;">${tl + tp}</td>
-            <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${pl}</td>
-            <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${pp}</td>
-            <td style="text-align: center; font-size: 12px; padding: 4px 6px; font-weight: bold;">${pl + pp}</td>
+            <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle; font-weight: bold;">Kelas ${k}</td>
+            <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${tl}</td>
+            <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${tp}</td>
+            <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle; font-weight: bold;">${tl + tp}</td>
+            <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${pl}</td>
+            <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${pp}</td>
+            <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle; font-weight: bold;">${pl + pp}</td>
           </tr>
         `;
       }).join("");
 
       cTableRows += `
         <tr style="background-color: #f1f5f9 !important; font-weight: bold;">
-          <td style="text-align: center; font-size: 12px; padding: 4px 6px;">Jumlah</td>
-          <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${stuSum.totalL ?? stuSum.totL ?? 0}</td>
-          <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${stuSum.totalP ?? stuSum.totP ?? 0}</td>
-          <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${stuSum.totalAll ?? stuSum.totAll ?? 0}</td>
-          <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${stuSum.pekaL ?? 0}</td>
-          <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${stuSum.pekaP ?? 0}</td>
-          <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${stuSum.pekaAll ?? 0}</td>
+          <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Jumlah</td>
+          <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${stuSum.totalL ?? stuSum.totL ?? 0}</td>
+          <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${stuSum.totalP ?? stuSum.totP ?? 0}</td>
+          <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${stuSum.totalAll ?? stuSum.totAll ?? 0}</td>
+          <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${stuSum.pekaL ?? 0}</td>
+          <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${stuSum.pekaP ?? 0}</td>
+          <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${stuSum.pekaAll ?? 0}</td>
         </tr>
       `;
 
@@ -3555,36 +3557,36 @@
           <table class="report-table">
             <thead>
               <tr>
-                <th rowspan="2" style="width: 35px; font-size: 12px; padding: 4px 6px;">No</th>
-                <th rowspan="2" style="font-size: 12px; padding: 4px 6px;">Nama Kelompok Belajar</th>
-                <th colspan="3" style="font-size: 12px; padding: 4px 6px;">Jumlah Murid</th>
+                <th rowspan="2" style="width: 35px; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">No</th>
+                <th rowspan="2" style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Nama Kelompok Belajar</th>
+                <th colspan="3" style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Jumlah Murid</th>
               </tr>
               <tr>
-                <th style="width: 70px; font-size: 12px; padding: 4px 6px;">L</th>
-                <th style="width: 70px; font-size: 12px; padding: 4px 6px;">P</th>
-                <th style="width: 80px; font-size: 12px; padding: 4px 6px;">Jumlah</th>
+                <th style="width: 70px; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">L</th>
+                <th style="width: 70px; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">P</th>
+                <th style="width: 80px; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Jumlah</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td style="text-align: center; font-size: 12px; padding: 4px 6px;">1</td>
-                <td style="font-size: 12px; padding: 4px 6px; font-weight: bold;">Kelompok Iqra</td>
-                <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${klpIslam.iqraL || 0}</td>
-                <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${klpIslam.iqraP || 0}</td>
-                <td style="text-align: center; font-size: 12px; padding: 4px 6px; font-weight: bold;">${iqraTotal}</td>
+                <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">1</td>
+                <td style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle; font-weight: bold;">Kelompok Iqra</td>
+                <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${klpIslam.iqraL || 0}</td>
+                <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${klpIslam.iqraP || 0}</td>
+                <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle; font-weight: bold;">${iqraTotal}</td>
               </tr>
               <tr>
-                <td style="text-align: center; font-size: 12px; padding: 4px 6px;">2</td>
-                <td style="font-size: 12px; padding: 4px 6px; font-weight: bold;">Kelompok Al-Qur'an</td>
-                <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${klpIslam.quranL || 0}</td>
-                <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${klpIslam.quranP || 0}</td>
-                <td style="text-align: center; font-size: 12px; padding: 4px 6px; font-weight: bold;">${quranTotal}</td>
+                <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">2</td>
+                <td style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle; font-weight: bold;">Kelompok Al-Qur'an</td>
+                <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${klpIslam.quranL || 0}</td>
+                <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${klpIslam.quranP || 0}</td>
+                <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle; font-weight: bold;">${quranTotal}</td>
               </tr>
               <tr style="background-color: #f1f5f9 !important; font-weight: bold;">
-                <td colspan="2" style="text-align: center; font-size: 12px; padding: 4px 6px;">Jumlah Peserta PEKA</td>
-                <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${(Number(klpIslam.iqraL) || 0) + (Number(klpIslam.quranL) || 0)}</td>
-                <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${(Number(klpIslam.iqraP) || 0) + (Number(klpIslam.quranP) || 0)}</td>
-                <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${iqraTotal + quranTotal}</td>
+                <td colspan="2" style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Jumlah Peserta PEKA</td>
+                <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${(Number(klpIslam.iqraL) || 0) + (Number(klpIslam.quranL) || 0)}</td>
+                <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${(Number(klpIslam.iqraP) || 0) + (Number(klpIslam.quranP) || 0)}</td>
+                <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${iqraTotal + quranTotal}</td>
               </tr>
             </tbody>
           </table>
@@ -3612,14 +3614,14 @@
           : (jmlPertemuanEfektif > 0 ? 100 : 0);
         return `
           <tr>
-            <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${idx + 1}</td>
-            <td style="font-size: 12px; padding: 4px 6px; font-weight: bold;">${escapeHtml(g.label)}</td>
-            <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${g.anggota}</td>
-            <td style="text-align: center; font-size: 12px; padding: 4px 6px; font-weight: bold;">${jmlPertemuanEfektif}</td>
-            <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${sVal}</td>
-            <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${iVal}</td>
-            <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${aVal}</td>
-            <td style="text-align: center; font-size: 12px; padding: 4px 6px; font-weight: bold;">${pctHadir}%</td>
+            <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${idx + 1}</td>
+            <td style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle; font-weight: bold;">${escapeHtml(g.label)}</td>
+            <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${g.anggota}</td>
+            <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle; font-weight: bold;">${jmlPertemuanEfektif}</td>
+            <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${sVal}</td>
+            <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${iVal}</td>
+            <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${aVal}</td>
+            <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle; font-weight: bold;">${pctHadir}%</td>
           </tr>
         `;
       }).join("");
@@ -3670,17 +3672,17 @@
             <table class="report-table">
               <thead>
                 <tr>
-                  <th rowspan="2" style="width: 80px; font-size: 12px; padding: 4px 6px;">Kelas</th>
-                  <th colspan="3" style="font-size: 12px; padding: 4px 6px;">Jumlah Murid Keseluruhan</th>
-                  <th colspan="3" style="font-size: 12px; padding: 4px 6px;">Jumlah Murid Mengikuti Ekskul PEKA</th>
+                  <th rowspan="2" style="width: 80px; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Kelas</th>
+                  <th colspan="3" style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Jumlah Murid Keseluruhan</th>
+                  <th colspan="3" style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Jumlah Murid Mengikuti Ekskul PEKA</th>
                 </tr>
                 <tr>
-                  <th style="font-size: 12px; padding: 4px 6px;">L</th>
-                  <th style="font-size: 12px; padding: 4px 6px;">P</th>
-                  <th style="font-size: 12px; padding: 4px 6px;">Jumlah</th>
-                  <th style="font-size: 12px; padding: 4px 6px;">L</th>
-                  <th style="font-size: 12px; padding: 4px 6px;">P</th>
-                  <th style="font-size: 12px; padding: 4px 6px;">Jumlah</th>
+                  <th style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">L</th>
+                  <th style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">P</th>
+                  <th style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Jumlah</th>
+                  <th style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">L</th>
+                  <th style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">P</th>
+                  <th style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Jumlah</th>
                 </tr>
               </thead>
               <tbody>
@@ -3699,24 +3701,24 @@
             <table class="report-table" style="margin-bottom: 8px;">
               <thead>
                 <tr>
-                  <th style="font-size: 12px; padding: 4px 6px;">Nama Fasilitator</th>
-                  <th style="width: 100px; font-size: 12px; padding: 4px 6px;">Hari Efektif</th>
-                  <th style="width: 70px; font-size: 12px; padding: 4px 6px;">Hadir (H)</th>
-                  <th style="width: 60px; font-size: 12px; padding: 4px 6px;">Sakit (S)</th>
-                  <th style="width: 60px; font-size: 12px; padding: 4px 6px;">Izin (I)</th>
-                  <th style="width: 60px; font-size: 12px; padding: 4px 6px;">Alpa (A)</th>
-                  <th style="width: 85px; font-size: 12px; padding: 4px 6px;">Persentase</th>
+                  <th style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Nama Fasilitator</th>
+                  <th style="width: 100px; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Hari Efektif</th>
+                  <th style="width: 70px; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Hadir (H)</th>
+                  <th style="width: 60px; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Sakit (S)</th>
+                  <th style="width: 60px; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Izin (I)</th>
+                  <th style="width: 60px; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Alpa (A)</th>
+                  <th style="width: 85px; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Persentase</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td style="font-size: 12px; padding: 4px 6px; font-weight: bold;">${escapeHtml(fasilitator)}</td>
-                  <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${scheduledDaysList.length} Hari</td>
-                  <td style="text-align: center; font-size: 12px; padding: 4px 6px; font-weight: bold;">${sumFas.H}</td>
-                  <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${sumFas.S}</td>
-                  <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${sumFas.I}</td>
-                  <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${sumFas.A}</td>
-                  <td style="text-align: center; font-size: 12px; padding: 4px 6px; font-weight: bold;">${pctFasilitator}%</td>
+                  <td style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle; font-weight: bold;">${escapeHtml(fasilitator)}</td>
+                  <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${scheduledDaysList.length} Hari</td>
+                  <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle; font-weight: bold;">${sumFas.H}</td>
+                  <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${sumFas.S}</td>
+                  <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${sumFas.I}</td>
+                  <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${sumFas.A}</td>
+                  <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle; font-weight: bold;">${pctFasilitator}%</td>
                 </tr>
               </tbody>
             </table>
@@ -3725,14 +3727,14 @@
             <table class="report-table">
               <thead>
                 <tr>
-                  <th style="width: 35px; font-size: 12px; padding: 4px 6px;">No</th>
-                  <th style="font-size: 12px; padding: 4px 6px;">Kelompok Peserta</th>
-                  <th style="width: 80px; font-size: 12px; padding: 4px 6px;">Jml Peserta</th>
-                  <th style="width: 85px; font-size: 12px; padding: 4px 6px;">Jml Pertemuan</th>
-                  <th style="width: 50px; font-size: 12px; padding: 4px 6px;">S</th>
-                  <th style="width: 50px; font-size: 12px; padding: 4px 6px;">I</th>
-                  <th style="width: 50px; font-size: 12px; padding: 4px 6px;">A</th>
-                  <th style="width: 85px; font-size: 12px; padding: 4px 6px;">Kehadiran</th>
+                  <th style="width: 35px; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">No</th>
+                  <th style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Kelompok Peserta</th>
+                  <th style="width: 80px; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Jml Peserta</th>
+                  <th style="width: 85px; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Jml Pertemuan</th>
+                  <th style="width: 50px; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">S</th>
+                  <th style="width: 50px; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">I</th>
+                  <th style="width: 50px; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">A</th>
+                  <th style="width: 85px; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Kehadiran</th>
                 </tr>
               </thead>
               <tbody>
@@ -3793,8 +3795,8 @@
       const allMateriSummary = Array.from(new Set(jurnalList.map(j => (j.materi || "").trim()).filter(Boolean))).slice(0, 4).join("; ") || "-";
       const allHasilSummary = Array.from(new Set(jurnalList.map(j => (j.catatan || "").trim()).filter(Boolean))).slice(0, 2).join("; ") || "Terlaksana dengan baik";
 
-      const rekapKelasCellsHead = KELAS_LIST.map(k => `<th style="font-size: 12px; padding: 4px 6px;">Kelas ${k}</th>`).join("");
-      const rekapKelasCellsBody = KELAS_LIST.map(k => `<td style="text-align: center; font-size: 12px; padding: 4px 6px; font-weight: bold;">${rekapPerKelas[k].count}x</td>`).join("");
+      const rekapKelasCellsHead = KELAS_LIST.map(k => `<th style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Kelas ${k}</th>`).join("");
+      const rekapKelasCellsBody = KELAS_LIST.map(k => `<td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle; font-weight: bold;">${rekapPerKelas[k].count}x</td>`).join("");
 
       // Olah baris tabel capaian kelompok belajar secara dinamis berdasarkan isian jurnal
       const activeKelompokRows = [];
@@ -3812,11 +3814,11 @@
 
           activeKelompokRows.push(`
             <tr>
-              <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${rowNum++}</td>
-              <td style="font-size: 12px; padding: 4px 6px; font-weight: bold;">${escapeHtml(labelIqra)}</td>
-              <td style="text-align: center; font-size: 12px; padding: 4px 6px; font-weight: bold;">${iqraCount} Kali</td>
-              <td style="font-size: 12px; padding: 4px 6px;">${escapeHtml(materiIqra)}</td>
-              <td style="font-size: 12px; padding: 4px 6px;">${escapeHtml(hasilIqra)}</td>
+              <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${rowNum++}</td>
+              <td style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle; font-weight: bold;">${escapeHtml(labelIqra)}</td>
+              <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle; font-weight: bold;">${iqraCount} Kali</td>
+              <td style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${escapeHtml(materiIqra)}</td>
+              <td style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${escapeHtml(hasilIqra)}</td>
             </tr>
           `);
         }
@@ -3829,11 +3831,11 @@
 
           activeKelompokRows.push(`
             <tr>
-              <td style="text-align: center; font-size: 12px; padding: 4px 6px;">${rowNum++}</td>
-              <td style="font-size: 12px; padding: 4px 6px; font-weight: bold;">${escapeHtml(labelQuran)}</td>
-              <td style="text-align: center; font-size: 12px; padding: 4px 6px; font-weight: bold;">${quranCount} Kali</td>
-              <td style="font-size: 12px; padding: 4px 6px;">${escapeHtml(materiQuran)}</td>
-              <td style="font-size: 12px; padding: 4px 6px;">${escapeHtml(hasilQuran)}</td>
+              <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${rowNum++}</td>
+              <td style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle; font-weight: bold;">${escapeHtml(labelQuran)}</td>
+              <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle; font-weight: bold;">${quranCount} Kali</td>
+              <td style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${escapeHtml(materiQuran)}</td>
+              <td style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${escapeHtml(hasilQuran)}</td>
             </tr>
           `);
         }
@@ -3842,11 +3844,11 @@
         if (jurnalList.length > 0) {
           activeKelompokRows.push(`
             <tr>
-              <td style="text-align: center; font-size: 12px; padding: 4px 6px;">1</td>
-              <td style="font-size: 12px; padding: 4px 6px; font-weight: bold;">Peserta PEKA ${escapeHtml(agama)} (${stuSum.pekaAll} Murid)</td>
-              <td style="text-align: center; font-size: 12px; padding: 4px 6px; font-weight: bold;">${jurnalList.length} Kali</td>
-              <td style="font-size: 12px; padding: 4px 6px;">${escapeHtml(allMateriSummary)}</td>
-              <td style="font-size: 12px; padding: 4px 6px;">${escapeHtml(allHasilSummary)}</td>
+              <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">1</td>
+              <td style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle; font-weight: bold;">Peserta PEKA ${escapeHtml(agama)} (${stuSum.pekaAll} Murid)</td>
+              <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle; font-weight: bold;">${jurnalList.length} Kali</td>
+              <td style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${escapeHtml(allMateriSummary)}</td>
+              <td style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">${escapeHtml(allHasilSummary)}</td>
             </tr>
           `);
         }
@@ -3882,9 +3884,9 @@
             <table class="report-table" style="margin-bottom: 10px;">
               <thead>
                 <tr>
-                  <th rowspan="2" style="width: 140px; font-size: 12px; padding: 4px 6px;">Hari Efektif Mengajar</th>
-                  <th rowspan="2" style="width: 110px; font-size: 12px; padding: 4px 6px;">Total Pertemuan</th>
-                  <th colspan="6" style="font-size: 12px; padding: 4px 6px;">Frekuensi Pelaksanaan Kegiatan Per Kelas</th>
+                  <th rowspan="2" style="width: 140px; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Hari Efektif Mengajar</th>
+                  <th rowspan="2" style="width: 110px; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Total Pertemuan</th>
+                  <th colspan="6" style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Frekuensi Pelaksanaan Kegiatan Per Kelas</th>
                 </tr>
                 <tr>
                   ${rekapKelasCellsHead}
@@ -3892,8 +3894,8 @@
               </thead>
               <tbody>
                 <tr>
-                  <td style="text-align: center; font-size: 12px; padding: 4px 6px; font-weight: bold;">${escapeHtml(hariEfektifStr)}</td>
-                  <td style="text-align: center; font-size: 12px; padding: 4px 6px; font-weight: bold;">${jurnalList.length} Pertemuan</td>
+                  <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle; font-weight: bold;">${escapeHtml(hariEfektifStr)}</td>
+                  <td style="text-align: center; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle; font-weight: bold;">${jurnalList.length} Pertemuan</td>
                   ${rekapKelasCellsBody}
                 </tr>
               </tbody>
@@ -3903,11 +3905,11 @@
             <table class="report-table">
               <thead>
                 <tr>
-                  <th style="width: 35px; font-size: 12px; padding: 4px 6px;">No</th>
-                  <th style="width: 175px; font-size: 12px; padding: 4px 6px;">Kelompok / Sasaran</th>
-                  <th style="width: 90px; font-size: 12px; padding: 4px 6px;">Terlaksana</th>
-                  <th style="font-size: 12px; padding: 4px 6px;">Rangkuman Materi Pokok yang Diajarkan</th>
-                  <th style="width: 160px; font-size: 12px; padding: 4px 6px;">Hasil / Capaian</th>
+                  <th style="width: 35px; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">No</th>
+                  <th style="width: 175px; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Kelompok / Sasaran</th>
+                  <th style="width: 90px; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Terlaksana</th>
+                  <th style="font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Rangkuman Materi Pokok yang Diajarkan</th>
+                  <th style="width: 160px; font-size: 12px; padding: 6px 8px 7px 8px; vertical-align: middle;">Hasil / Capaian</th>
                 </tr>
               </thead>
               <tbody>
@@ -3971,12 +3973,12 @@
         const pageRowsHtml = pageObj.rows.length > 0
           ? pageObj.rows.map(({ item, number }) => `
               <tr>
-                <td style="text-align: center; width: 32px;">${number}</td>
-                <td style="width: 130px;">${escapeHtml(formatFullHariTanggal(item.dayNumber))}</td>
-                <td style="text-align: center; width: 65px;">${escapeHtml(item.kelas)}</td>
-                <td style="width: 145px;">${escapeHtml(item.materi)}</td>
-                <td>${escapeHtml(item.kegiatan)}</td>
-                <td style="width: 115px;">${escapeHtml(item.catatan || 'Terlaksana dengan baik')}</td>
+                <td style="text-align: center; width: 32px; padding: 6px 4px 7px 4px; vertical-align: middle;">${number}</td>
+                <td style="width: 130px; padding: 6px 7px 7px 7px; vertical-align: middle;">${escapeHtml(formatFullHariTanggal(item.dayNumber))}</td>
+                <td style="text-align: center; width: 65px; padding: 6px 4px 7px 4px; vertical-align: middle;">${escapeHtml(item.kelas)}</td>
+                <td style="width: 145px; padding: 6px 7px 7px 7px; vertical-align: middle;">${escapeHtml(item.materi)}</td>
+                <td style="padding: 6px 8px 7px 8px; vertical-align: middle;">${escapeHtml(item.kegiatan)}</td>
+                <td style="width: 115px; padding: 6px 7px 7px 7px; vertical-align: middle;">${escapeHtml(item.catatan || 'Terlaksana dengan baik')}</td>
               </tr>
             `).join("")
           : `
@@ -4028,12 +4030,12 @@
             <table class="report-table">
               <thead>
                 <tr>
-                  <th style="width: 32px;">No</th>
-                  <th style="width: 130px;">Hari &amp; Tanggal</th>
-                  <th style="width: 65px;">Kelas</th>
-                  <th style="width: 145px;">Materi</th>
-                  <th>Kegiatan Pembelajaran Inti</th>
-                  <th style="width: 115px;">Hasil / Catatan</th>
+                  <th style="width: 32px; padding: 7px 4px 8px 4px; vertical-align: middle;">No</th>
+                  <th style="width: 130px; padding: 7px 7px 8px 7px; vertical-align: middle;">Hari &amp; Tanggal</th>
+                  <th style="width: 65px; padding: 7px 4px 8px 4px; vertical-align: middle;">Kelas</th>
+                  <th style="width: 145px; padding: 7px 7px 8px 7px; vertical-align: middle;">Materi</th>
+                  <th style="padding: 7px 8px 8px 8px; vertical-align: middle;">Kegiatan Pembelajaran Inti</th>
+                  <th style="width: 115px; padding: 7px 7px 8px 7px; vertical-align: middle;">Hasil / Catatan</th>
                 </tr>
               </thead>
               <tbody>
@@ -4338,7 +4340,23 @@
             allowTaint: true,
             backgroundColor: "#ffffff",
             logging: false,
-            windowWidth: isLandscape ? 1400 : 1000
+            windowWidth: isLandscape ? 1400 : 1000,
+            onclone: (clonedDoc) => {
+              const style = clonedDoc.createElement('style');
+              style.innerHTML = `
+                .report-table th, .report-table td {
+                  vertical-align: middle !important;
+                  padding: 6px 8px 7px 8px !important;
+                  line-height: 1.45 !important;
+                }
+                .presensi-table th, .presensi-table td {
+                  vertical-align: middle !important;
+                  padding: 4px 1px 5px 1px !important;
+                  line-height: 1.25 !important;
+                }
+              `;
+              clonedDoc.head.appendChild(style);
+            }
           });
 
           const imgData = canvas.toDataURL("image/jpeg", 0.95);

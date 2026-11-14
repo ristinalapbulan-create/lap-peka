@@ -3,7 +3,7 @@
  * Mendukung akses offline 100% baik di Vercel maupun GitHub Pages.
  */
 
-const CACHE_NAME = 'sahabat-peka-v7';
+const CACHE_NAME = 'sahabat-peka-v8';
 
 // Aset lokal & CDN penting yang di-cache saat instalasi
 const PRECACHE_ASSETS = [
