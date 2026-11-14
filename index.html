@@ -227,6 +227,7 @@
       box-sizing: border-box;
     }
 
+    .f4-sheet,
     .f4-preview-sheet {
       width: 215mm;
       height: 330mm;
@@ -234,15 +235,21 @@
       max-height: 330mm;
       background: #ffffff;
       margin: 0 auto 28px auto;
-      padding: 15mm 18mm 18mm 18mm;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+      padding: 14mm 16mm 18mm 16mm;
       font-family: 'Tinos', 'Times New Roman', Times, serif;
       color: #000000;
       box-sizing: border-box;
       position: relative;
       overflow: hidden;
+      zoom: 1;
+      transform: none;
     }
 
+    .f4-preview-sheet {
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+    }
+
+    .f4-sheet.f4-landscape-sheet,
     .f4-preview-sheet.f4-landscape-sheet {
       width: 330mm;
       height: 215mm;
@@ -1256,15 +1263,20 @@
                 Dokumentasi</strong>
             </p>
           </div>
-          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
-            <button onclick="downloadPdfF4()"
-              class="peka-btn-primary px-4 py-3 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 shadow-md hover:brightness-105 transition cursor-pointer">
-              <i class="fa-solid fa-file-arrow-down text-sm"></i> Unduh PDF Otomatis (F4)
-            </button>
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto">
             <button onclick="triggerPrintF4()"
-              class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-3.5 py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-xs transition cursor-pointer">
-              <i class="fa-solid fa-print"></i> Cetak / Print
+              class="peka-btn-primary px-5 py-3 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 shadow-md hover:brightness-105 transition cursor-pointer">
+              <i class="fa-solid fa-print text-sm"></i> Cetak / Simpan PDF (Kualitas Terbaik F4)
             </button>
+            <button onclick="downloadPdfF4()"
+              class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-3.5 py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-xs transition cursor-pointer">
+              <i class="fa-solid fa-file-arrow-down text-emerald-600"></i> Unduh File Langsung (Alternatif)
+            </button>
+          </div>
+          <div class="w-full text-left sm:text-right">
+            <span class="text-[11px] text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2.5 py-1 rounded-full font-medium inline-flex items-center gap-1.5 shadow-2xs">
+              <i class="fa-solid fa-circle-check text-emerald-600"></i> Nama file otomatis: <strong>Bulan Tahun - Nama Fasilitator</strong>
+            </span>
           </div>
         </div>
 
@@ -4191,13 +4203,6 @@
       // "Nama Bulan dan tahun - Nama Fasil"
       document.title = `${bulanNama} ${tahun} - ${cleanFasil}`;
 
-      // Temporarily expand mobile viewport to prevent cutting off the right side
-      const viewportMeta = document.querySelector('meta[name="viewport"]');
-      const originalViewport = viewportMeta ? viewportMeta.getAttribute('content') : '';
-      if (viewportMeta && window.innerWidth < 850) {
-        viewportMeta.setAttribute('content', 'width=1024, initial-scale=1.0');
-      }
-
       const printMount = document.getElementById("print-mount");
       printMount.innerHTML = buildCompleteF4ReportHTML(true);
 
@@ -4214,14 +4219,14 @@
       Promise.all(imgPromises).then(() => {
         setTimeout(() => {
           window.print();
-          // Restore original title & viewport after print dialog closes
+          // Restore original title after print dialog closes
+          window.addEventListener('afterprint', () => {
+            document.title = originalTitle;
+          }, { once: true });
           setTimeout(() => {
             document.title = originalTitle;
-            if (viewportMeta && originalViewport) {
-              viewportMeta.setAttribute('content', originalViewport);
-            }
-          }, 1000);
-        }, 300);
+          }, 3000);
+        }, 250);
       });
     }
 
@@ -4249,7 +4254,7 @@
             <i class="fa-solid fa-file-pdf animate-pulse"></i>
           </div>
           <h3 class="text-base font-extrabold text-slate-800">Menyusun File PDF F4</h3>
-          <p id="pdf-progress-text" class="text-xs text-slate-500 mt-1">Menyiapkan halaman dokumen...</p>
+          <p id="pdf-progress-text" class="text-xs text-slate-500 mt-1">Memuat font & aset dokumen...</p>
           <div class="w-full bg-slate-100 rounded-full h-2.5 mt-4 overflow-hidden">
             <div id="pdf-progress-bar" class="bg-emerald-600 h-2.5 rounded-full transition-all duration-300" style="width: 10%"></div>
           </div>
@@ -4270,6 +4275,11 @@
           throw new Error("Pustaka PDF generator belum siap.");
         }
 
+        // Wait for all web fonts (Tinos, Plus Jakarta Sans) to be 100% ready
+        if (document.fonts) {
+          await document.fonts.ready;
+        }
+
         const jsPDFClass = window.jspdf ? (window.jspdf.jsPDF || window.jspdf) : window.jsPDF;
         const pdf = new jsPDFClass({
           orientation: "p",
@@ -4284,7 +4294,6 @@
         renderSandbox.style.position = "fixed";
         renderSandbox.style.left = "-9999px";
         renderSandbox.style.top = "0";
-        renderSandbox.style.width = "350mm";
         renderSandbox.style.background = "#ffffff";
         renderSandbox.style.zIndex = "-9999";
         renderSandbox.innerHTML = buildCompleteF4ReportHTML(true);
@@ -4300,7 +4309,7 @@
           });
         }));
 
-        await new Promise(r => setTimeout(r, 250));
+        await new Promise(r => setTimeout(r, 300));
 
         const sheets = renderSandbox.querySelectorAll(".f4-sheet");
         const totalSheets = sheets.length;
@@ -4313,12 +4322,23 @@
           const pageW = isLandscape ? 330 : 215;
           const pageH = isLandscape ? 215 : 330;
 
+          // Enforce strict millimeter and box dimensions on the sheet
+          sheet.style.width = isLandscape ? "330mm" : "215mm";
+          sheet.style.height = isLandscape ? "215mm" : "330mm";
+          sheet.style.minHeight = isLandscape ? "215mm" : "330mm";
+          sheet.style.maxHeight = isLandscape ? "215mm" : "330mm";
+          sheet.style.margin = "0";
+          sheet.style.zoom = "1";
+          sheet.style.transform = "none";
+          sheet.style.boxSizing = "border-box";
+
           const canvas = await html2canvas(sheet, {
             scale: 2,
             useCORS: true,
             allowTaint: true,
             backgroundColor: "#ffffff",
-            logging: false
+            logging: false,
+            windowWidth: isLandscape ? 1400 : 1000
           });
 
           const imgData = canvas.toDataURL("image/jpeg", 0.95);
