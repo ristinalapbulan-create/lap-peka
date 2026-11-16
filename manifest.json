@@ -2,7 +2,6 @@
   "name": "SAHABAT PEKA SD - Kabupaten Tabalong",
   "short_name": "Sahabat PEKA",
   "description": "Sistem Pelaporan & Jurnal Harian Pendidikan Karakter (PEKA) SD se-Kabupaten Tabalong",
-  "id": "./",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -11,12 +10,6 @@
   "theme_color": "#108A44",
   "categories": ["education", "productivity"],
   "icons": [
-    {
-      "src": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh1LklSYTcej0n282IA4zjqXazCcUbdZ0QBZ9Am2yi4cRvoFLmx2vU89loDTwo7yaSatEr9cMG5B9CpJf344OZLtDBnqZ18AS_4WQRRPmG44Y5mgaw6rIPbJQgVLfrc0JgUGpZkM0RcbXYtM-opDmuQblffAmB9uZKx1y47JunIDE9JJ8n5Xi1cfqxhcD7T/s1600/logo%20sahabat%20peka%20new.png",
-      "sizes": "1254x1254",
-      "type": "image/png",
-      "purpose": "any"
-    },
     {
       "src": "./icon-192.png",
       "sizes": "192x192",

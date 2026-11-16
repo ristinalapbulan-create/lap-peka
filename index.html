@@ -10,13 +10,13 @@
   <meta name="theme-color" content="#108A44" />
 
   <!-- Favicon, PWA & Apple Touch Icons for iPhone & Android -->
-  <link rel="icon" type="image/png" sizes="1254x1254" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh1LklSYTcej0n282IA4zjqXazCcUbdZ0QBZ9Am2yi4cRvoFLmx2vU89loDTwo7yaSatEr9cMG5B9CpJf344OZLtDBnqZ18AS_4WQRRPmG44Y5mgaw6rIPbJQgVLfrc0JgUGpZkM0RcbXYtM-opDmuQblffAmB9uZKx1y47JunIDE9JJ8n5Xi1cfqxhcD7T/s1600/logo%20sahabat%20peka%20new.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
-  <link rel="shortcut icon" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh1LklSYTcej0n282IA4zjqXazCcUbdZ0QBZ9Am2yi4cRvoFLmx2vU89loDTwo7yaSatEr9cMG5B9CpJf344OZLtDBnqZ18AS_4WQRRPmG44Y5mgaw6rIPbJQgVLfrc0JgUGpZkM0RcbXYtM-opDmuQblffAmB9uZKx1y47JunIDE9JJ8n5Xi1cfqxhcD7T/s1600/logo%20sahabat%20peka%20new.png" type="image/png" />
-  <link rel="apple-touch-icon" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh1LklSYTcej0n282IA4zjqXazCcUbdZ0QBZ9Am2yi4cRvoFLmx2vU89loDTwo7yaSatEr9cMG5B9CpJf344OZLtDBnqZ18AS_4WQRRPmG44Y5mgaw6rIPbJQgVLfrc0JgUGpZkM0RcbXYtM-opDmuQblffAmB9uZKx1y47JunIDE9JJ8n5Xi1cfqxhcD7T/s1600/logo%20sahabat%20peka%20new.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh1LklSYTcej0n282IA4zjqXazCcUbdZ0QBZ9Am2yi4cRvoFLmx2vU89loDTwo7yaSatEr9cMG5B9CpJf344OZLtDBnqZ18AS_4WQRRPmG44Y5mgaw6rIPbJQgVLfrc0JgUGpZkM0RcbXYtM-opDmuQblffAmB9uZKx1y47JunIDE9JJ8n5Xi1cfqxhcD7T/s1600/logo%20sahabat%20peka%20new.png" />
-  <link rel="apple-touch-icon-precomposed" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh1LklSYTcej0n282IA4zjqXazCcUbdZ0QBZ9Am2yi4cRvoFLmx2vU89loDTwo7yaSatEr9cMG5B9CpJf344OZLtDBnqZ18AS_4WQRRPmG44Y5mgaw6rIPbJQgVLfrc0JgUGpZkM0RcbXYtM-opDmuQblffAmB9uZKx1y47JunIDE9JJ8n5Xi1cfqxhcD7T/s1600/logo%20sahabat%20peka%20new.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="180x180" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh1LklSYTcej0n282IA4zjqXazCcUbdZ0QBZ9Am2yi4cRvoFLmx2vU89loDTwo7yaSatEr9cMG5B9CpJf344OZLtDBnqZ18AS_4WQRRPmG44Y5mgaw6rIPbJQgVLfrc0JgUGpZkM0RcbXYtM-opDmuQblffAmB9uZKx1y47JunIDE9JJ8n5Xi1cfqxhcD7T/s1600/logo%20sahabat%20peka%20new.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png" />
+  <link rel="shortcut icon" href="./icon-192.png" type="image/png" />
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
+  <link rel="apple-touch-icon-precomposed" href="./apple-touch-icon-precomposed.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="180x180" href="./apple-touch-icon-precomposed.png" />
   <link rel="manifest" href="./manifest.json" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -2068,9 +2068,9 @@
 
     function fixAppleTouchIconPaths() {
       try {
-        const logoUrl = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh1LklSYTcej0n282IA4zjqXazCcUbdZ0QBZ9Am2yi4cRvoFLmx2vU89loDTwo7yaSatEr9cMG5B9CpJf344OZLtDBnqZ18AS_4WQRRPmG44Y5mgaw6rIPbJQgVLfrc0JgUGpZkM0RcbXYtM-opDmuQblffAmB9uZKx1y47JunIDE9JJ8n5Xi1cfqxhcD7T/s1600/logo%20sahabat%20peka%20new.png";
-        document.querySelectorAll('link[rel="apple-touch-icon"]').forEach(l => l.setAttribute('href', logoUrl));
-        document.querySelectorAll('link[rel="apple-touch-icon-precomposed"]').forEach(l => l.setAttribute('href', logoUrl));
+        const iconUrl = "./apple-touch-icon.png";
+        document.querySelectorAll('link[rel="apple-touch-icon"]').forEach(l => l.setAttribute('href', iconUrl));
+        document.querySelectorAll('link[rel="apple-touch-icon-precomposed"]').forEach(l => l.setAttribute('href', iconUrl));
       } catch (e) {
         console.warn('Apple touch icon path fix error:', e);
       }
