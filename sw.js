@@ -3,7 +3,7 @@
  * Mendukung akses offline 100% baik di Vercel maupun GitHub Pages.
  */
 
-const CACHE_NAME = 'sahabat-peka-v10';
+const CACHE_NAME = 'sahabat-peka-v12';
 
 // Aset lokal & CDN penting yang di-cache saat instalasi
 const PRECACHE_ASSETS = [
@@ -85,6 +85,20 @@ self.addEventListener('fetch', (event) => {
             return cachedResponse || caches.match('./index.html') || caches.match('./');
           });
         })
+    );
+    return;
+  }
+
+  // Strategi Network-First untuk manifest.json agar perubahan PWA langsung terbaca
+  if (url.pathname.endsWith('manifest.json')) {
+    event.respondWith(
+      fetch(event.request)
+        .then((res) => {
+          const resClone = res.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, resClone));
+          return res;
+        })
+        .catch(() => caches.match(event.request, { ignoreSearch: true }))
     );
     return;
   }
